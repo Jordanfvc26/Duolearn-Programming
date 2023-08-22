@@ -18,6 +18,9 @@ import { TeoriasComponent } from './teorias/teorias.component';
 import { CoronasComponent } from './coronas/coronas.component';
 import { EstadisticasComponent } from './estadisticas/estadisticas.component';
 import { AdministradorComponent } from './administrador/administrador.component';
+import { ListComponent } from './administrador/list/list.component';
+import { CreateComponent } from './administrador/create/create.component';
+import { EditComponent } from './administrador/edit/edit.component';
 
 const routes: Routes = [
   {path:"",pathMatch:"full",redirectTo:"principal"},
@@ -38,7 +41,10 @@ const routes: Routes = [
   {path: "foro-discusion", component:ForoDiscusionComponent},
   {path: "mapa-preguntas", component:MapaPreguntasComponent},
   {path: "teorias", component:TeoriasComponent},
-  {path: "administrador", component:AdministradorComponent}
+  {path: "administrador/list", component:ListComponent},
+  {path: "administrador/create", component:CreateComponent},
+  {path: "administrador/edit/:id", component:EditComponent}
+  
 ];
 
 @NgModule({

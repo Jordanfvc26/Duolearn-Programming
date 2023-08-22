@@ -33,12 +33,12 @@ export class LoginComponent implements OnInit {
       clave: ['', Validators.required]
     });
     this.form_registro = this.formulario_registro.group({
-      correo: ['', [Validators.email, Validators.required, Validators.pattern("^[a-z0-9]+([._][a-z0-9]+)*[@]+[a-z0-9]+[.]+[a-z0-9]+[.]+[a-z]{2,4}$")]],
+      correo: ['', [Validators.email, Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       usuario: ['', Validators.required],
       fecha_nacimiento: ['', Validators.required],
       nombres: ['', Validators.required],
       apellidos: ['', Validators.required],
-      clave: ['', [Validators.required, Validators.pattern("^(?=.*\d)(?=.*[a-zA-Z!@#$%^&*])(.{8,})$")]],
+      clave: ['', [Validators.required, Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$"),Validators.maxLength(20), Validators.minLength(8)]],
     });
   }
   
@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
     this.user_service.get_user({ usuario: sessionStorage.getItem("user") }).subscribe(resp => {
       if(resp.estado==1){
         if(resp.tipo.trim()=="administrador"){
-          this.ruta.navigateByUrl("/administrador");
+          this.ruta.navigateByUrl("/administrador/list");
         }else{
           this.ruta.navigateByUrl("/dashboard");
         }
@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
         this.user_service.get_user({ usuario: sessionStorage.getItem("user") }).subscribe(resp => {
           if(resp.estado==1){
             if(resp.tipo.trim()=="administrador"){
-              this.ruta.navigateByUrl("/administrador");
+              this.ruta.navigateByUrl("/administrador/list");
             }else{
               this.ruta.navigateByUrl("/elegir-lenguaje");
             }

@@ -10,42 +10,16 @@
         </span>
     </div>
 
-
-    <div class="d-flex">
-
-
-
+    <div class="body p-5 row">
         <div class="body">
             <div class="caja" id="screenPreguntas">
                 <div class="cuestionario">
                     <div class="titulo">
                         <!--Este titulo habría que traerlo de la base da datos, o de la pagina anterior, ya que el nombre del módulo aparece según el modulo que el usuario elige-->
-                        Agregar nuevas preguntas
+                        Editar pregunta
                         <span>
                             <fa-icon [icon]="faPlus"></fa-icon>
                         </span>
-                    </div>
-
-                    <!--Los comboBox para seleccionar tipo de pregunta y tema-->
-                    <div class="header">
-                        <div class="tipo-pregunta"><b>Tipo de Pregunta: </b>
-                            <select #escoge1 [(ngModel)]="seleccionado">
-                                <option [value]="1" selected disabled>--- Seleccione ---</option>
-                                <option [value]="2">Cuestionario</option>
-                                <option [value]="3">Pares</option>
-                                <option [value]="4">Drag and drop</option>
-                                <option [value]="5">Error</option>
-                            </select>
-                        </div>
-                        <div class="tema"><b>Tema: </b>
-                            <select [(ngModel)]="tema_select">
-                                <option *ngFor="let tema of Temas" [value]="tema.id">
-                                    <b>Lenguaje:</b> {{tema.lenguaje}};
-                                    <b>Módulo:</b> {{tema.modulo}};
-                                    <b>Titulo:</b> {{tema.titulo}}
-                                </option>
-                            </select>
-                        </div>
                     </div>
                 </div>
 
@@ -56,7 +30,7 @@
                         <span><i><b>Nota: </b> En caso de ser de tipo Drag and drop, ingrese la pregunta (comentarios)
                                 línea
                                 a línea.</i></span>
-                        <textarea #pregunta_cuestionario></textarea>
+                        <textarea #pregunta_cuestionario> {{activityInfo.pregunta}} </textarea>
                     </div>
 
                     <div class="caja-opciones">
@@ -65,10 +39,10 @@
                         <input #opcion_a_cuestionario type="text"
                             [ngStyle]="seleccionado==2 && {'background-color': 'rgb(5, 196, 88)'} || seleccionado==4 && {'background-color': 'wheat'}"
                             [ngClass]="{'opc_correcta': seleccionado ==2, 'opc_correctadd' : step ==4 }"
-                            placeholder=" Opción A" />
-                        <input #opcion_b_cuestionario type="text" placeholder=" Opción B" />
-                        <input #opcion_c_cuestionario type="text" placeholder=" Opción C" />
-                        <input #opcion_d_cuestionario type="text" placeholder=" Opción D" />
+                            [value]="activityInfo.opcion_correcta" placeholder=" Opción A" />
+                        <input #opcion_b_cuestionario type="text" [value]="activityInfo.opcion2" placeholder=" Opción B" />
+                        <input #opcion_c_cuestionario type="text" [value]="activityInfo.opcion3" placeholder=" Opción C" />
+                        <input #opcion_d_cuestionario type="text" [value]="activityInfo.opcion4" placeholder=" Opción D" />
                     </div>
                 </div>
 
@@ -80,8 +54,8 @@
                     <div class="contenedor-imagen-pares">
                         <div class="imagenes-a-cargar">
                             <br />
-                            <img alt="" id="img-vista-previa1" />
-                            <img alt="" id="img-vista-previa2" />
+                            <img [src]="activityInfo.pregunta" alt="" id="img-vista-previa1" />
+                            <img [src]="activityInfo.opcion_correcta" alt="" id="img-vista-previa2" />
                         </div>
                     </div>
 
@@ -104,7 +78,7 @@
                         <div class="imagenes-a-cargar">
                             <br />
                             <!--La imagen que puse aquí es de prueba, debes borrar esa imagen y dejar en blanco-->
-                            <img #imagen3 alt="" id="img-vista-previa3" />
+                            <img [src]="activityInfo.pregunta" #imagen3 alt="" id="img-vista-previa3" />
                         </div>
 
                         <div class="form-pares">
@@ -118,10 +92,10 @@
                         <h5>Ingrese las Opciones: </h5>
                         <span><i><b>Nota: </b> No ingrese literales (a,b,c,d), solo el texto.</i></span>
                         <input class="opc_correcta" #opcion_a_error type="text"
-                            style="background-color: rgb(5, 196, 88);" placeholder=" Opción A" />
-                        <input #opcion_b_error type="text" placeholder=" Opción B" />
-                        <input #opcion_c_error type="text" placeholder=" Opción C" />
-                        <input #opcion_d_error type="text" placeholder=" Opción D" />
+                            style="background-color: rgb(5, 196, 88);" [value]="activityInfo.opcion_correcta" placeholder=" Opción A" />
+                        <input #opcion_b_error type="text" [value]="activityInfo.opcion2" placeholder=" Opción B" />
+                        <input #opcion_c_error type="text" [value]="activityInfo.opcion3" placeholder=" Opción C" />
+                        <input #opcion_d_error type="text" [value]="activityInfo.opcion4" placeholder=" Opción D" />
                     </div>
                 </div>
 
@@ -134,12 +108,4 @@
             </div>
         </div>
     </div>
-
 </div>
-
-
-<!--Este script JS hace mostrar la imagen en vista previa-->
-<script>
-</script>
-
-<!--https://www.youtube.com/watch?v=7kAJUQOkJqo-->

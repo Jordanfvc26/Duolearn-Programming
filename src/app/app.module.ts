@@ -29,6 +29,9 @@ import { EstadisticasComponent } from './estadisticas/estadisticas.component';
 import { ForoDiscusionComponent } from './foro-discusion/foro-discusion.component';
 import { TeoriasComponent } from './teorias/teorias.component';
 import { AdministradorComponent } from './administrador/administrador.component';
+import { ListComponent } from './administrador/list/list.component';
+import { EditComponent } from './administrador/edit/edit.component';
+import { CreateComponent } from './administrador/create/create.component';
 
 
 
@@ -53,7 +56,10 @@ import { AdministradorComponent } from './administrador/administrador.component'
     EstadisticasComponent,
     ForoDiscusionComponent,
     TeoriasComponent,
-    AdministradorComponent
+    AdministradorComponent,
+    ListComponent,
+    EditComponent,
+    CreateComponent
   ],
   imports: [
     BrowserModule,
