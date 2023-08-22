@@ -7,7 +7,9 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "heroku-postbuild": "ng build --prod"
+    "heroku-postbuild": "ng build --prod",
+    "electron": "electron src/app/electron/main.js",
+    "electron:build":"ng build --output-path src/app/electron/dist --base-href . && electron src/app/electron/main.js"
   },
   "private": true,
   "dependencies": {
@@ -45,6 +47,7 @@
     "@types/jasmine": "~3.10.0",
     "@types/node": "^12.11.1",
     "@types/react": "16.4.13",
+    "electron": "^26.0.0",
     "jasmine-core": "~4.0.0",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",
