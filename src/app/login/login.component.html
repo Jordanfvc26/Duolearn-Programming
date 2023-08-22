@@ -1,0 +1,175 @@
+<div id="contenedor-p">
+    <div *ngIf="bol" class="contenedorLoader">
+        <div class="loader"></div>
+        <a href="../../assets/imagenes/"></a>
+    </div>
+
+
+    <div class="body">
+        <div class="container" id="contenedor" #container>
+            <div class="forms-container">
+                <div class="ingresar-login-registrarse">
+                    <form [formGroup]="form_login" (ngSubmit)="login()" class="ingresar-login-form">
+                        <h2 class="title">Iniciar Sesión</h2>
+                        <div class="entrada-texto mb-5">
+                             <label class="mb-1"><b>Usuario</b></label>
+                             <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                 formControlName="usuario" placeholder="  Usuario*" [ngClass]="{
+                                     'is-invalid': form_login.get('usuario')?.hasError('required') && form_login.get('usuario')?.touched || form_login.get('usuario')?.hasError('pattern'),
+                                     'is-valid': form_login.get('usuario')?.value?.length >= 4 && form_login.get('usuario')?.hasError('pattern') == false
+                                 }" [maxlength]="50" />
+                             <div class="validators"
+                                 *ngIf="form_login.get('usuario')?.hasError('required') && form_login.get('usuario')?.touched">
+                                 <small>¡Este campo es requerido!</small>
+                             </div>
+                         </div>
+                         <div class="entrada-texto mb-3">
+                            <label class="mb-1"><b>Contraseña</b></label>
+                            <input type="password" class="form-control form-control-lg bg-light fs-6"
+                                formControlName="clave" placeholder="  Contraseña*" [ngClass]="{
+                                    'is-invalid': form_login.get('clave')?.hasError('required') && form_login.get('clave')?.touched || form_login.get('clave')?.hasError('pattern'),
+                                    'is-valid': form_login.get('clave')?.value?.length >= 8 && form_login.get('clave')?.hasError('pattern') == false
+                                }" [maxlength]="20" />
+                            <div class="validators"
+                                *ngIf="form_login.get('clave')?.hasError('required') && form_login.get('clave')?.touched">
+                                <small>¡Este campo es requerido!</small>
+                            </div>
+                        </div>
+                        <br />
+                        <i>
+                            <p>¿Olvidaste tu contraseña? Restablecela <a routerLink="/olvide-contrasenia/0">Aquí</a></p>
+                        </i>
+                        <button type="submit" class="btn ingresar">ingresar</button>
+                    </form>
+
+
+                    <form [formGroup]="form_registro" class="ingresar-registro-form" (ngSubmit)="registro_user()">
+                        <h2 class="title">Registrarse</h2>
+                        <div class="entrada-texto mb-3">
+                           <!--  <label class="mb-1"><b>Nombres</b></label> -->
+                            <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                formControlName="nombres" placeholder="  Nombres*" [ngClass]="{
+                                    'is-invalid': form_registro.get('nombres')?.hasError('required') && form_registro.get('nombres')?.touched || form_registro.get('nombres')?.hasError('pattern'),
+                                    'is-valid': form_registro.get('nombres')?.value?.length >= 10 && form_registro.get('nombres')?.hasError('pattern') == false
+                                }" [maxlength]="50" />
+                            <div class="validators"
+                                *ngIf="form_registro.get('nombres')?.hasError('required') && form_registro.get('nombres')?.touched">
+                                <small>¡Este campo es requerido!</small>
+                            </div>
+                        </div>
+
+                        <div class="entrada-texto mb-3">
+                            <!-- <label class="mb-1"><b>Apellidos</b></label> -->
+                            <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                formControlName="apellidos" placeholder="  Apellidos*" [ngClass]="{
+                                    'is-invalid': form_registro.get('apellidos')?.hasError('required') && form_registro.get('apellidos')?.touched || form_registro.get('apellidos')?.hasError('pattern'),
+                                    'is-valid': form_registro.get('apellidos')?.value?.length >= 10 && form_registro.get('apellidos')?.hasError('pattern') == false
+                                }" [maxlength]="50" />
+                            <div class="validators"
+                                *ngIf="form_registro.get('apellidos')?.hasError('required') && form_registro.get('apellidos')?.touched">
+                                <small>¡Este campo es requerido!</small>
+                            </div>
+                        </div>
+
+                        <div class="entrada-texto mb-3">
+                           <!--  <label class="mb-1"><b>Fecha de nacimiento</b></label> -->
+                            <input type="date" class="form-control form-control-lg bg-light fs-6"
+                                formControlName="fecha_nacimiento" placeholder="  Fecha de nacimiento*" [ngClass]="{
+                                    'is-invalid': form_registro.get('fecha_nacimiento')?.hasError('required') && form_registro.get('fecha_nacimiento')?.touched || form_registro.get('fecha_nacimiento')?.hasError('pattern'),
+                                    'is-valid': form_registro.get('fecha_nacimiento')?.value?.length >= 10 && form_registro.get('fecha_nacimiento')?.hasError('pattern') == false
+                                }" [maxlength]="50" />
+                            <div class="validators"
+                                *ngIf="form_registro.get('fecha_nacimiento')?.hasError('required') && form_registro.get('fecha_nacimiento')?.touched">
+                                <small>¡Este campo es requerido!</small>
+                            </div>
+                        </div>
+
+                        <div class="entrada-texto mb-3">
+                           <!--  <label class="mb-1"><b>Correo</b></label> -->
+                            <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                formControlName="correo" placeholder="  Correo*" [ngClass]="{
+                                    'is-invalid': form_registro.get('correo')?.hasError('required') && form_registro.get('correo')?.touched || form_registro.get('correo')?.hasError('pattern'),
+                                    'is-valid': form_registro.get('correo')?.value?.length >= 10 && form_registro.get('correo')?.hasError('pattern') == false
+                                }" [maxlength]="50" />
+                            <div class="validators"
+                                *ngIf="form_registro.get('correo')?.hasError('required') && form_registro.get('correo')?.touched">
+                                <small>¡Este campo es requerido!</small>
+                            </div>
+                            <div class="validators" 
+                                *ngIf="form_registro.get('correo')?.hasError('pattern')">
+                                <small>¡No contiene formato de correo institucional!</small>
+                            </div>
+                        </div>
+
+                        <div class="entrada-texto mb-3">
+                          <!--   <label class="mb-1"><b>Usuario</b></label> -->
+                            <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                formControlName="usuario" placeholder="  Usuario*" [ngClass]="{
+                                    'is-invalid': form_registro.get('usuario')?.hasError('required') && form_registro.get('usuario')?.touched || form_registro.get('usuario')?.hasError('pattern'),
+                                    'is-valid': form_registro.get('usuario')?.value?.length >= 10 && form_registro.get('usuario')?.hasError('pattern') == false
+                                }" [maxlength]="50" />
+                            <div class="validators"
+                                *ngIf="form_registro.get('usuario')?.hasError('required') && form_registro.get('usuario')?.touched">
+                                <small>¡Este campo es requerido!</small>
+                            </div>
+                        </div>
+                        <div class="entrada-texto mb-3">
+                           <!--  <label class="mb-1"><b>Contraseña</b></label> -->
+                            <input type="password" class="form-control form-control-lg bg-light fs-6"
+                                formControlName="clave" placeholder="  Contraseña*" [ngClass]="{
+                                    'is-invalid': form_registro.get('clave')?.hasError('required') && form_registro.get('clave')?.touched || form_registro.get('clave')?.hasError('pattern'),
+                                    'is-valid': form_registro.get('clave')?.value?.length >= 10 && form_registro.get('clave')?.hasError('pattern') == false
+                                }" [maxlength]="50" />
+                            <div class="validators"
+                                *ngIf="form_registro.get('clave')?.hasError('required') && form_registro.get('clave')?.touched">
+                                <small>¡Este campo es requerido!</small>
+                            </div>
+                            <div class="validators" 
+                            *ngIf="form_registro.get('clave')?.hasError('pattern')">
+                            <small>¡Mínimo 8 caracteres, letras, números y 1 caracter!</small>
+                        </div>
+                        </div>
+                        <button type="submit" [disabled]="form_registro.invalid" class="btn ingresar" id="boton-ingresar">
+                            Registrarme
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="paneles-container">
+                <div class="panel panel-izquierdo">
+                    <div class="content">
+                        <h3>¿No tienes una cuenta?</h3>
+                        <br />
+                        <p>
+                            Registrate ahora, es totalmente gratis!. Llena nuestro formulario y
+                            tendrás una cuenta en nuestra página.
+                        </p>
+                        <button class="btn transparente" (click)="registro()" id="btn-registrarse">
+                            Registrarme
+                        </button>
+                    </div>
+                    <img src="../../assets/imagenes/img-registrarse.svg" class="image" id="imagen-registrarse"
+                        alt="imagen-de-registro" />
+                </div>
+
+                <div class="panel panel-derecho">
+                    <div class="content">
+                        <h3>¿Ya creaste una cuenta?</h3>
+                        <br />
+                        <p>
+                            Si ya creaste una cuenta en nuestra página, inicia sesión con tus
+                            credenciales.
+                        </p>
+                        <button class="btn transparente" (click)="ingres()" id="btn-ingresar2">
+                            Ingresar
+                        </button>
+                    </div>
+
+                    <img src="../../assets/imagenes/img-loguearse.svg" class="image" alt="imagen-de-login" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
