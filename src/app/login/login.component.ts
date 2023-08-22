@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
     this.user_service.get_user({ usuario: sessionStorage.getItem("user") }).subscribe(resp => {
       if(resp.estado==1){
         if(resp.tipo.trim()=="administrador"){
-          this.ruta.navigateByUrl("/administrador/list");
+          this.ruta.navigateByUrl("/administrador/questions/list");
         }else{
           this.ruta.navigateByUrl("/dashboard");
         }
@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
         this.user_service.get_user({ usuario: sessionStorage.getItem("user") }).subscribe(resp => {
           if(resp.estado==1){
             if(resp.tipo.trim()=="administrador"){
-              this.ruta.navigateByUrl("/administrador/list");
+              this.ruta.navigateByUrl("/administrador/questions/list");
             }else{
               this.ruta.navigateByUrl("/elegir-lenguaje");
             }
