@@ -17,7 +17,6 @@ import { PerfilUsuarioComponent } from './perfil-usuario/perfil-usuario.componen
 import { TeoriasComponent } from './teorias/teorias.component';
 import { CoronasComponent } from './coronas/coronas.component';
 import { EstadisticasComponent } from './estadisticas/estadisticas.component';
-import { AdministradorComponent } from './administrador/administrador.component';
 import { ListComponent } from './administrador/list/list.component';
 import { CreateComponent } from './administrador/create/create.component';
 import { EditComponent } from './administrador/edit/edit.component';
@@ -41,10 +40,12 @@ const routes: Routes = [
   {path: "foro-discusion", component:ForoDiscusionComponent},
   {path: "mapa-preguntas", component:MapaPreguntasComponent},
   {path: "teorias", component:TeoriasComponent},
-  {path: "administrador/list", component:ListComponent},
-  {path: "administrador/create", component:CreateComponent},
-  {path: "administrador/edit/:id", component:EditComponent}
-  
+  {path: "administrador/questions/list", component:ListComponent},
+  {path: "administrador/questions/create", component:CreateComponent},
+  {path: "administrador/questions/edit/:id", component:EditComponent},
+  {path:"administrador",pathMatch:"full",redirectTo:"administrador/questions/list"},
+  {path:"administrador/questions",pathMatch:"full",redirectTo:"administrador/questions/list"}
+
 ];
 
 @NgModule({

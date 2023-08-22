@@ -13,7 +13,7 @@
     <div class="body p-5 row justify-content-center">
         <div>
             <h4 id="titulo"><fa-icon [icon]="iconMyPatients" class="icon-title"></fa-icon> Preguntas</h4>
-            <button [routerLink]="'/administrador/create'" type="button" class="btn btn-primary btn-sm">
+            <button [routerLink]="'/administrador/questions/create'" type="button" class="btn btn-primary btn-sm">
                 <fa-icon [icon]="iconAdd"></fa-icon> Nueva pregunta</button>
         </div>
         <br>
@@ -37,7 +37,7 @@
                                 <td>{{actividad.lenguaje=='csh'?'C#':'Java'}}</td>
                                 <td>{{actividad.titulo}}</td>
                                 <td class="acciones d-flex justify-content-evenly">
-                                    <fa-icon [routerLink]="'/administrador/edit/' + actividad.id" title="Editar"
+                                    <fa-icon [routerLink]="'/administrador/questions/edit/' + actividad.id" title="Editar"
                                         style="cursor: pointer;" id="iconEditar" [icon]="iconEdit"></fa-icon>
                                     <fa-icon (click)="removeActivity(actividad.id)" data-bs-toggle="mensaje"
                                         style="cursor: pointer;" title="Eliminar" id="iconEliminar"

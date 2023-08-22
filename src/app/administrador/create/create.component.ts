@@ -147,9 +147,9 @@ export class CreateComponent implements AfterViewInit {
             if (resp.estado == 1) {
               this.mensaje_bien("Pregunta agregada con éxito");
             } else {
-              this.mensaje_bien("Pregunta agregada con éxito");
-              console.log("No se pudo agregar la pregunta");
+              this.mensaje_mal("No se pudo agregar la pregunta");
             }
+            this.ruta.navigateByUrl("/administrador/questions/list");
             this.seleccionado = 0;
             this.tema_select = 0;
           });
@@ -167,9 +167,9 @@ export class CreateComponent implements AfterViewInit {
             if (resp.estado == 1) {
               this.mensaje_bien("Pregunta agregada con éxito");
             } else {
-              this.mensaje_bien("Se pudo agregar la imagen");
-              console.log("No se pudo agregar la pregunta");
+              this.mensaje_mal("No se pudo agregar la pregunta");
             }
+            this.ruta.navigateByUrl("/administrador/questions/list");
             this.seleccionado = 0;
             this.tema_select = 0;
           });
@@ -193,9 +193,9 @@ export class CreateComponent implements AfterViewInit {
               if (resp.estado == 1) {
                 this.mensaje_bien("Pregunta agregada con éxito");
               } else {
-                this.mensaje_bien("Pregunta agregada con éxito");
-              console.log("No se pudo agregar la pregunta");
+                this.mensaje_mal("No se pudo agregar la pregunta");
               }
+              this.ruta.navigateByUrl("/administrador/questions/list");
               this.seleccionado = 0;
               this.tema_select = 0;
             });
@@ -217,9 +217,9 @@ export class CreateComponent implements AfterViewInit {
             if (resp.estado == 1) {
               this.mensaje_bien("Pregunta agregada con éxito");
             } else {
-              this.mensaje_bien("Pregunta agregada con éxito");
-              console.log("No se pudo agregar la pregunta")
+              this.mensaje_mal("No se pudo agregar la pregunta");
             }
+            this.ruta.navigateByUrl("/administrador/questions/list");
             this.seleccionado = 0;
             this.tema_select = 0;
           });

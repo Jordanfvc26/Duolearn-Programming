@@ -167,7 +167,7 @@ export class EditComponent implements AfterViewInit {
             } else {
               this.mensaje_mal("No se pudo editar la pregunta");
             }
-            this.ruta.navigateByUrl("/administrador/list");
+            this.ruta.navigateByUrl("/administrador/questions/list");
             this.seleccionado = 0;
             this.tema_select = 0;
           });
@@ -196,7 +196,7 @@ export class EditComponent implements AfterViewInit {
             } else {
               this.mensaje_mal("No se pudo editar la pregunta");
             }
-            this.ruta.navigateByUrl("/administrador/list");
+            this.ruta.navigateByUrl("/administrador/questions/list");
             this.seleccionado = 0;
             this.tema_select = 0;
           });
@@ -223,7 +223,7 @@ export class EditComponent implements AfterViewInit {
               } else {
                 this.mensaje_mal("No se pudo editar la pregunta");
               }
-              this.ruta.navigateByUrl("/administrador/list");
+              this.ruta.navigateByUrl("/administrador/questions/list");
               this.seleccionado = 0;
               this.tema_select = 0;
             });
@@ -253,7 +253,7 @@ export class EditComponent implements AfterViewInit {
             } else {
               this.mensaje_mal("No se pudo editar la pregunta");
             }
-            this.ruta.navigateByUrl("/administrador/list");
+            this.ruta.navigateByUrl("/administrador/questions/list");
             this.seleccionado = 0;
             this.tema_select = 0;
           });

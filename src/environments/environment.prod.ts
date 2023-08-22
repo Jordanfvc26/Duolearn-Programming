@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  api: "https://duolearn-programming.onrender.com"
+  api: "http://localhost:3000"
 };
