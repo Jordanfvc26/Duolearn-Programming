@@ -111,7 +111,7 @@ export class DashboardComponent implements AfterViewInit {
     AOS.init();
     //console.log(sessionStorage.getItem("usuario"));
     this.user_serv.get_user({ usuario: sessionStorage.getItem("user") }).subscribe(resp => {
-      if (resp.estado != 0) {
+      if (resp.estado != 1) {
         this.ruta.navigateByUrl("/principal");
       }
       else {
