@@ -1,7 +1,7 @@
 <!--Agregar la página de carga-->
 
 <div class="body">
-    <div class="container">
+    <div>
         <form>
             <div class="header" data-aos="fade-up" data-aos-anchor-placement="bottom-bottom" data-aos-duration="1300">
                 <div class="logo">
@@ -16,21 +16,22 @@
             </div>
         
         
-            <div class="elegir-curso" data-aos="fade-up" data-aos-anchor-placement="bottom-bottom"
+            <div class="container pt-3" data-aos="fade-up" data-aos-anchor-placement="bottom-bottom"
                         data-aos-duration="1300">
-                <a (click)="redirigir('java')">
-                    <img class="img-java" src="./assets/imagenes/logo-java.jpg" alt="" />
-                </a>
-                <a (click)="redirigir('csh')">
-                    <img class="img-csharp" src="./assets/imagenes/logo-csharp.png" alt="" />
-                </a>
+                <div class="curso-container">
+                    <div *ngFor="let lenguaje of lenguajes" class="card m-3" style="align-items: center;">
+                        <img width="40%" [src]="lenguaje.portada" class="img-fluid" [alt]="lenguaje.titulo">
+                        <div class="card-body">
+                          <h5 style="text-align: center;" class="card-title"> {{lenguaje.titulo}} </h5>
+                          <p class="card-text"> {{lenguaje.descripcion}} </p>
+                          <a (click)="redirigir(lenguaje.lenguaje_id)" class="btn btn-primary">Aprender {{lenguaje.titulo}} </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         
         
-            <div class="nombres" data-aos="fade-up" data-aos-anchor-placement="bottom-bottom" data-aos-duration="1300">
-                <a class="texto-java">Java</a>
-                <a class="texto-csharp">C#</a>
-            </div>
+            
         </form>
     </div>
 </div>

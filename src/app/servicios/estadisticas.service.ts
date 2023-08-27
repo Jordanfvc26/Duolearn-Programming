@@ -20,4 +20,8 @@ export class EstadisticasService {
     return this.clientHttp.get(this.Api+"/usuario/estadisticas_csharp/"+user.usuario);
   }
 
+  obtener_puntajes(userId:any,moduloId:any):Observable<any>{
+    return this.clientHttp.get(this.Api+"/puntajes/"+userId+"/"+moduloId);
+  }
+
 }

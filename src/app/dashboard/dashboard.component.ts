@@ -6,6 +6,9 @@ import * as iconos from '@fortawesome/free-solid-svg-icons';
 import * as iconosfab from '@fortawesome/free-brands-svg-icons';
 import { UsuariosService } from '../servicios/usuarios.service';
 import { EstadisticasService } from '../servicios/estadisticas.service';
+import { LenguajesService } from '../servicios/lenguajes.service';
+import { forkJoin } from 'rxjs';
+import { TemasService } from '../servicios/temas.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,6 +22,8 @@ export class DashboardComponent implements AfterViewInit {
   constructor(
     public ruta: Router,
     private user_serv: UsuariosService,
+    public temas_serv: TemasService,
+    public lenguajeService: LenguajesService,
     public estadisticas_serv: EstadisticasService
   ) { }
 
@@ -43,6 +48,7 @@ export class DashboardComponent implements AfterViewInit {
   fafilealt = iconos.faCode;
   facode = iconos.faCode;
 
+  lenguajeSeleccionado: any;
   public static modulo_select: any = "vacio";
   public nombre: string;
   json_general: any = {};
@@ -102,86 +108,50 @@ export class DashboardComponent implements AfterViewInit {
 
   //nummod
   nun_mod: any = 0;
-
+  infoLenguaje:any;
+  lenguajes=[];
+  modulos=[];
+  infoUser:any;
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.bol = !this.bol;
       this.bol2 = !this.bol2;
     }, 1250);
     AOS.init();
-    //console.log(sessionStorage.getItem("usuario"));
+    const observable1 = this.lenguajeService.obtener_lenguaje_por_id(sessionStorage.getItem("lenguaje"));
+    const observable2 = this.lenguajeService.listar_lenguajes();
+    const observable3 = this.user_serv.get_user({ usuario: sessionStorage.getItem("user") });
+    const observable4 = this.temas_serv.obtener_temas_por_id(sessionStorage.getItem("lenguaje"));
+    forkJoin([observable1, observable2, observable3, observable4]).subscribe(
+      ([result1, result2, result3, result4]) => {
+        this.infoLenguaje = result1;
+        this.lenguajes = result2;
+        this.infoUser = result3;
+        this.modulos = result4;
+        this.modulos.forEach(element => {
+          this.estadisticas_serv.obtener_puntajes(sessionStorage.getItem("user"),element.modulo_id).subscribe(resp=>{
+            if(resp==null){
+              element.porcentaje='0';
+            }else{
+              element.porcentaje=resp.length.toString()+"0";
+            }
+          })
+        })
+      },
+      error => {
+        console.error('Error:', error);
+      }
+    );
+
     this.user_serv.get_user({ usuario: sessionStorage.getItem("user") }).subscribe(resp => {
       if (resp.estado != 1) {
         this.ruta.navigateByUrl("/principal");
       }
       else {
-        if (sessionStorage.getItem("lenguaje") == "java") {
-          this.estadisticas_serv.obtener_est_java({ usuario: sessionStorage.getItem("user") }).subscribe(resp => {
-            this.json_general = resp;
-            this.nombre = sessionStorage.getItem("user");
-            //console.log(this.json_general);
-            this.asigna_img();
-            this.porcentaje();
-            this.asignaporcentajes();
-            this.verifica_porcentaje();
-          });
-        } else if (sessionStorage.getItem("lenguaje") == "csh") {
-          this.estadisticas_serv.obtener_est_csh({ usuario: sessionStorage.getItem("user") }).subscribe(resp => {
-            this.json_general = resp;
-            this.nombre = sessionStorage.getItem("user");
-            //console.log(this.json_general);
-            this.porcentaje();
-            this.asigna_img();
-            this.asignaporcentajes();
-            this.verifica_porcentaje();
-          });
-        }
-
+        this.nombre = this.infoUser.usuario;
+        this.asigna_img();
       }
     });
-  }
-
-  verifica_porcentaje() {
-    if (DashboardComponent.porcentaje_mod1 == 100) {
-      this.estilo1 = { 'background-color': 'rgb(5, 196, 88)', 'color': '#fff', "pointer-events": "none" };
-      this.estiloicono1 = { 'color': '#fff' };
-      this.estiloletra1 = { 'color': '#fff' };
-    }
-    if (DashboardComponent.porcentaje_mod2 == 100) {
-      this.estilo2 = { 'background-color': 'rgb(5, 196, 88)', 'color': '#fff', "pointer-events": "none" };
-      this.estiloicono2 = { 'color': '#fff' };
-      this.estiloletra2 = { 'color': '#fff' };
-    }
-    if (DashboardComponent.porcentaje_mod3 == 100) {
-      this.estilo3 = { 'background-color': 'rgb(5, 196, 88)', 'color': '#fff', "pointer-events": "none" };
-      this.estiloicono3 = { 'color': '#fff' };
-      this.estiloletra3 = { 'color': '#fff' };
-    }
-    if (DashboardComponent.porcentaje_mod4 == 100) {
-      this.estilo4 = { 'background-color': 'rgb(5, 196, 88)', 'color': '#fff', "pointer-events": "none" };
-      this.estiloicono4 = { 'color': '#fff' };
-      this.estiloletra4 = { 'color': '#fff' };
-    }
-    if (DashboardComponent.porcentaje_mod5 == 100) {
-      this.estilo5 = { 'background-color': 'rgb(5, 196, 88)', 'color': '#fff', "pointer-events": "none" };
-      this.estiloicono5 = { 'color': '#fff' };
-      this.estiloletra5 = { 'color': '#fff' };
-    }
-    if (DashboardComponent.porcentaje_mod6 == 100) {
-      this.estilo6 = { 'background-color': 'rgb(5, 196, 88)', 'color': '#fff', "pointer-events": "none" };
-      this.estiloicono6 = { 'color': '#fff' };
-      this.estiloletra6 = { 'color': '#fff' };
-    }
-    if (DashboardComponent.porcentaje_mod7 == 100) {
-      this.estilo7 = { 'background-color': 'rgb(5, 196, 88)', 'color': '#fff', "pointer-events": "none" };
-      this.estiloicono7 = { 'color': '#fff' };
-      this.estiloletra7 = { 'color': '#fff' };
-    }
-    if (DashboardComponent.porcentaje_mod8 == 100) {
-      this.estilo8 = { 'background-color': 'rgb(5, 196, 88)', 'color': '#fff', "pointer-events": "none" };
-      this.estiloicono8 = { 'color': '#fff' };
-      this.estiloletra8 = { 'color': '#fff' };
-    }
   }
 
   agregar_text(entrada: any, number: any) {
@@ -192,117 +162,18 @@ export class DashboardComponent implements AfterViewInit {
   }
 
   close_session() {
-    /* this.user_serv.close_session().subscribe(resp => {
-       console.log(resp.mensaje);
-     });*/
     sessionStorage.clear();
     this.ruta.navigateByUrl("/principal");
-  }
-
-  porcentaje() {
-    DashboardComponent.porcentaje_mod1 = 0;
-    DashboardComponent.porcentaje_mod2 = 0;
-    DashboardComponent.porcentaje_mod3 = 0;
-    DashboardComponent.porcentaje_mod4 = 0;
-    DashboardComponent.porcentaje_mod5 = 0;
-    DashboardComponent.porcentaje_mod6 = 0;
-    DashboardComponent.porcentaje_mod7 = 0;
-    DashboardComponent.porcentaje_mod8 = 0;
-
-    for (let index = 0; index < 10; index++) {
-      if (this.json_general.puntaje_actividades[index] > 0) {
-        DashboardComponent.porcentaje_mod1 += 10;
-      }
-    }
-
-    for (let index = 10; index < 20; index++) {
-      if (this.json_general.puntaje_actividades[index] > 0) {
-        DashboardComponent.porcentaje_mod2 += 10;
-      }
-    }
-
-    for (let index = 20; index < 30; index++) {
-      if (this.json_general.puntaje_actividades[index] > 0) {
-        DashboardComponent.porcentaje_mod3 += 10;
-      }
-    }
-
-    for (let index = 30; index < 40; index++) {
-      if (this.json_general.puntaje_actividades[index] > 0) {
-        DashboardComponent.porcentaje_mod4 += 10;
-      }
-    }
-
-    for (let index = 40; index < 50; index++) {
-      if (this.json_general.puntaje_actividades[index] > 0) {
-        DashboardComponent.porcentaje_mod5 += 10;
-      }
-    }
-
-    for (let index = 50; index < 60; index++) {
-      if (this.json_general.puntaje_actividades[index] > 0) {
-        DashboardComponent.porcentaje_mod6 += 10;
-      }
-    }
-
-    for (let index = 60; index < 70; index++) {
-      if (this.json_general.puntaje_actividades[index] > 0) {
-        DashboardComponent.porcentaje_mod7 += 10;
-      }
-    }
-
-    for (let index = 70; index < 80; index++) {
-      if (this.json_general.puntaje_actividades[index] > 0) {
-        DashboardComponent.porcentaje_mod8 += 10;
-      }
-    }
-
-  }
-
-  asignaporcentajes() {
-    this.porcentaje_1 = DashboardComponent.porcentaje_mod1;
-    this.porcentaje_2 = DashboardComponent.porcentaje_mod2;
-    this.porcentaje_3 = DashboardComponent.porcentaje_mod3;
-    this.porcentaje_4 = DashboardComponent.porcentaje_mod4;
-    this.porcentaje_5 = DashboardComponent.porcentaje_mod5;
-    this.porcentaje_6 = DashboardComponent.porcentaje_mod6;
-    this.porcentaje_7 = DashboardComponent.porcentaje_mod7;
-    this.porcentaje_8 = DashboardComponent.porcentaje_mod8;
   }
 
   img: any = "";
 
   elegir_leng() {
-    if (this.retornaselect(this.esc.nativeElement.options.selectedIndex) == "Java") {
-      sessionStorage.setItem("lenguaje", "java");
-    } else if (this.retornaselect(this.esc.nativeElement.options.selectedIndex) == "C#") {
-      sessionStorage.setItem("lenguaje", "csh");
-    }
-    if (sessionStorage.getItem("lenguaje") == "java") {
-      this.img = "../../assets/imagenes/logo-java.jpg";
-    } else {
-      this.img = "../../assets/imagenes/logo-csharp.png";
-    }
+    sessionStorage.setItem("lenguaje", this.lenguajeSeleccionado);
     window.location.reload();
   }
-
-  sel_java: boolean;
-  sel_csh: boolean;
-
   asigna_img() {
-    if (sessionStorage.getItem("lenguaje") == "java") {
-      this.img = "../../assets/imagenes/logo-java.jpg";
-      this.sel_java = true;
-      this.sel_csh=false;
-    } else {
-      this.img = "../../assets/imagenes/logo-csharp.png";
-      this.sel_csh=true;
-      this.sel_java = false;
-    }
+    this.lenguajeSeleccionado = this.infoLenguaje.lenguaje_id;
+    this.img=this.infoLenguaje.portada;
   }
-
-  retornaselect(index: number): string {
-    return this.esc.nativeElement.options[index].innerText;
-  }
-
 }

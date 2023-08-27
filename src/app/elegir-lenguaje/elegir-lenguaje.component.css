@@ -2,75 +2,58 @@
     padding: 0;
 }
 
-.body{
+.body {
     box-sizing: border-box;
-	margin: auto;
-	padding: 0;
-	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin: auto;
+    padding: 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     background-color: rgb(5, 196, 88);
-    height: 648px
 }
 
-.header h6{
+.header h6 {
     margin-left: 42.5%;
     color: blanchedalmond;
     margin-top: 8px;
 }
 
 .logo img {
-	width: 5.8rem;
+    width: 5.8rem;
     margin-top: 20px;
     margin-left: 46%;
 }
 
-.texto{
+.texto {
     color: blanchedalmond;
-    margin-left: 20%;
-    margin-top: 8%;
+    margin-top: 40px;
+    text-align: center;
 }
 
-.nombres a{
+.nombres a {
     text-decoration: none;
     color: whitesmoke;
 }
 
-.elegir-curso{
-    margin-top: 40px;
-    margin-left: 34%;
+.curso-container {
+    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
 }
 
-.img-java{
-    width: 150px;
-    height: 150px;
-    border-radius: 5%;
-}
-
-.img-csharp{
-    width: 150px;
-    height: 150px;
-    border-radius: 5%;
-    margin-left: 60px;
-}
-
-.img-java:hover{
+.img-curso:hover {
     box-shadow: 0 10px 25px rgba(98, 114, 7, 0.63);
 }
 
-.img-csharp:hover{
-    box-shadow: 0 10px 25px rgba(98, 114, 7, 0.63);
-}
-
-.nombres{
+.nombres {
     margin-left: 39%;
     margin-top: 10px;
-    color:white;
+    color: white;
     font-size: 22px;
 }
 
-.texto-csharp{
+.texto-csharp {
     margin-left: 25%;
 }
 
-.nombres{
+.nombres {
     height: 120%;
 }
