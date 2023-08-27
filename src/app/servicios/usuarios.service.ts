@@ -38,8 +38,8 @@ export class UsuariosService {
     return this.clientHttp.get(this.Api + "/cerrar_sesion");
   }
 
-  get_user(user: any): Observable<any> {
-    return this.clientHttp.get(this.Api + "/usuario/datos/" + user.usuario);
+  get_user(usuario: any): Observable<any> {
+    return this.clientHttp.get(this.Api + "/usuario/datos/" + usuario.usuario);
   }
 
   update_info(datos_nuevos: any): Observable<any> {

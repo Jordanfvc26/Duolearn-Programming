@@ -78,7 +78,7 @@
                                                             class="form-control form-control-lg bg-light fs-6"
                                                             formControlName="nombres" placeholder="Nombres*"
                                                             [ngClass]="{
-                                                        'is-invalid': (form_registro.get('nombres')?.hasError('required') || form_registro.get('nombres')?.hasError('pattern')) && form_registro.get('nombres')?.touched,
+                                                        'is-invalid': form_registro.get('nombres')?.hasError('required') && form_registro.get('nombres')?.touched || form_registro.get('nombres')?.hasError('pattern'),
                                                         'is-valid': form_registro.get('nombres')?.value?.length >= 4 && form_registro.get('nombres')?.hasError('pattern') == false}">
                                                         <div class="validators"
                                                             *ngIf="form_registro.get('nombres')?.hasError('required') && form_registro.get('nombres')?.touched">
@@ -196,11 +196,15 @@
                                                             class="form-control form-control-lg bg-light fs-6"
                                                             formControlName="usuario" placeholder="Nombre de suario*"
                                                             [ngClass]="{
-                                                            'is-invalid': form_registro.get('usuario')?.hasError('required') && form_registro.get('usuario')?.touched || form_registro.get('usuario')?.hasError('pattern'),
+                                                            'is-invalid': (form_registro.get('usuario')?.hasError('required') || form_registro.get('usuario')?.hasError('nombreApellidoEnUsuario')) && form_registro.get('usuario')?.touched || form_registro.get('usuario')?.hasError('pattern'),
                                                             'is-valid': form_registro.get('usuario')?.value?.length >= 4 && form_registro.get('usuario')?.hasError('pattern') == false}">
                                                         <div class="validators"
                                                             *ngIf="form_registro.get('usuario')?.hasError('required') && form_registro.get('usuario')?.touched">
                                                             <small>¡Este campo es requerido!</small>
+                                                        </div>
+                                                        <div class="validators"
+                                                            *ngIf="form_registro.get('usuario')?.hasError('nombreApellidoEnUsuario')">
+                                                            <small>¡El nombre de usuario no puede contener el nombre ni el apellido!</small>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -221,7 +225,7 @@
                                                             <small>¡Este campo es requerido!</small>
                                                         </div>
                                                         <div class="validators"
-                                                            *ngIf="form_registro.get('correo')?.hasError('pattern')">
+                                                            *ngIf="form_registro.get('clave')?.hasError('pattern')">
                                                             <small>¡Al menos una mayúscula, una minúscula, un número, un
                                                                 caracter especial!</small>
                                                         </div>
@@ -235,16 +239,15 @@
                                                             formControlName="confirmClave"
                                                             placeholder="Confirmar contraseña*"
                                                             [ngClass]="{
-                                                            'is-invalid': form_registro.get('confirmClave')?.hasError('required') && form_registro.get('confirmClave')?.touched || form_registro.get('confirmClave')?.hasError('pattern'),
-                                                            'is-valid': form_registro.get('confirmClave')?.value?.length >= 4 && form_registro.get('confirmClave')?.hasError('pattern') == false}">
+                                                            'is-invalid': form_registro.get('confirmClave')?.hasError('required') && form_registro.get('confirmClave')?.touched || form_registro.get('confirmClave')?.hasError('confirmacionClaveNoCoincide'),
+                                                            'is-valid': form_registro.get('confirmClave')?.value?.length >= 4 && form_registro.get('confirmClave')?.hasError('confirmacionClaveNoCoincide') == false}">
                                                         <div class="validators"
                                                             *ngIf="form_registro.get('confirmClave')?.hasError('required') && form_registro.get('confirmClave')?.touched">
                                                             <small>¡Este campo es requerido!</small>
                                                         </div>
                                                         <div class="validators"
-                                                            *ngIf="form_registro.get('confirmClave')?.hasError('pattern')">
-                                                            <small>¡No contiene formato de correo electrónico
-                                                                válido!</small>
+                                                            *ngIf="form_registro.get('confirmClave')?.hasError('confirmacionClaveNoCoincide')">
+                                                            <small>¡La confirmación de la clave no coincide con la clave!</small>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -254,7 +257,7 @@
                                             <div style="text-align: end;">
                                                 <button mat-button matStepperPrevious class="btn btn-secondary">
                                                     <fa-icon [icon]="iconPreviousStep"></fa-icon>Volver</button>
-                                                <button mat-button class="btn btn-primary">Registrarme</button>
+                                                <button (click)="registro_user()" mat-button class="btn btn-primary">Registrarme</button>
                                             </div>
                                         </form>
                                     </mat-step>

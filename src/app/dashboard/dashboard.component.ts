@@ -6,6 +6,8 @@ import * as iconos from '@fortawesome/free-solid-svg-icons';
 import * as iconosfab from '@fortawesome/free-brands-svg-icons';
 import { UsuariosService } from '../servicios/usuarios.service';
 import { EstadisticasService } from '../servicios/estadisticas.service';
+import { LenguajesService } from '../servicios/lenguajes.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,6 +21,7 @@ export class DashboardComponent implements AfterViewInit {
   constructor(
     public ruta: Router,
     private user_serv: UsuariosService,
+    public lenguajeService: LenguajesService,
     public estadisticas_serv: EstadisticasService
   ) { }
 
@@ -43,6 +46,7 @@ export class DashboardComponent implements AfterViewInit {
   fafilealt = iconos.faCode;
   facode = iconos.faCode;
 
+  lenguajeSeleccionado: any;
   public static modulo_select: any = "vacio";
   public nombre: string;
   json_general: any = {};
@@ -102,19 +106,37 @@ export class DashboardComponent implements AfterViewInit {
 
   //nummod
   nun_mod: any = 0;
-
+  infoLenguaje:any;
+  lenguajes=[];
+    infoUser:any;
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.bol = !this.bol;
       this.bol2 = !this.bol2;
     }, 1250);
     AOS.init();
-    //console.log(sessionStorage.getItem("usuario"));
+    const observable1 = this.lenguajeService.obtener_lenguaje_por_id(sessionStorage.getItem("lenguaje"));
+    const observable2 = this.lenguajeService.listar_lenguajes();
+    const observable3 = this.user_serv.get_user({ usuario: sessionStorage.getItem("user") });
+    forkJoin([observable1, observable2, observable3]).subscribe(
+      ([result1, result2, result3]) => {
+        this.infoLenguaje = result1;
+        this.lenguajes = result2;
+        console.log(this.lenguajes)
+        this.infoUser = result3;
+      },
+      error => {
+        console.error('Error:', error);
+      }
+    );
+
     this.user_serv.get_user({ usuario: sessionStorage.getItem("user") }).subscribe(resp => {
       if (resp.estado != 1) {
         this.ruta.navigateByUrl("/principal");
       }
       else {
+        this.nombre = this.infoUser.usuario;
+        this.asigna_img();
         if (sessionStorage.getItem("lenguaje") == "java") {
           this.estadisticas_serv.obtener_est_java({ usuario: sessionStorage.getItem("user") }).subscribe(resp => {
             this.json_general = resp;
@@ -285,20 +307,9 @@ export class DashboardComponent implements AfterViewInit {
     }
     window.location.reload();
   }
-
-  sel_java: boolean;
-  sel_csh: boolean;
-
   asigna_img() {
-    if (sessionStorage.getItem("lenguaje") == "java") {
-      this.img = "../../assets/imagenes/logo-java.jpg";
-      this.sel_java = true;
-      this.sel_csh=false;
-    } else {
-      this.img = "../../assets/imagenes/logo-csharp.png";
-      this.sel_csh=true;
-      this.sel_java = false;
-    }
+    this.lenguajeSeleccionado = this.infoLenguaje.lenguaje_id;
+    this.img=this.infoLenguaje.portada;
   }
 
   retornaselect(index: number): string {
