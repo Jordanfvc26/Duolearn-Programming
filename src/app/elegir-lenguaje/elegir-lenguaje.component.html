@@ -1,7 +1,7 @@
 <!--Agregar la página de carga-->
 
 <div class="body">
-    <div class="container">
+    <div>
         <form>
             <div class="header" data-aos="fade-up" data-aos-anchor-placement="bottom-bottom" data-aos-duration="1300">
                 <div class="logo">
@@ -16,13 +16,13 @@
             </div>
         
         
-            <div class="elegir-curso" data-aos="fade-up" data-aos-anchor-placement="bottom-bottom"
+            <div class="container pt-3" data-aos="fade-up" data-aos-anchor-placement="bottom-bottom"
                         data-aos-duration="1300">
-                <div class="d-flex flex-row">
-                    <div *ngFor="let lenguaje of lenguajes" class="card m-3" style="width: 50%; align-items: center;">
+                <div class="curso-container">
+                    <div *ngFor="let lenguaje of lenguajes" class="card m-3" style="align-items: center;">
                         <img width="40%" [src]="lenguaje.portada" class="img-fluid" [alt]="lenguaje.titulo">
                         <div class="card-body">
-                          <h5 class="card-title"> {{lenguaje.titulo}} </h5>
+                          <h5 style="text-align: center;" class="card-title"> {{lenguaje.titulo}} </h5>
                           <p class="card-text"> {{lenguaje.descripcion}} </p>
                           <a (click)="redirigir(lenguaje.lenguaje_id)" class="btn btn-primary">Aprender {{lenguaje.titulo}} </a>
                         </div>

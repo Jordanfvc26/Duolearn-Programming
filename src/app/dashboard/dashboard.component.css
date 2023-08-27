@@ -243,10 +243,9 @@ main:hover{
 
 /*-------------------------------------Modulos (cuadros)--------------------------------*/
 .tarjetas-simples{
-    display: flex;
     justify-content: space-between;
     background:wheat;
-    padding: 2rem;
+    padding: 1rem;
     border-radius: 15px;
     color: #1D2231;
     width: 80%;
