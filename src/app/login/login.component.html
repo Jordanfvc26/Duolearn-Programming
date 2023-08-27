@@ -64,7 +64,7 @@
                             <!--Formulario de REGISTRO-->
                             <ng-template #registro>
                                 <h2 class="text-center">Registro de usuario</h2>
-                                <mat-horizontal-stepper linear #stepper="matHorizontalStepper">
+                                <mat-horizontal-stepper #stepper="matHorizontalStepper">
                                     <!--Paso 1-->
                                     <mat-step [stepControl]="form_registro">
                                         <form [formGroup]="form_registro">
@@ -85,7 +85,7 @@
                                                             <small>¡Este campo es requerido!</small>
                                                         </div>
                                                         <div class="validators"
-                                                            *ngIf="form_registro.get('nombres')?.hasError('pattern') && form_registro.get('nombres')?.touched">
+                                                            *ngIf="form_registro.get('nombres')?.hasError('pattern')">
                                                             <small>¡Solo se permiten letras!</small>
                                                         </div>
                                                     </div>
@@ -106,6 +106,10 @@
                                                             *ngIf="form_registro.get('apellidos')?.hasError('required') && form_registro.get('apellidos')?.touched">
                                                             <small>¡Este campo es requerido!</small>
                                                         </div>
+                                                        <div class="validators"
+                                                            *ngIf="form_registro.get('apellidos')?.hasError('pattern')">
+                                                            <small>¡Solo se permiten letras!</small>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -117,8 +121,8 @@
                                                         <input type="date"
                                                             class="form-control form-control-lg bg-light fs-6"
                                                             formControlName="fecha_nacimiento" [ngClass]="{
-                                                            'is-invalid': form_registro.get('fecha_nacimiento')?.hasError('required') && form_registro.get('fecha_nacimiento')?.touched || form_registro.get('fecha_nacimiento')?.hasError('pattern'),
-                                                            'is-valid': form_registro.get('fecha_nacimiento')?.value?.length >= 10 && form_registro.get('fecha_nacimiento')?.hasError('pattern') == false
+                                                            'is-invalid': form_registro.get('fecha_nacimiento')?.hasError('required') && form_registro.get('fecha_nacimiento')?.touched,
+                                                            'is-valid': form_registro.get('fecha_nacimiento')?.value?.length >= 10
                                                         }" [max]="getTodayDateString()">
                                                         <div class="validators"
                                                             *ngIf="form_registro.get('fecha_nacimiento')?.hasError('required') && form_registro.get('fecha_nacimiento')?.touched">
