@@ -6,6 +6,7 @@ import { UsuariosService } from '../servicios/usuarios.service';
 import * as iconos from '@fortawesome/free-solid-svg-icons';
 
 import Swal from 'sweetalert2';
+import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-login',
@@ -17,40 +18,45 @@ export class LoginComponent implements OnInit {
   form_registro: FormGroup;
   mensaje: any;
   myItems: any;
-  bol:boolean=true;
+  bol: boolean = true;
+  status: string = "login";
+  optionTypeUser: string = "";
 
   fanombre = iconos.faClosedCaptioning;
 
+  @ViewChild('stepper') stepper!: MatStepper;
   @ViewChild("container") public contenedor: ElementRef;
 
   constructor(public ruta: Router,
     public formulario: FormBuilder,
     public formulario_registro: FormBuilder,
     private user_service: UsuariosService,
-    public activatedRoute:ActivatedRoute) {
+    public activatedRoute: ActivatedRoute) {
     this.form_login = this.formulario.group({
       usuario: ['', Validators.required],
       clave: ['', Validators.required]
     });
     this.form_registro = this.formulario_registro.group({
-      correo: ['', [Validators.email, Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      nombres: ['', Validators.required, Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚ\\s]*$')],
+      apellidos: ['', Validators.required, Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚ\\s]*$')],
       usuario: ['', Validators.required],
+      tipo: [Validators.required],
       fecha_nacimiento: ['', Validators.required],
-      nombres: ['', Validators.required],
-      apellidos: ['', Validators.required],
-      clave: ['', [Validators.required, Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$"),Validators.maxLength(20), Validators.minLength(8)]],
+      correo: ['', [Validators.email, Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      clave: ['', [Validators.required, Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$"), Validators.maxLength(20), Validators.minLength(8)]],
+      confirmClave: ['', [Validators.required, Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$"), Validators.maxLength(20), Validators.minLength(8)]],
     });
   }
-  
+
   ngOnInit(): void {
     setTimeout(() => {
-      this.bol=!this.bol;
+      this.bol = !this.bol;
     }, 1250);
     this.user_service.get_user({ usuario: sessionStorage.getItem("user") }).subscribe(resp => {
-      if(resp.estado==1){
-        if(resp.tipo.trim()=="administrador"){
+      if (resp.estado == 1) {
+        if (resp.tipo.trim() == "administrador") {
           this.ruta.navigateByUrl("/administrador/questions/list");
-        }else{
+        } else {
           this.ruta.navigateByUrl("/dashboard");
         }
       }
@@ -58,16 +64,16 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.user_service.user_login(this.form_login.value).subscribe(resp =>{
+    this.user_service.user_login(this.form_login.value).subscribe(resp => {
       let val = resp.estado;
       if (val == 1) {
         this.mensaje_bien(resp.mensaje);
         sessionStorage.setItem('user', this.form_login.value.usuario);
         this.user_service.get_user({ usuario: sessionStorage.getItem("user") }).subscribe(resp => {
-          if(resp.estado==1){
-            if(resp.tipo.trim()=="administrador"){
+          if (resp.estado == 1) {
+            if (resp.tipo.trim() == "administrador") {
               this.ruta.navigateByUrl("/administrador/questions/list");
-            }else{
+            } else {
               this.ruta.navigateByUrl("/elegir-lenguaje");
             }
           }
@@ -86,7 +92,6 @@ export class LoginComponent implements OnInit {
       if (val == 1) {
         this.mensaje_bien("Usuario registrado con éxito");
         this.ruta.navigateByUrl("/login");
-        this.ingres();
       } else {
         this.mensaje_mal("Usuario no registrado");
         this.ruta.navigateByUrl("/login");
@@ -94,7 +99,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  mensaje_bien(mensaje:any) {
+  mensaje_bien(mensaje: any) {
     Swal.fire({
       icon: 'success',
       title: mensaje,
@@ -103,7 +108,7 @@ export class LoginComponent implements OnInit {
     })
   }
 
-  mensaje_mal(mensaje:any) {
+  mensaje_mal(mensaje: any) {
     Swal.fire({
       icon: 'error',
       title: 'Oops...',
@@ -121,11 +126,35 @@ export class LoginComponent implements OnInit {
     this.ruta.navigateByUrl("/dashboard");
   }
 
-  //Cambiamos el nombre de la clase container verificando donde se clickea
-  ingres() {
-    this.contenedor.nativeElement.classList.remove("modo-registrarse");
+  //Método que muestra el formulario de registro
+  mostrarFormRegistro() {
+    this.status = "registro";
   }
-  registro() {
-    this.contenedor.nativeElement.classList.add("modo-registrarse");
+
+   //Método que muestra el formulario de registro
+   mostrarFormLogin() {
+    this.status = "login";
   }
+
+  //Para deshabilitar la fecha
+  getTodayDateString(): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    return `${year}-${this.padZero(month)}-${this.padZero(day)}`;
+  }
+
+  private padZero(number: number): string {
+    return number < 10 ? `0${number}` : `${number}`;
+  }
+
+  /*Método para avanzar al siguiente paso en el stepper*/
+  nextStepAssignTasks() {
+    this.stepper.next();
+  }
+
+  //Iconos a utilizar
+  iconNextStep = iconos.faArrowRight;
+  iconPreviousStep = iconos.faArrowLeft;
 }

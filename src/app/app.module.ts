@@ -32,7 +32,8 @@ import { AdministradorComponent } from './administrador/administrador.component'
 import { ListComponent } from './administrador/list/list.component';
 import { EditComponent } from './administrador/edit/edit.component';
 import { CreateComponent } from './administrador/create/create.component';
-
+import { MatStepperModule } from '@angular/material/stepper';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -71,6 +72,8 @@ import { CreateComponent } from './administrador/create/create.component';
     FormsModule,
     ReactiveFormsModule,
     FontAwesomeModule,
+    MatStepperModule,
+    BrowserAnimationsModule 
     ],
   providers: [
     InstruccionesComponent
