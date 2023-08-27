@@ -37,14 +37,14 @@ export class LoginComponent implements OnInit {
       clave: ['', Validators.required]
     });
     this.form_registro = this.formulario_registro.group({
-      nombres: ['', Validators.required, Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚ\\s]*$')],
-      apellidos: ['', Validators.required, Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚ\\s]*$')],
+      nombres: ['', Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚ\\s]*$/)],
+      apellidos: ['', Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚ\\s]*$/)],
       usuario: ['', Validators.required],
       tipo: [Validators.required],
       fecha_nacimiento: ['', Validators.required],
       correo: ['', [Validators.email, Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
-      clave: ['', [Validators.required, Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$"), Validators.maxLength(20), Validators.minLength(8)]],
-      confirmClave: ['', [Validators.required, Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$"), Validators.maxLength(20), Validators.minLength(8)]],
+      clave: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/), Validators.maxLength(20), Validators.minLength(8)]],
+      confirmClave: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/), Validators.maxLength(20), Validators.minLength(8)]],
     });
   }
 
