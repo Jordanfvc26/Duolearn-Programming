@@ -10,9 +10,9 @@ import { TemasService } from '../servicios/temas.service';
 export class TeoriasComponent implements OnInit {
 
   //nombre modulo
-  modulo = sessionStorage.getItem("modulo");
+  modulo = '';
   //temas
-  temas: any;
+  tema: any;
   //checkbox del diseño
   @ViewChild("checkbox") public checkbox: ElementRef;
 
@@ -22,8 +22,9 @@ export class TeoriasComponent implements OnInit {
     if (sessionStorage.getItem("check"+"-"+sessionStorage.getItem("modulo")+"-"+sessionStorage.getItem("lenguaje")+"-"+sessionStorage.getItem("user"))=="true"+"-"+sessionStorage.getItem("modulo")+"-"+sessionStorage.getItem("lenguaje")+"-"+sessionStorage.getItem("user")) {
       this.ruta.navigateByUrl("/mapa-preguntas");
     } else {
-      this.temaserv.obtener_temas({ 'modulo': sessionStorage.getItem("num_mod"), 'lenguaje': sessionStorage.getItem("lenguaje") }).subscribe(resp => {
-        this.temas = resp;
+      this.temaserv.obtener_temas_por_id(sessionStorage.getItem("modulo")).subscribe(resp => {
+        this.modulo=resp.titulo_modulo;
+        this.tema = resp.conceptos;
       });
     }
   }

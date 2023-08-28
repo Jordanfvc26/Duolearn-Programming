@@ -51,7 +51,7 @@ export class PreguntasCuatroComponent implements AfterViewInit {
     if (sessionStorage.getItem("modulo") == null) {
       this.ruta.navigateByUrl("/dashboard");
     } else {
-      this.pregservice.get_questions({ modulo: sessionStorage.getItem("num_mod"), lenguaje: sessionStorage.getItem("lenguaje"), tipo: "cuestionario", usuario: sessionStorage.getItem("user") }).subscribe(resp => {
+      this.pregservice.get_questions({ modulo: sessionStorage.getItem("num_mod"), lenguaje: sessionStorage.getItem("lenguaje"), tipo: "selected", usuario: sessionStorage.getItem("user") }).subscribe(resp => {
         this.pregunta = resp;
         //console.log(resp);
         this.startTimer();
@@ -170,29 +170,9 @@ export class PreguntasCuatroComponent implements AfterViewInit {
     }
     for (let index = 0; index < 4; index++) {
       var fecha = this.hoy.getFullYear() + '-' + (this.hoy.getMonth() + 1) + '-' + this.hoy.getDate();
-      this.pregservice.send_solves({ usuario: sessionStorage.getItem("user"), id_actividad: this.aleatorios[index].id, fecha: fecha, minutos: 5, intentos: 1, num_actividad: this.calc_num_act(), puntaje: this.puntos }).subscribe(resp => {
-        //console.log(resp);
+      this.pregservice.send_solves(sessionStorage.getItem("user"),{id_actividad: this.aleatorios[index].id, minutos: this.tiempo, intentos: 1, num_actividad: Number.parseInt(sessionStorage.getItem("num_act")), puntaje: this.puntos }).subscribe(resp => {
+        console.log(resp);
       });
-    }
-  }
-
-  calc_num_act(): number {
-    if (sessionStorage.getItem("num_mod") == "1") {
-      return 0 + Number.parseInt(sessionStorage.getItem("num_act"));
-    } else if (sessionStorage.getItem("num_mod") == "2") {
-      return 10 + Number.parseInt(sessionStorage.getItem("num_act"));
-    } else if (sessionStorage.getItem("num_mod") == "3") {
-      return 20 + Number.parseInt(sessionStorage.getItem("num_act"));
-    } else if (sessionStorage.getItem("num_mod") == "4") {
-      return 30 + Number.parseInt(sessionStorage.getItem("num_act"));
-    } else if (sessionStorage.getItem("num_mod") == "5") {
-      return 40 + Number.parseInt(sessionStorage.getItem("num_act"));
-    } else if (sessionStorage.getItem("num_mod") == "6") {
-      return 50 + Number.parseInt(sessionStorage.getItem("num_act"));
-    } else if (sessionStorage.getItem("num_mod") == "7") {
-      return 60 + Number.parseInt(sessionStorage.getItem("num_act"));
-    } else if (sessionStorage.getItem("num_mod") == "8") {
-      return 70 + Number.parseInt(sessionStorage.getItem("num_act"));
     }
   }
 

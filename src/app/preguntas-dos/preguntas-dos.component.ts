@@ -52,14 +52,14 @@ export class PreguntasDosComponent implements AfterViewInit {
       this.ruta.navigateByUrl("/dashboard");
     } else {
       this.valor = sessionStorage.getItem("modulo");
-      this.pregservice.get_questions({ modulo: sessionStorage.getItem("num_mod"), lenguaje: sessionStorage.getItem("lenguaje"), tipo: "pares", usuario: sessionStorage.getItem("user") }).subscribe(resp => {
+      this.pregservice.obtener_preguntas_sin_resolver(sessionStorage.getItem("user"), sessionStorage.getItem("modulo"), "pares").subscribe(resp => {
         if (resp.length >= 3) {
           this.startTimer();
           for (let index = 0; index < 3; index++) {
             let rand = this.getRandomInt(0, resp.length - 1);
             let bol = false;
             for (let j = 0; j < this.aleatorios.length; j++) {
-              if (resp[rand]["id"] == this.aleatorios[j]["id"]) {
+              if (resp[rand]["actividad_id"] == this.aleatorios[j]["actividad_id"]) {
                 bol = true;
                 break;
               }
@@ -370,8 +370,16 @@ export class PreguntasDosComponent implements AfterViewInit {
     }
     for (let index = 0; index < 3; index++) {
       var fecha = this.hoy.getFullYear() + '-' + (this.hoy.getMonth() + 1) + '-' + this.hoy.getDate();
-      this.pregservice.send_solves({ usuario: sessionStorage.getItem("user"), id_actividad: this.aleatorios[index].id, fecha: fecha, minutos: this.tiempo, intentos: 1, num_actividad: this.calc_num_act(), puntaje: this.puntos }).subscribe(resp => {
-        //console.log(resp);
+      this.pregservice.send_solves(
+        sessionStorage.getItem("user"),
+        {
+          id_actividad: this.aleatorios[index].actividad_id, 
+          minutos: this.tiempo, 
+          intentos: 1, 
+          num_actividad: Number.parseInt(sessionStorage.getItem("num_act")),
+          puntaje: this.puntos 
+        }).subscribe(resp => {
+        console.log(resp);
       });
     }
 

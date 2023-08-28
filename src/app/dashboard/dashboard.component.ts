@@ -121,7 +121,7 @@ export class DashboardComponent implements AfterViewInit {
     const observable1 = this.lenguajeService.obtener_lenguaje_por_id(sessionStorage.getItem("lenguaje"));
     const observable2 = this.lenguajeService.listar_lenguajes();
     const observable3 = this.user_serv.get_user({ usuario: sessionStorage.getItem("user") });
-    const observable4 = this.temas_serv.obtener_temas_por_id(sessionStorage.getItem("lenguaje"));
+    const observable4 = this.temas_serv.obtener_temas_por_lenguaje(sessionStorage.getItem("lenguaje"));
     forkJoin([observable1, observable2, observable3, observable4]).subscribe(
       ([result1, result2, result3, result4]) => {
         this.infoLenguaje = result1;
@@ -154,10 +154,8 @@ export class DashboardComponent implements AfterViewInit {
     });
   }
 
-  agregar_text(entrada: any, number: any) {
+  agregar_text(entrada: any) {
     sessionStorage.setItem("modulo", entrada);
-    this.nun_mod = number;
-    sessionStorage.setItem("num_mod", number);
     this.ruta.navigateByUrl("/teorias");
   }
 

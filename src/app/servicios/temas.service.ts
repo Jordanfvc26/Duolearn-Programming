@@ -20,8 +20,12 @@ export class TemasService {
     return this.clientHttp.get(this.Api+"/admin/temas/obtener");
   }
 
-  obtener_temas_por_id(id:any):Observable<any>{
+  obtener_temas_por_lenguaje(id:any):Observable<any>{
     return this.clientHttp.get(this.Api+"/modulo/obtener/"+id);
+  }
+
+  obtener_temas_por_id(id:any):Observable<any>{
+    return this.clientHttp.get(this.Api+"/modulo/"+id);
   }
 
 }

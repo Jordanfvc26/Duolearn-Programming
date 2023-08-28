@@ -42,7 +42,7 @@ export class PreguntasCincoComponent implements AfterViewInit {
       this.ruta.navigateByUrl("/dashboard");
     } else {
       this.valor = sessionStorage.getItem("modulo");
-      this.pregservice.get_questions({ modulo: sessionStorage.getItem("num_mod"), lenguaje: sessionStorage.getItem("lenguaje"), tipo: "encontrar-error", usuario: sessionStorage.getItem("user") }).subscribe(respuesta => {
+      this.pregservice.obtener_preguntas_sin_resolver(sessionStorage.getItem("user"), sessionStorage.getItem("modulo"), "encontrar-error").subscribe(respuesta => {
         //console.log(respuesta);
         this.startTimer();
         this.Pregunta = respuesta;
@@ -156,26 +156,6 @@ export class PreguntasCincoComponent implements AfterViewInit {
 
   }
 
-  calc_num_act(): number {
-    if (sessionStorage.getItem("num_mod") == "1") {
-      return 0 + Number.parseInt(sessionStorage.getItem("num_act"));
-    } else if (sessionStorage.getItem("num_mod") == "2") {
-      return 10 + Number.parseInt(sessionStorage.getItem("num_act"));
-    } else if (sessionStorage.getItem("num_mod") == "3") {
-      return 20 + Number.parseInt(sessionStorage.getItem("num_act"));
-    } else if (sessionStorage.getItem("num_mod") == "4") {
-      return 30 + Number.parseInt(sessionStorage.getItem("num_act"));
-    } else if (sessionStorage.getItem("num_mod") == "5") {
-      return 40 + Number.parseInt(sessionStorage.getItem("num_act"));
-    } else if (sessionStorage.getItem("num_mod") == "6") {
-      return 50 + Number.parseInt(sessionStorage.getItem("num_act"));
-    } else if (sessionStorage.getItem("num_mod") == "7") {
-      return 60 + Number.parseInt(sessionStorage.getItem("num_act"));
-    } else if (sessionStorage.getItem("num_mod") == "8") {
-      return 70 + Number.parseInt(sessionStorage.getItem("num_act"));
-    }
-  }
-
   //enviar respuesta
   hoy = new Date();
 
@@ -187,8 +167,16 @@ export class PreguntasCincoComponent implements AfterViewInit {
       this.tiempo = Number.parseInt(this.min);
     }
     var fecha = this.hoy.getFullYear() + '-' + (this.hoy.getMonth() + 1) + '-' + this.hoy.getDate();
-    this.pregservice.send_solves({ usuario: sessionStorage.getItem("user"), id_actividad: this.Pregunta[0].id, fecha: fecha, minutos: this.tiempo, intentos: 1, num_actividad: this.calc_num_act(), puntaje: this.puntos }).subscribe(resp => {
-      //console.log(resp);
+    this.pregservice.send_solves(
+      sessionStorage.getItem("user"),
+      {
+        id_actividad: this.preg_aleatoria.actividad_id, 
+        minutos: this.tiempo, 
+        intentos: 1, 
+        num_actividad: Number.parseInt(sessionStorage.getItem("num_act")), 
+        puntaje: this.puntos 
+      }).subscribe(resp => {
+      console.log(resp);
     });
   }
 
