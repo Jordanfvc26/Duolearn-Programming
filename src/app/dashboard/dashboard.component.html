@@ -27,10 +27,6 @@
                         <span> Mi Perfil</span></a>
                 </li>
                 <li>
-                    <a routerLink="/foro-discusion"> <span><fa-icon [icon]="facomments"></fa-icon></span>
-                        <span>Foro Discusión</span></a>
-                </li>
-                <li>
                     <a routerLink="/coronas"> <span><fa-icon [icon]="facrown"></fa-icon></span>
                         <span>Coronas</span></a>
                 </li>
@@ -75,7 +71,7 @@
             <!--Fila 1 de los módulos-->
             <div class="tarjetas" data-aos="zoom-in" data-aos-duration="900">
                 <div *ngFor="let modulo of modulos" class="tarjetas-simples" [ngStyle]="estilo1"
-                    (click)="agregar_text('Variables y tipos de datos',1)">
+                    (click)="agregar_text(modulo.modulo_id)">
                     <div>
                         <h1> {{modulo.porcentaje}}% </h1>
                         <span [ngStyle]="estiloletra1">{{modulo.titulo_modulo}}</span>

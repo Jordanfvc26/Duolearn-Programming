@@ -16,6 +16,10 @@ export class PreguntasService {
     return this.clientHttp.post(this.Api + "/actividades/obtener", datos);
   }
 
+  obtener_preguntas_sin_resolver(usuario: any, modulo: any, tipo: any): Observable<any> {
+    return this.clientHttp.get(this.Api + "/actividades/obtener/"+usuario+"/"+modulo+"/"+tipo);
+  }
+
   get_questionsAll(): Observable<any> {
     return this.clientHttp.get(this.Api + "/actividades/obtener");
   }
@@ -24,8 +28,8 @@ export class PreguntasService {
     return this.clientHttp.get(this.Api + "/actividades/obtener/"+id);
   }
 
-  send_solves(datos: any): Observable<any> {
-    return this.clientHttp.post(this.Api + "/actividades/resolver", datos);
+  send_solves(userId:any,datos: any): Observable<any> {
+    return this.clientHttp.post(this.Api + "/actividades/resolver/"+userId, datos);
   }
 
   modifyActivity(datos: any): Observable<any> {

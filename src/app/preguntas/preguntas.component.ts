@@ -8,6 +8,7 @@ import { InstruccionesComponent } from '../instrucciones/instrucciones.component
 import { Router } from '@angular/router';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { MapaPreguntasComponent } from '../mapa-preguntas/mapa-preguntas.component';
+import { TemasService } from '../servicios/temas.service';
 
 @Component({
   selector: 'app-preguntas',
@@ -30,9 +31,11 @@ export class PreguntasComponent implements OnInit {
   valor: any;
   tiempo: number;
 
-  constructor(private pregservice: PreguntasService, public ruta: Router) {
-    //this.datos = [this.opcion1, this.opcion2, this.opcion3, this.opcion4];
-
+  constructor(
+    private pregservice: PreguntasService, 
+    public ruta: Router,
+    public temas_serv: TemasService
+    ) {
   }
 
   preg_aleatoria: any = {};
@@ -41,15 +44,14 @@ export class PreguntasComponent implements OnInit {
     if (sessionStorage.getItem("modulo") == null) {
       this.ruta.navigateByUrl("/dashboard");
     } else {
-      this.valor = sessionStorage.getItem("modulo");
-      this.pregservice.get_questions({ modulo: sessionStorage.getItem("num_mod"), lenguaje: sessionStorage.getItem("lenguaje"), tipo: "cuestionario", usuario: sessionStorage.getItem("user") }).subscribe(respuesta => {
-        //console.log(respuesta);
-        this.Pregunta = respuesta;
+      this.temas_serv.obtener_temas_por_id(sessionStorage.getItem("modulo")).subscribe(resp => {
+        this.valor = resp.titulo_modulo;
+      })
+      this.pregservice.obtener_preguntas_sin_resolver(sessionStorage.getItem("user"), sessionStorage.getItem("modulo"), "cuestionario").subscribe(resp => {
+        this.Pregunta = resp;
         this.startTimer();
-        //console.log(this.Pregunta);
         let rnd = this.getRandomInt(0, this.Pregunta.length - 1);
-        //console.log(rnd);
-        this.preg_aleatoria = respuesta[rnd];
+        this.preg_aleatoria = resp[rnd];
         this.cargar_elementos();
         //console.log(this.preg_aleatoria);
         this.opciones = [this.preg_aleatoria.opcion_correcta, this.preg_aleatoria.opcion2, this.preg_aleatoria.opcion3, this.preg_aleatoria.opcion4]
@@ -69,7 +71,8 @@ export class PreguntasComponent implements OnInit {
             i--;
           }
         }
-      });
+      })
+      
     }
 
   }
@@ -194,29 +197,17 @@ export class PreguntasComponent implements OnInit {
       this.tiempo = Number.parseInt(this.min);
     }
     var fecha = this.hoy.getFullYear() + '-' + (this.hoy.getMonth() + 1) + '-' + this.hoy.getDate();
-    this.pregservice.send_solves({ usuario: sessionStorage.getItem("user"), id_actividad: this.Pregunta[0].id, fecha: fecha, minutos: this.tiempo, intentos: 1, num_actividad: this.calc_num_act(), puntaje: this.puntos }).subscribe(resp => {
-      //console.log(resp);
+    this.pregservice.send_solves(
+      sessionStorage.getItem("user"),
+      {
+        id_actividad: this.Pregunta[0].actividad_id, 
+        minutos: this.tiempo, 
+        intentos: 1, 
+        num_actividad: Number.parseInt(sessionStorage.getItem("num_act")), 
+        puntaje: this.puntos 
+      }).subscribe(resp => {
+      console.log(resp);
     });
-  }
-
-  calc_num_act(): number {
-    if (sessionStorage.getItem("num_mod") == "1") {
-      return 0 + Number.parseInt(sessionStorage.getItem("num_act"));
-    } else if (sessionStorage.getItem("num_mod") == "2") {
-      return 10 + Number.parseInt(sessionStorage.getItem("num_act"));
-    } else if (sessionStorage.getItem("num_mod") == "3") {
-      return 20 + Number.parseInt(sessionStorage.getItem("num_act"));
-    } else if (sessionStorage.getItem("num_mod") == "4") {
-      return 30 + Number.parseInt(sessionStorage.getItem("num_act"));
-    } else if (sessionStorage.getItem("num_mod") == "5") {
-      return 40 + Number.parseInt(sessionStorage.getItem("num_act"));
-    } else if (sessionStorage.getItem("num_mod") == "6") {
-      return 50 + Number.parseInt(sessionStorage.getItem("num_act"));
-    } else if (sessionStorage.getItem("num_mod") == "7") {
-      return 60 + Number.parseInt(sessionStorage.getItem("num_act"));
-    } else if (sessionStorage.getItem("num_mod") == "8") {
-      return 70 + Number.parseInt(sessionStorage.getItem("num_act"));
-    }
   }
 
   //cronometro

@@ -1,6 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as iconos from '@fortawesome/free-solid-svg-icons';
 import { EstadisticasService } from '../servicios/estadisticas.service';
+import { TemasService } from '../servicios/temas.service';
+import { LenguajesService } from '../servicios/lenguajes.service';
 
 
 @Component({
@@ -16,112 +18,40 @@ export class CoronasComponent implements OnInit {
   //coronas
 
   coronas_tiene=0;
-  coronas_totales=8;
-  coronas_faltan;
-
-
+  coronas_totales=0;
+  coronas_faltan=0;
+  modulos=[];
+  lenguajeSeleccionado='';
   constructor(
-    public estadisticas_serv: EstadisticasService
+    public estadisticas_serv: EstadisticasService,
+    public lenguajeService: LenguajesService,
+    public temas_serv: TemasService
   ) { }
 
   ngOnInit(): void {
-    if (sessionStorage.getItem("lenguaje") == "java") {
-      this.estadisticas_serv.obtener_est_java({ usuario: sessionStorage.getItem("user") }).subscribe(resp => {
-        this.json_general = resp;
-        this.coronas();
-        this.coronas_faltan=this.coronas_totales-this.coronas_tiene;
-      });
-    }
-    else if (sessionStorage.getItem("lenguaje") == "csh") {
-      this.estadisticas_serv.obtener_est_csh({ usuario: sessionStorage.getItem("user") }).subscribe(resp => {
-        this.json_general = resp;
-        this.coronas();
-        this.coronas_faltan=this.coronas_totales-this.coronas_tiene;
-      });
-    }
+    this.lenguajeService.obtener_lenguaje_por_id(sessionStorage.getItem("lenguaje")).subscribe(resp => {
+      this.lenguajeSeleccionado = resp.titulo;
+    })
+    this.temas_serv.obtener_temas_por_lenguaje(sessionStorage.getItem("lenguaje")).subscribe(resp => {
+      this.coronas_totales = resp.length??0;
+      this.modulos = resp;
+      this.coronas();
+      this.coronas_faltan=this.coronas_totales-this.coronas_tiene;
+    });
   }
 
   coronas() {
     let contador = 0;
-    for (let index = 0; index < 10; index++) {
-      if (this.json_general.puntaje_actividades[index] > 0) {
-        contador++
-      }
-    }
-    if (contador == 10) {
-      this.coronas_tiene += 1;
-    }
-
-    contador = 0;
-    for (let index = 10; index < 20; index++) {
-      if (this.json_general.puntaje_actividades[index] > 0) {
-        contador++
-      }
-    }
-    if (contador == 10) {
-      this.coronas_tiene += 1;
-    }
-
-    contador = 0;
-    for (let index = 20; index < 30; index++) {
-      if (this.json_general.puntaje_actividades[index] > 0) {
-        contador++
-      }
-    }
-    if (contador == 10) {
-      this.coronas_tiene += 1;
-    }
-
-    contador = 0;
-    for (let index = 30; index < 40; index++) {
-      if (this.json_general.puntaje_actividades[index] > 0) {
-        contador++
-      }
-    }
-    if (contador == 10) {
-      this.coronas_tiene += 1;
-    }
-
-    contador = 0;
-    for (let index = 40; index < 50; index++) {
-      if (this.json_general.puntaje_actividades[index] > 0) {
-        contador++
-      }
-    }
-    if (contador == 10) {
-      this.coronas_tiene += 1;
-    }
-
-    contador = 0;
-    for (let index = 50; index < 60; index++) {
-      if (this.json_general.puntaje_actividades[index] > 0) {
-        contador++
-      }
-    }
-    if (contador == 10) {
-      this.coronas_tiene += 1;
-    }
-
-    contador = 0;
-    for (let index = 60; index < 70; index++) {
-      if (this.json_general.puntaje_actividades[index] > 0) {
-        contador++
-      }
-    }
-    if (contador == 10) {
-      this.coronas_tiene += 1;
-    }
-
-    contador = 0;
-    for (let index = 70; index < 80; index++) {
-      if (this.json_general.puntaje_actividades[index] > 0) {
-        contador++
-      }
-    }
-    if (contador == 10) {
-      this.coronas_tiene += 1;
-    }
-
+    this.modulos.forEach(element => {
+      this.estadisticas_serv.obtener_puntajes(sessionStorage.getItem("user"),element.modulo_id).subscribe(resp=>{
+        if(resp==null){
+          contador+=0;
+        }else{
+          contador+=1;
+        }
+      })
+    });
+    this.coronas_tiene=contador;
   }
 
 }
