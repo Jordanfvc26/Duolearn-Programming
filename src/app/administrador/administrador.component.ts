@@ -261,4 +261,15 @@ export class AdministradorComponent implements AfterViewInit {
     });
   }
 
+
+  //Iconos a utilizar
+  fagraduation = iconos.faGraduationCap;
+  fahome = iconos.faHome;
+  fachart = iconos.faChartBar;
+  fauser = iconos.faUser;
+  facomments = iconos.faComments;
+  facrown = iconos.faCrown;
+  fasignoutalt = iconos.faSignOutAlt;
+  fabars = iconos.faBars;
+  fasearch = iconos.faSearch;
 }
