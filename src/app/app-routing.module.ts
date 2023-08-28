@@ -20,6 +20,7 @@ import { EstadisticasComponent } from './estadisticas/estadisticas.component';
 import { ListComponent } from './administrador/list/list.component';
 import { CreateComponent } from './administrador/create/create.component';
 import { EditComponent } from './administrador/edit/edit.component';
+import { AdministradorComponent } from './administrador/administrador.component';
 
 const routes: Routes = [
   {path:"",pathMatch:"full",redirectTo:"principal"},
@@ -40,11 +41,12 @@ const routes: Routes = [
   {path: "foro-discusion", component:ForoDiscusionComponent},
   {path: "mapa-preguntas", component:MapaPreguntasComponent},
   {path: "teorias", component:TeoriasComponent},
+  {path: "administrador/questions/options", component:AdministradorComponent},
   {path: "administrador/questions/list", component:ListComponent},
   {path: "administrador/questions/create", component:CreateComponent},
   {path: "administrador/questions/edit/:id", component:EditComponent},
   {path:"administrador",pathMatch:"full",redirectTo:"administrador/questions/list"},
-  {path:"administrador/questions",pathMatch:"full",redirectTo:"administrador/questions/list"}
+  {path:"administrador/questions",pathMatch:"full",redirectTo:"administrador/questions/options"}
 
 ];
 

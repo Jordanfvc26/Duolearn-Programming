@@ -37,10 +37,10 @@ export class LoginComponent implements OnInit {
       clave: ['', Validators.required]
     });
     this.form_registro = this.formulario_registro.group({
-      nombres: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚ\\s]*$/)]],
-      apellidos: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚ\\s]*$/)]],
+      nombres: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/)]],
+      apellidos: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/)]],
       usuario: ['', [Validators.required]],
-      tipo: ['',[Validators.required]],
+      tipo: ['', [Validators.required]],
       fecha_nacimiento: ['', [Validators.required]],
       correo: ['', [Validators.email, Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{1,}))$/)]],
       clave: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%#*?&])[A-Za-z\d@$!%*#?&]{8,20}$/), Validators.maxLength(20), Validators.minLength(8)]],
@@ -91,16 +91,16 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.form_login.markAllAsTouched();
-    if (this.form_login.valid){
+    if (this.form_login.valid) {
       this.user_service.user_login(this.form_login.value).subscribe(resp => {
-        if (resp.estado==1) {
+        if (resp.estado == 1) {
           this.mensaje_bien(resp.mensaje);
           sessionStorage.setItem('user', resp.data);
           this.user_service.get_user({ usuario: sessionStorage.getItem("user") }).subscribe(resp => {
             if (resp.estado == 1) {
               if (resp.tipo_usuario.trim() == "administrador") {
                 this.ruta.navigateByUrl("/administrador/questions/list");
-              } else if(resp.tipo_usuario.trim() == "estudiante"){
+              } else if (resp.tipo_usuario.trim() == "estudiante") {
                 this.ruta.navigateByUrl("/elegir-lenguaje");
               }
             }
@@ -110,10 +110,10 @@ export class LoginComponent implements OnInit {
           this.ruta.navigateByUrl("/login");
         }
       });
-    }else{
+    } else {
       this.mensaje_mal("Faltan datos");
     }
-    
+
   }
 
   registro_user(): any {
@@ -169,8 +169,8 @@ export class LoginComponent implements OnInit {
     this.status = "registro";
   }
 
-   //Método que muestra el formulario de registro
-   mostrarFormLogin() {
+  //Método que muestra el formulario de registro
+  mostrarFormLogin() {
     this.status = "login";
   }
 
