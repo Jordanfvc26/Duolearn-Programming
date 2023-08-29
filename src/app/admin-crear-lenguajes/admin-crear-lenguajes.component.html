@@ -1,0 +1,69 @@
+<body>
+    <div class="row justify-content-center">
+        <div class="col-12 container-info">
+            <div class="col-12 mt-3 mx-1">
+                <h4 id="titulo"><fa-icon [icon]="iconLanguage" class="icon-title"></fa-icon> Crear nuevo lenguaje</h4>
+            </div>
+
+            <form [formGroup]="languageForm">
+                <div class="row mt-4">
+                    <!--Titulo-->
+                    <div class="col-12 col-md-6 mb-3">
+                        <label class="mb-1"><b>Título</b></label>
+                        <input type="text" placeholder="Nombres*" class="form-control form-control-lg bg-light fs-6"
+                            formControlName="titulo" [ngClass]="{
+                                'is-invalid': languageForm.get('titulo')?.hasError('required') && languageForm.get('titulo')?.touched || languageForm.get('titulo')?.hasError('pattern'),
+                                'is-valid': languageForm.get('titulo')?.value?.length >= 4 && languageForm.get('titulo')?.hasError('pattern') == false
+                              }" [maxlength]="50" />
+                        <div class="validators"
+                            *ngIf="languageForm.get('titulo')?.hasError('required') && languageForm.get('titulo')?.touched">
+                            <small>¡Este campo es requerido!</small>
+                        </div>
+                        <div class="validators" *ngIf="languageForm.get('titulo')?.hasError('pattern')">
+                            <small>¡Solo se permiten letras!</small>
+                        </div>
+                    </div>
+                     <!--Portada-->
+                     <div class="col-12 col-md-6 mb-3">
+                        <label class="mb-1"><b>Portada</b></label>
+                        <input type="file" accept="image/*" class="form-control form-control-lg bg-light fs-6"
+                            formControlName="portada" [ngClass]="{
+                                'is-invalid': languageForm.get('portada')?.hasError('required') && languageForm.get('portada')?.touched || languageForm.get('portada')?.hasError('pattern'),
+                                'is-valid': languageForm.get('portada')?.value?.length >= 4 && languageForm.get('portada')?.hasError('pattern') == false
+                              }"/>
+                        <div class="validators"
+                            *ngIf="languageForm.get('portada')?.hasError('required') && languageForm.get('portada')?.touched">
+                            <small>¡Este campo es requerido!</small>
+                        </div>
+                        <div class="validators" *ngIf="languageForm.get('portada')?.hasError('pattern')">
+                            <small>¡Solo se permiten letras!</small>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--Descripción-->
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <label class="mb-1" id="descripcion"><b>Descripción</b></label>
+                        <textarea class="form-control form-control-lg bg-light fs-6" formControlName="descripcion"
+                            placeholder="Descripción*" rows="10"
+                            [ngClass]="{
+                                'is-invalid': languageForm.get('descripcion')?.hasError('required') && languageForm.get('descripcion')?.touched || languageForm.get('descripcion')?.hasError('pattern'),
+                                'is-valid': languageForm.get('descripcion')?.value?.length >=5 && languageForm.get('descripcion')?.hasError('pattern') == false }">
+                            </textarea>
+                        <div class="validators"
+                            *ngIf="languageForm.get('descripcion')?.hasError('required') && languageForm.get('descripcion')?.touched">
+                            <small>¡Este campo es requerido!</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons mb-3">
+                    <button (click)="registrarLenguaje()" [disabled]="!languageForm.valid" mat-button type="button"
+                        class="btn btn-primary btn-md">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>

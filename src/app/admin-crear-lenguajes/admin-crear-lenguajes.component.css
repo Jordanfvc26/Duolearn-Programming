@@ -1,0 +1,67 @@
+body {
+    background-color: #FFF;
+    height: auto;
+    border-radius: 8px;
+}
+
+.div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.div>button {
+    border-radius: 50px;
+}
+
+.container-info {
+    padding: .5rem 2rem;
+}
+
+.validators {
+    color: #FC3B56;
+}
+
+.icon-title {
+    color: rgb(6, 148, 68)!important;
+}
+
+.action-buttons {
+    text-align: end;
+}
+
+/*Botón aceptar (Guardar)*/
+.btn-primary {
+    background-color: rgb(6, 148, 68) !important;
+    border-color: rgb(6, 148, 68)!important;
+}
+
+.btn-primary:hover {
+    background-color: rgb(5, 129, 59) !important;
+    border-color: rgb(5, 129, 59) !important;
+}
+
+.btn-secondary, .btn-danger {
+    margin-right: 10px;
+    border-radius: 50px;
+}
+
+.btn-danger{
+    background-color: #FC3B56 !important;
+    border-color: #FC3B56 !important;
+}
+
+.btn-danger:hover{
+    background-color: #f72944 !important;
+    border-color: #f72944 !important;
+}
+
+/*Responsive Web Design*/
+@media screen and (max-width: 760px) {
+    .button-back {
+        text-align: end;
+    }
+
+    .action-buttons>button{
+        width: 100%;
+    }
+}

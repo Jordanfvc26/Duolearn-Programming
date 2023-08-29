@@ -1,0 +1,64 @@
+<body>
+    <div class="row justify-content-center">
+        <div class="col-12 container-info">
+            <div class="div mt-3 mx-1">
+                <h4 id="titulo"><fa-icon [icon]="iconUsuarios" class="icon-title"></fa-icon> Usuarios</h4>
+            </div>
+            <br />
+
+            <!--Tabla con la lista de tareas-->
+            <div class="card" id="htmlTablePDF">
+                <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true"
+                    style="position: relative;">
+                    <table class="table table-striped mb-0" id="htmlExcelTable">
+                        <thead>
+                            <tr>
+                                <th scope="col">N°</th>
+                                <th scope="col">Nombres</th>
+                                <th scope="col">Usuario</th>
+                                <th scope="col">Correo</th>
+                                <th scope="col">Tipo</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngIf="usuarios.length > 0; else noResults">
+                                <tr *ngFor="let usuario of usuarios; let i = index;">
+                                    <th scope="row">{{i+1}}</th>
+                                    <td>{{usuario.nombres + " " + usuario.apellidos}}</td>
+                                    <td>{{usuario.usuario}}</td>
+                                    <td>{{usuario.correo}}</td>
+                                    <td>{{usuario.tipo_usuario}}</td>
+                                    <td>
+                                        {{ usuario.aprobado === null ? 'Sin solicitud' : usuario.aprobado ? 'Aprobado' :
+                                        'Pendiente' }}
+                                    </td>
+                                    <td class="actions">
+                                        <fa-icon (click)="aprobarComoProfesor(usuario.nombres, usuario.usuario_id)" data-bs-toggle="mensaje" title="Ver detalles" id="iconVerDetalles"
+                                            [icon]="iconAprobar"></fa-icon>
+                                        <!--(click)="goToEditMyTask(task)"-->
+                                        <fa-icon data-bs-toggle="mensaje" title="Editar" id="iconEditar"
+                                            [icon]="iconEditar"></fa-icon>
+                                        <fa-icon (click)="eliminarUsuario(usuario.nombres, usuario.usuario_id)" data-bs-toggle="mensaje" title="Eliminar" id="iconEliminar"
+                                            [icon]="iconEliminar"></fa-icon>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                            <!--Para cuando no cargue la data-->
+                            <ng-template #noResults>
+                                <tr>
+                                    <td colspan="7" class="no-results">Sin resultados...</td>
+                                </tr>
+                            </ng-template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--Paginación-->
+            <!--  <mat-paginator id="paginacion" [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="itemsForPage"
+          [length]="arrayTasks.length" (page)="changePage($event)">
+        </mat-paginator> -->
+        </div>
+    </div>
+</body>

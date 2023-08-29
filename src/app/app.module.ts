@@ -34,6 +34,11 @@ import { EditComponent } from './administrador/edit/edit.component';
 import { CreateComponent } from './administrador/create/create.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UsuariosComponent } from './usuarios/usuarios.component';
+import { AdminListLenguajesComponent } from './admin-list-lenguajes/admin-list-lenguajes.component';
+import { AdminCrearLenguajesComponent } from './admin-crear-lenguajes/admin-crear-lenguajes.component';
+import { AdminListarModulosComponent } from './admin-listar-modulos/admin-listar-modulos.component';
+import { AdminCrearModulosComponent } from './admin-crear-modulos/admin-crear-modulos.component';
 
 
 @NgModule({
@@ -60,7 +65,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AdministradorComponent,
     ListComponent,
     EditComponent,
-    CreateComponent
+    CreateComponent,
+    UsuariosComponent,
+    AdminListLenguajesComponent,
+    AdminCrearLenguajesComponent,
+    AdminListarModulosComponent,
+    AdminCrearModulosComponent
   ],
   imports: [
     BrowserModule,

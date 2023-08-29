@@ -35,8 +35,34 @@ export class AdministradorComponent implements AfterViewInit {
   img1;
   img2;
   img3;
+  activeLink: string = '';
+  indice: number = 0;
+  static userType: string = '';
 
   constructor(public tema_serv: TemasService, public act_serv: PreguntasService, public ruta: Router) { }
+
+  /*ngOnInit*/
+  ngOnInit(): void {
+
+  }
+
+  toggleNavbar() {
+    const body = document.getElementById('body-pd');
+    const navbar = document.getElementById('nav-bar');
+
+    if (body && navbar) {
+      navbar.classList.toggle('show');
+      body.classList.toggle('body-pd');
+    }
+  }
+
+  toggleActiveLink(linkName: string) {
+    if (this.activeLink === linkName) {
+      this.activeLink = '';
+    } else {
+      this.activeLink = linkName;
+    }
+  }
 
   ngAfterViewInit(): void {
     this.tema_serv.listar_temas().subscribe(resp => {
@@ -112,16 +138,16 @@ export class AdministradorComponent implements AfterViewInit {
 
   }
 
-  valida_dragandrop():boolean{
-    let v=this.pregunta_cuest.nativeElement.value.split("\n");
-    if(v.length==4){
+  valida_dragandrop(): boolean {
+    let v = this.pregunta_cuest.nativeElement.value.split("\n");
+    if (v.length == 4) {
       for (let index = 0; index < v.length; index++) {
-        if(v[index]==""){
+        if (v[index] == "") {
           return false;
         }
       }
       return true;
-    }else{
+    } else {
       return false;
     }
   }
@@ -180,9 +206,9 @@ export class AdministradorComponent implements AfterViewInit {
         }
       } else if (this.seleccionado == 4) {
         if (this.valida_campos(3)) {
-          if(this.valida_dragandrop()==false){
+          if (this.valida_dragandrop() == false) {
             this.mensaje_mal("Deben ser 4 lineas de pregunta");
-          }else{
+          } else {
             this.act_serv.realiza_pregunta({
               tema: this.tema_select,
               pregunta: this.pregunta_cuest.nativeElement.value.trim(),
@@ -196,7 +222,7 @@ export class AdministradorComponent implements AfterViewInit {
                 this.mensaje_bien("Pregunta agregada con éxito");
               } else {
                 this.mensaje_bien("Pregunta agregada con éxito");
-              console.log("No se pudo agregar la pregunta");
+                console.log("No se pudo agregar la pregunta");
               }
               this.seleccionado = 0;
               this.tema_select = 0;
@@ -233,11 +259,6 @@ export class AdministradorComponent implements AfterViewInit {
     }
   }
 
-  close_session() {
-    sessionStorage.clear();
-    this.ruta.navigateByUrl("/principal");
-  }
-
   mensaje_bien(mensaje: any) {
     Swal.fire({
       icon: 'success',
@@ -245,10 +266,6 @@ export class AdministradorComponent implements AfterViewInit {
       showConfirmButton: false,
       timer: 2000
     })
-  }
-
-  placeholder(){
-    
   }
 
   mensaje_mal(mensaje: any) {
@@ -261,15 +278,38 @@ export class AdministradorComponent implements AfterViewInit {
     });
   }
 
+  /*Método para cerrar la sesión*/
+  close_session() {
+    sessionStorage.clear();
+    this.ruta.navigateByUrl("/login");
+  }
+
+  /*Método que cambia el índice para ver la opción del menú*/
+  cambiarIndice(indice: number) {
+    this.indice = indice;
+    if (indice == 999) {
+      this.close_session();
+    }
+  }
+
 
   //Iconos a utilizar
+  iconBars = iconos.faBars;
+  iconHome = iconos.faHome;
+  iconLanguage = iconos.faGlobe;
+  iconModules = iconos.faFolder;
+  iconQuestions = iconos.faQuestionCircle;
+  iconUsers = iconos.faUsers;
+  iconSignOut = iconos.faSignOutAlt;
+  iconListar = iconos.faList;
+  iconCrear = iconos.faPlusCircle;
+  iconEditar = iconos.faEdit;
+
   fagraduation = iconos.faGraduationCap;
-  fahome = iconos.faHome;
   fachart = iconos.faChartBar;
   fauser = iconos.faUser;
   facomments = iconos.faComments;
   facrown = iconos.faCrown;
   fasignoutalt = iconos.faSignOutAlt;
-  fabars = iconos.faBars;
   fasearch = iconos.faSearch;
 }

@@ -49,4 +49,16 @@ export class UsuariosService {
   update_pass(datos_nuevos: any): Observable<any> {
     return this.clientHttp.post(this.Api + "/cambio_clave", datos_nuevos);
   }
+
+  listar_usuarios(): Observable<any> {
+    return this.clientHttp.get(this.Api + "/admin/usuarios/listar");
+  }
+
+  aprobar_profesor(idUser: number):Observable<any>{
+    return this.clientHttp.patch(this.Api + "/profesor/aprobacion/"+idUser, null);
+  }
+
+  eliminar_usuario(idUser: number):Observable<any>{
+    return this.clientHttp.delete(this.Api + "/usuario/eliminar/"+idUser);
+  }
 }
