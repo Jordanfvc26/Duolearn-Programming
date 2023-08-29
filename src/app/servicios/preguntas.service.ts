@@ -21,7 +21,7 @@ export class PreguntasService {
   }
 
   get_questionsAll(): Observable<any> {
-    return this.clientHttp.get(this.Api + "/actividades/obtener");
+    return this.clientHttp.get(this.Api + "/actividades/obtener/all");
   }
 
   get_questionId(id: any): Observable<any> {

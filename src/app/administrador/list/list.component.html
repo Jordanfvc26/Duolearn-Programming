@@ -15,29 +15,30 @@
                   <th scope="col">N°</th>
                   <th scope="col">Tipo</th>
                   <th scope="col">Lenguaje</th>
-                  <th scope="col">Título</th>
+                  <th scope="col">Modulo</th>
                   <th scope="col">Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 <ng-container *ngIf="actividades.length > 0; else noResults">
                   <tr
-                    *ngFor="let actividad of actividades">
+                    *ngFor="let actividad of actividades; let i=index;">
                     <th scope="row">{{i+1}}</th>
-                    <td>{{actividad.tipo.replaceAll('-', ' ').toUpperCase()}}</td>
-                    <td>{{actividad.lenguaje=='csh'?'C#':'Java'}}</td>
-                    <td>{{actividad.titulo}}</td>
+                    <td>{{actividad.tipo_actividad.replaceAll('-', ' ').toUpperCase()}}</td>
+                    <td>{{actividad.nombre_lenguaje}}</td>
+                    <td>{{actividad.nombre_modulo}}</td>
                     <td class="actions">
                       <!--(click)="openModalViewTaskDetail(viewTaskDetail, task.id)"-->
-                      <fa-icon data-bs-toggle="mensaje"
-                        title="Ver detalles" id="iconVerDetalles" [icon]="iconVerDetalles"></fa-icon>
+                      
                         <!--(click)="goToEditMyTask(task)"-->
                       <fa-icon data-bs-toggle="mensaje" title="Editar" id="iconEditar"
-                        [icon]="iconEditar"></fa-icon>
+                        [icon]="iconEdit"></fa-icon>
                         <!--(click)="deleteTask(task.id, task.title)" -->
                       <fa-icon data-bs-toggle="mensaje" title="Eliminar"
-                        id="iconEliminar" [icon]="iconEliminar"></fa-icon>
+                        id="iconEliminar" [icon]="iconDelete"></fa-icon>
+
                     </td>
+                    
                   </tr>
                 </ng-container>
                 <!--Para cuando no cargue la data-->
