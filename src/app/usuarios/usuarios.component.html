@@ -35,7 +35,7 @@
                                         'Pendiente' }}
                                     </td>
                                     <td class="actions">
-                                        <fa-icon (click)="aprobarComoProfesor(usuario.nombres, usuario.usuario_id)" data-bs-toggle="mensaje" title="Ver detalles" id="iconVerDetalles"
+                                        <fa-icon *ngIf="usuario.tipo_usuario.trim()=='docente'" (click)="aprobarComoProfesor(usuario.nombres, usuario.usuario_id)" data-bs-toggle="mensaje" title="Aprobar Docente" id="iconVerDetalles"
                                             [icon]="iconAprobar"></fa-icon>
                                         <!--(click)="goToEditMyTask(task)"-->
                                         <fa-icon data-bs-toggle="mensaje" title="Editar" id="iconEditar"

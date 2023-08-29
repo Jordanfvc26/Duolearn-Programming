@@ -1,6 +1,7 @@
 import { Component, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import * as iconos from '@fortawesome/free-solid-svg-icons';
+import { LenguajesService } from 'src/app/servicios/lenguajes.service';
 import { PreguntasService } from 'src/app/servicios/preguntas.service';
 import { TemasService } from 'src/app/servicios/temas.service';
 import Swal from 'sweetalert2';
@@ -12,7 +13,11 @@ import Swal from 'sweetalert2';
 })
 export class CreateComponent implements AfterViewInit {
 
-  constructor(public tema_serv: TemasService, public act_serv: PreguntasService, public ruta: Router) { }
+  constructor(
+    public tema_serv: TemasService,
+    public act_serv: PreguntasService,
+    public lenguajeService: LenguajesService,
+    public ruta: Router) { }
   faCerrarSesion = iconos.faSignOutAlt;
   //cuestionario
   @ViewChild("escoge1") public select1: ElementRef;
@@ -31,23 +36,29 @@ export class CreateComponent implements AfterViewInit {
 
   seleccionado = 0;
   tema_select = 0;
-  Temas: any;
+  lenguaje_select=0;
+  Temas=[];
   faPlus = iconos.faPlusCircle;
   img1;
   img2;
   img3;
+  lenguajes = [];
+
   ngAfterViewInit(): void {
-    this.tema_serv.listar_temas().subscribe(resp => {
-      this.Temas = resp;
-      for (let index = 0; index < this.Temas.length; index++) {
-        if (this.Temas[index]["lenguaje"] == "csh") {
-          this.Temas[index]["lenguaje"] = "C#";
-        }
-      }
-    });
+    this.lenguajeService.listar_lenguajes().subscribe(resp => {
+      this.lenguajes = resp;
+      console.log(this.lenguajes);
+    })
+
   }
 
-
+  cargarModulos() {
+    this.Temas=[];
+    this.tema_serv.obtener_temas_por_lenguaje(this.lenguaje_select).subscribe(resp => {
+      this.Temas = resp;
+      console.log(this.Temas);
+    });
+  }
 
   vista_preliminar1 = (event) => {
     let id_img = document.getElementById('img-vista-previa1');
@@ -110,16 +121,16 @@ export class CreateComponent implements AfterViewInit {
 
   }
 
-  valida_dragandrop():boolean{
-    let v=this.pregunta_cuest.nativeElement.value.split("\n");
-    if(v.length==4){
+  valida_dragandrop(): boolean {
+    let v = this.pregunta_cuest.nativeElement.value.split("\n");
+    if (v.length == 4) {
       for (let index = 0; index < v.length; index++) {
-        if(v[index]==""){
+        if (v[index] == "") {
           return false;
         }
       }
       return true;
-    }else{
+    } else {
       return false;
     }
   }
@@ -149,7 +160,7 @@ export class CreateComponent implements AfterViewInit {
             } else {
               this.mensaje_mal("No se pudo agregar la pregunta");
             }
-            this.ruta.navigateByUrl("/administrador/questions/list");
+            this.ruta.navigateByUrl("/administrador/questions/options");
             this.seleccionado = 0;
             this.tema_select = 0;
           });
@@ -169,7 +180,7 @@ export class CreateComponent implements AfterViewInit {
             } else {
               this.mensaje_mal("No se pudo agregar la pregunta");
             }
-            this.ruta.navigateByUrl("/administrador/questions/list");
+            this.ruta.navigateByUrl("/administrador/questions/options");
             this.seleccionado = 0;
             this.tema_select = 0;
           });
@@ -178,9 +189,9 @@ export class CreateComponent implements AfterViewInit {
         }
       } else if (this.seleccionado == 4) {
         if (this.valida_campos(3)) {
-          if(this.valida_dragandrop()==false){
+          if (this.valida_dragandrop() == false) {
             this.mensaje_mal("Deben ser 4 lineas de pregunta");
-          }else{
+          } else {
             this.act_serv.realiza_pregunta({
               tema: this.tema_select,
               pregunta: this.pregunta_cuest.nativeElement.value.trim(),
@@ -195,7 +206,7 @@ export class CreateComponent implements AfterViewInit {
               } else {
                 this.mensaje_mal("No se pudo agregar la pregunta");
               }
-              this.ruta.navigateByUrl("/administrador/questions/list");
+              this.ruta.navigateByUrl("/administrador/questions/options");
               this.seleccionado = 0;
               this.tema_select = 0;
             });
@@ -219,7 +230,7 @@ export class CreateComponent implements AfterViewInit {
             } else {
               this.mensaje_mal("No se pudo agregar la pregunta");
             }
-            this.ruta.navigateByUrl("/administrador/questions/list");
+            this.ruta.navigateByUrl("/administrador/questions/options");
             this.seleccionado = 0;
             this.tema_select = 0;
           });
@@ -245,8 +256,8 @@ export class CreateComponent implements AfterViewInit {
     })
   }
 
-  placeholder(){
-    
+  placeholder() {
+
   }
 
   mensaje_mal(mensaje: any) {
