@@ -19,12 +19,17 @@
                     <option [value]="5">Error</option>
                 </select>
             </div>
-            <div class="tema"><b>Tema: </b>
-                <select [(ngModel)]="tema_select">
-                    <option *ngFor="let tema of Temas" [value]="tema.id">
-                        <b>Lenguaje:</b> {{tema.lenguaje}};
-                        <b>Módulo:</b> {{tema.modulo}};
-                        <b>Titulo:</b> {{tema.titulo}}
+            <div class="tema"><b>Lenguaje: </b>
+                <select [(ngModel)]="lenguaje_select" (change)="cargarModulos()">
+                    <option *ngFor="let lenguaje of lenguajes" [value]="lenguaje.lenguaje_id">
+                        {{lenguaje.titulo}}
+                    </option>
+                </select>
+            </div>
+            <div class="tema"><b>Modulo: </b>
+                <select *ngIf="Temas.length > 0" [(ngModel)]="tema_select">
+                    <option *ngFor="let tema of Temas" [value]="tema.modulo_id">
+                        {{tema.titulo_modulo}}
                     </option>
                 </select>
             </div>
