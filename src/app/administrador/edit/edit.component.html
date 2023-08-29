@@ -1,110 +1,93 @@
-<div class="box" id="resultScreen">
-
-    <div class="barra">
-        <span>Duolearn Programming</span>
-        <span>Administrador</span>
-        <span (click)="close_session()" id="cerrar-sesion">
-            <a>Cerrar sesión
-                <fa-icon [icon]="faCerrarSesion"></fa-icon>
-            </a>
-        </span>
+<div class="caja" id="screenPreguntas">
+    <div class="cuestionario">
+        <div class="titulo">
+            <!--Este titulo habría que traerlo de la base da datos, o de la pagina anterior, ya que el nombre del módulo aparece según el modulo que el usuario elige-->
+            Editar pregunta
+            <span>
+                <fa-icon [icon]="faPlus"></fa-icon>
+            </span>
+        </div>
     </div>
 
-    <div class="body p-5 row">
-        <div class="body">
-            <div class="caja" id="screenPreguntas">
-                <div class="cuestionario">
-                    <div class="titulo">
-                        <!--Este titulo habría que traerlo de la base da datos, o de la pagina anterior, ya que el nombre del módulo aparece según el modulo que el usuario elige-->
-                        Editar pregunta
-                        <span>
-                            <fa-icon [icon]="faPlus"></fa-icon>
-                        </span>
-                    </div>
-                </div>
+    <!--Para ingresar preguntas de tipo cuestionario-->
+    <div *ngIf="(seleccionado==2 || seleccionado==4)" class="tipo-cuestionario">
+        <div class="caja-pregunta" #pregunta>
+            <h5>Ingrese la pregunta: </h5>
+            <span><i><b>Nota: </b> En caso de ser de tipo Drag and drop, ingrese la pregunta (comentarios)
+                    línea
+                    a línea.</i></span>
+            <textarea #pregunta_cuestionario> {{activityInfo.pregunta}} </textarea>
+        </div>
 
-                <!--Para ingresar preguntas de tipo cuestionario-->
-                <div *ngIf="(seleccionado==2 || seleccionado==4)" class="tipo-cuestionario">
-                    <div class="caja-pregunta" #pregunta>
-                        <h5>Ingrese la pregunta: </h5>
-                        <span><i><b>Nota: </b> En caso de ser de tipo Drag and drop, ingrese la pregunta (comentarios)
-                                línea
-                                a línea.</i></span>
-                        <textarea #pregunta_cuestionario> {{activityInfo.pregunta}} </textarea>
-                    </div>
+        <div class="caja-opciones">
+            <h5>Ingrese las Opciones: </h5>
+            <span><b>Nota: </b> No ingrese literales (a,b,c,d), solo el texto.</span>
+            <input #opcion_a_cuestionario type="text"
+                [ngStyle]="seleccionado==2 && {'background-color': 'rgb(5, 196, 88)'} || seleccionado==4 && {'background-color': 'wheat'}"
+                [ngClass]="{'opc_correcta': seleccionado ==2, 'opc_correctadd' : step ==4 }"
+                [value]="activityInfo.opcion_correcta" placeholder=" Opción A" />
+            <input #opcion_b_cuestionario type="text" [value]="activityInfo.opcion2" placeholder=" Opción B" />
+            <input #opcion_c_cuestionario type="text" [value]="activityInfo.opcion3" placeholder=" Opción C" />
+            <input #opcion_d_cuestionario type="text" [value]="activityInfo.opcion4" placeholder=" Opción D" />
+        </div>
+    </div>
 
-                    <div class="caja-opciones">
-                        <h5>Ingrese las Opciones: </h5>
-                        <span><b>Nota: </b> No ingrese literales (a,b,c,d), solo el texto.</span>
-                        <input #opcion_a_cuestionario type="text"
-                            [ngStyle]="seleccionado==2 && {'background-color': 'rgb(5, 196, 88)'} || seleccionado==4 && {'background-color': 'wheat'}"
-                            [ngClass]="{'opc_correcta': seleccionado ==2, 'opc_correctadd' : step ==4 }"
-                            [value]="activityInfo.opcion_correcta" placeholder=" Opción A" />
-                        <input #opcion_b_cuestionario type="text" [value]="activityInfo.opcion2" placeholder=" Opción B" />
-                        <input #opcion_c_cuestionario type="text" [value]="activityInfo.opcion3" placeholder=" Opción C" />
-                        <input #opcion_d_cuestionario type="text" [value]="activityInfo.opcion4" placeholder=" Opción D" />
-                    </div>
-                </div>
-
-                <!--Para ingresar 2 imágenes en la pregunta de tipo pares-->
-                <div *ngIf="(seleccionado==3)" class="pares">
-                    <h5>Suba una imagen de algún código de muestra: </h5>
-                    <span><i><b>Nota: </b> Deberá subir 2 imágenes, una como pregunta y la otra como opción
-                            correcta</i></span>
-                    <div class="contenedor-imagen-pares">
-                        <div class="imagenes-a-cargar">
-                            <br />
-                            <img [src]="activityInfo.pregunta" alt="" id="img-vista-previa1" />
-                            <img [src]="activityInfo.opcion_correcta" alt="" id="img-vista-previa2" />
-                        </div>
-                    </div>
-
-                    <div class="form-pares">
-                        <input type="file" id="file1" (change)="vista_preliminar1($event)" />
-                        <input type="button" value="Subir imagen 1🔼" class="btn-subir-img"
-                            onclick="document.getElementById('file1').click()" />
-                        <input type="file" id="file2" (change)="vista_preliminar2($event)" />
-                        <input type="button" value="Subir imagen 2🔼" class="btn-subir-img"
-                            onclick="document.getElementById('file2').click()" />
-                    </div>
-                </div>
-
-
-                <!--Pregunta para encontrar errores-->
-                <div *ngIf="(seleccionado==5)" class="error">
-                    <h5>Suba una imagen de algún código de muestra: </h5>
-                    <span><i><b>Nota: </b> Debe subir una imagen el cual el código contendrá un error</i></span>
-                    <div class="contenedor-imagen-pares">
-                        <div class="imagenes-a-cargar">
-                            <br />
-                            <img [src]="activityInfo.pregunta" #imagen3 alt="" id="img-vista-previa3" />
-                        </div>
-
-                        <div class="form-pares">
-                            <input type="file" id="file3" (change)="vista_preliminar3($event)" />
-                            <input type="button" value="Subir imagen 🔼" class="btn-subir-img"
-                                onclick="document.getElementById('file3').click()" />
-                        </div>
-                    </div>
-
-                    <div class="caja-opciones">
-                        <h5>Ingrese las Opciones: </h5>
-                        <span><i><b>Nota: </b> No ingrese literales (a,b,c,d), solo el texto.</i></span>
-                        <input class="opc_correcta" #opcion_a_error type="text"
-                            style="background-color: rgb(5, 196, 88);" [value]="activityInfo.opcion_correcta" placeholder=" Opción A" />
-                        <input #opcion_b_error type="text" [value]="activityInfo.opcion2" placeholder=" Opción B" />
-                        <input #opcion_c_error type="text" [value]="activityInfo.opcion3" placeholder=" Opción C" />
-                        <input #opcion_d_error type="text" [value]="activityInfo.opcion4" placeholder=" Opción D" />
-                    </div>
-                </div>
-
-                <!--Boton para guardar los cambios-->
-                <div class="botones">
-                    <button (click)="send_question()">
-                        Guardar cambios 💾
-                    </button>
-                </div>
+    <!--Para ingresar 2 imágenes en la pregunta de tipo pares-->
+    <div *ngIf="(seleccionado==3)" class="pares">
+        <h5>Suba una imagen de algún código de muestra: </h5>
+        <span><i><b>Nota: </b> Deberá subir 2 imágenes, una como pregunta y la otra como opción
+                correcta</i></span>
+        <div class="contenedor-imagen-pares">
+            <div class="imagenes-a-cargar">
+                <br />
+                <img [src]="activityInfo.pregunta" alt="" id="img-vista-previa1" />
+                <img [src]="activityInfo.opcion_correcta" alt="" id="img-vista-previa2" />
             </div>
         </div>
+
+        <div class="form-pares">
+            <input type="file" id="file1" (change)="vista_preliminar1($event)" />
+            <input type="button" value="Subir imagen 1🔼" class="btn-subir-img"
+                onclick="document.getElementById('file1').click()" />
+            <input type="file" id="file2" (change)="vista_preliminar2($event)" />
+            <input type="button" value="Subir imagen 2🔼" class="btn-subir-img"
+                onclick="document.getElementById('file2').click()" />
+        </div>
+    </div>
+
+
+    <!--Pregunta para encontrar errores-->
+    <div *ngIf="(seleccionado==5)" class="error">
+        <h5>Suba una imagen de algún código de muestra: </h5>
+        <span><i><b>Nota: </b> Debe subir una imagen el cual el código contendrá un error</i></span>
+        <div class="contenedor-imagen-pares">
+            <div class="imagenes-a-cargar">
+                <br />
+                <img [src]="activityInfo.pregunta" #imagen3 alt="" id="img-vista-previa3" />
+            </div>
+
+            <div class="form-pares">
+                <input type="file" id="file3" (change)="vista_preliminar3($event)" />
+                <input type="button" value="Subir imagen 🔼" class="btn-subir-img"
+                    onclick="document.getElementById('file3').click()" />
+            </div>
+        </div>
+
+        <div class="caja-opciones">
+            <h5>Ingrese las Opciones: </h5>
+            <span><i><b>Nota: </b> No ingrese literales (a,b,c,d), solo el texto.</i></span>
+            <input class="opc_correcta" #opcion_a_error type="text"
+                style="background-color: rgb(5, 196, 88);" [value]="activityInfo.opcion_correcta" placeholder=" Opción A" />
+            <input #opcion_b_error type="text" [value]="activityInfo.opcion2" placeholder=" Opción B" />
+            <input #opcion_c_error type="text" [value]="activityInfo.opcion3" placeholder=" Opción C" />
+            <input #opcion_d_error type="text" [value]="activityInfo.opcion4" placeholder=" Opción D" />
+        </div>
+    </div>
+
+    <!--Boton para guardar los cambios-->
+    <div class="botones">
+        <button (click)="send_question()">
+            Guardar cambios 💾
+        </button>
     </div>
 </div>

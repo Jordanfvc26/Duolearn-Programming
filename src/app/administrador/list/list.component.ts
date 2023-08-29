@@ -60,4 +60,8 @@ export class ListComponent implements OnInit {
       timer: 1500
     });
   }
+
+  iconPreguntas = iconos.faQuestionCircle;
+  iconListar = iconos.faList;
+  iconCrear = iconos.faPlusCircle;
 }

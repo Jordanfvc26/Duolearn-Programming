@@ -1,50 +1,59 @@
-<!-- <div class="box" id="resultScreen">
-
-    <div class="body p-5 row justify-content-center">
-        <div>
-            <h4 id="titulo"><fa-icon [icon]="iconMyPatients" class="icon-title"></fa-icon> Preguntas</h4>
-            <br>
-            <button [routerLink]="'/administrador/questions/create'" type="button" class="btn btn-primary p-2">
-                <fa-icon [icon]="iconAdd"></fa-icon> Nueva pregunta</button>
+<body>
+    <div class="row justify-content-center">
+      <div class="col-12 container-info">
+        <div class="div mt-3 mx-1">
+          <h4 id="titulo"><fa-icon [icon]="iconPreguntas" class="icon-title"></fa-icon> Preguntas</h4>
         </div>
-        <br>
-        <div class="card pt-3 mt-3" id="htmlTablePDF">
-            <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative;">
-                <table class="table table-striped mb-0" id="htmlExcelTable">
-                    <thead>
-                        <tr>
-                            <th scope="col">N°</th>
-                            <th scope="col">Tipo</th>
-                            <th scope="col">Lenguaje</th>
-                            <th scope="col">Titulo</th>
-                            <th scope="col">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <ng-container *ngIf="actividades.length > 0; else noResults">
-                            <tr *ngFor="let actividad of actividades; let i = index">
-                                <th scope="row">{{i+1}}</th>
-                                <td>{{actividad.tipo.replaceAll('-', ' ').toUpperCase()}}</td>
-                                <td>{{actividad.lenguaje=='csh'?'C#':'Java'}}</td>
-                                <td>{{actividad.titulo}}</td>
-                                <td class="acciones d-flex justify-content-evenly">
-                                    <fa-icon [routerLink]="'/administrador/questions/edit/' + actividad.id" title="Editar"
-                                        style="cursor: pointer;" id="iconEditar" [icon]="iconEdit"></fa-icon>
-                                    <fa-icon (click)="removeActivity(actividad.id)" data-bs-toggle="mensaje"
-                                        style="cursor: pointer;" title="Eliminar" id="iconEliminar"
-                                        [icon]="iconDelete"></fa-icon>
-                                </td>
-                            </tr>
-                        </ng-container>
-                        <ng-template #noResults>
-                            <tr>
-                                <td colspan="7" class="no-results">Sin resultados...</td>
-                            </tr>
-                        </ng-template>
-                    </tbody>
-                </table>
-            </div>
+        <br />
+  
+        <!--Tabla con la lista de tareas-->
+        <div class="card" id="htmlTablePDF">
+          <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative;">
+            <table class="table table-striped mb-0" id="htmlExcelTable">
+              <thead>
+                <tr>
+                  <th scope="col">N°</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Lenguaje</th>
+                  <th scope="col">Título</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngIf="actividades.length > 0; else noResults">
+                  <tr
+                    *ngFor="let actividad of actividades">
+                    <th scope="row">{{i+1}}</th>
+                    <td>{{actividad.tipo.replaceAll('-', ' ').toUpperCase()}}</td>
+                    <td>{{actividad.lenguaje=='csh'?'C#':'Java'}}</td>
+                    <td>{{actividad.titulo}}</td>
+                    <td class="actions">
+                      <!--(click)="openModalViewTaskDetail(viewTaskDetail, task.id)"-->
+                      <fa-icon data-bs-toggle="mensaje"
+                        title="Ver detalles" id="iconVerDetalles" [icon]="iconVerDetalles"></fa-icon>
+                        <!--(click)="goToEditMyTask(task)"-->
+                      <fa-icon data-bs-toggle="mensaje" title="Editar" id="iconEditar"
+                        [icon]="iconEditar"></fa-icon>
+                        <!--(click)="deleteTask(task.id, task.title)" -->
+                      <fa-icon data-bs-toggle="mensaje" title="Eliminar"
+                        id="iconEliminar" [icon]="iconEliminar"></fa-icon>
+                    </td>
+                  </tr>
+                </ng-container>
+                <!--Para cuando no cargue la data-->
+                <ng-template #noResults>
+                  <tr>
+                    <td colspan="7" class="no-results">Sin resultados...</td>
+                  </tr>
+                </ng-template>
+              </tbody>
+            </table>
+          </div>
         </div>
-
+        <!--Paginación-->
+       <!--  <mat-paginator id="paginacion" [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="itemsForPage"
+          [length]="arrayTasks.length" (page)="changePage($event)">
+        </mat-paginator> -->
+      </div>
     </div>
-</div> -->
+  </body>

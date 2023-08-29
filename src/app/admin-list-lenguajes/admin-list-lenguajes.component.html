@@ -1,0 +1,50 @@
+<body>
+    <div class="row justify-content-center">
+        <div class="col-12 container-info">
+            <div class="div mt-3 mx-1">
+                <h4 id="titulo"><fa-icon [icon]="iconLanguages" class="icon-title"></fa-icon> Lenguajes registrados</h4>
+            </div>
+            <br />
+
+            <!--Tabla con la lista de tareas-->
+            <div class="card" id="htmlTablePDF">
+                <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true"
+                    style="position: relative;">
+                    <table class="table table-striped mb-0" id="htmlExcelTable">
+                        <thead>
+                            <tr>
+                                <th scope="col">N°</th>
+                                <th scope="col">Título</th>
+                                <th scope="col">Descripción</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">URL Portada</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngIf="lenguajes.length > 0; else noResults">
+                                <tr *ngFor="let lenguaje of lenguajes; let i = index">
+                                    <th scope="row">{{i+1}}</th>
+                                    <td>{{lenguaje.titulo.replaceAll('-', ' ').toUpperCase()}}</td>
+                                    <td>{{lenguaje.descripcion}}</td>
+                                    <td>{{lenguaje.lenguaje_activo?"Activo":"Inactivo"}}</td>
+                                    <td>{{lenguaje.portada}}</td>
+                                    <td class="actions">
+                                        <fa-icon (click)="eliminar_lenguaje(lenguaje.titulo, lenguaje.id)" data-bs-toggle="mensaje" title="Eliminar" id="iconEliminar"
+                                            [icon]="iconEliminar"></fa-icon>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                            <!--Para cuando no cargue la data-->
+                            <ng-template #noResults>
+                                <tr>
+                                    <td colspan="7" class="no-results">Sin resultados...</td>
+                                </tr>
+                            </ng-template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

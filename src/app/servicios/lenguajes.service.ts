@@ -1,26 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {environment} from 'src/environments/environment'
+import { environment } from 'src/environments/environment'
 
 @Injectable({
   providedIn: 'root'
 })
 export class LenguajesService {
 
-  constructor(private clientHttp:HttpClient) { }
+  constructor(private clientHttp: HttpClient) { }
 
   Api: string = environment.api;
 
-  agregar_lenguaje(datos:any):Observable<any>{
-    return this.clientHttp.post(this.Api+"/lenguajes/nuevo",datos);
+  agregar_lenguaje(datos: any): Observable<any> {
+    return this.clientHttp.post(this.Api + "/lenguajes/nuevo", datos);
   }
 
-  listar_lenguajes():Observable<any>{
-    return this.clientHttp.get(this.Api+"/admin/lenguajes/obtener");
+  listar_lenguajes(): Observable<any> {
+    return this.clientHttp.get(this.Api + "/admin/lenguajes/obtener");
   }
 
-  obtener_lenguaje_por_id(id:any):Observable<any>{
-    return this.clientHttp.get(this.Api+"/admin/lenguajes/obtener/"+id);
+  obtener_lenguaje_por_id(id: any): Observable<any> {
+    return this.clientHttp.get(this.Api + "/admin/lenguajes/obtener/" + id);
+  }
+
+  cambiar_estado_lenguaje(id: any, estado: any): Observable<any> {
+    return this.clientHttp.patch(this.Api + "/admin/lenguaje/cambiar-estado/" + id + "/" + estado, null);
+  }
+
+  nuevo_lenguaje(datos:any): Observable<any> {
+    return this.clientHttp.post(this.Api + "/admin/lenguaje/agregar", datos);
   }
 }
