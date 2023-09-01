@@ -83,7 +83,7 @@ import { AdminCrearModulosComponent } from './admin-crear-modulos/admin-crear-mo
     ReactiveFormsModule,
     FontAwesomeModule,
     MatStepperModule,
-    BrowserAnimationsModule 
+    BrowserAnimationsModule, 
     ],
   providers: [
     InstruccionesComponent

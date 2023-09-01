@@ -71,3 +71,8 @@ input,select{
 .no-account{
     cursor: pointer;
 }
+
+.input-group-append, .input-group-text{
+    margin-top: 1px;
+    margin-left: 7px;
+}
