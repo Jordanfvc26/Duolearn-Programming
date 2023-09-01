@@ -58,7 +58,7 @@ describe('LoginComponent', () => {
     formRegistro.controls['correo'].setValue('luism@gmail.com');
     formRegistro.controls['clave'].setValue('Papa123#');
     formRegistro.controls['confirmClave'].setValue('Papa123#');
-    console.log(formRegistro);
+    
     expect(formRegistro.valid).toBeTrue();
   })
 
