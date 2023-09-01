@@ -2,7 +2,7 @@
     <header class="header" id="header">
         <div class="header_toggle"> <fa-icon [icon]="iconBars" id="header-toggle" (click)="toggleNavbar()"></fa-icon> </div>
         <div class="header_img"> <img src="https://i.imgur.com/hczKIze.jpg" alt="">
-            <span> Administrador</span>
+            <span> {{userTypeRecived=='administrador'?'Administrador':'Docente'}}</span>
         </div>
     </header>
 

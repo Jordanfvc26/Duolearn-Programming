@@ -44,7 +44,7 @@ export class AdministradorComponent implements AfterViewInit {
 
   /*ngOnInit*/
   ngOnInit(): void {
-    this.userTypeRecived = AdministradorComponent.userType;
+    this.userTypeRecived = sessionStorage.getItem('userType');
   }
 
   toggleNavbar() {

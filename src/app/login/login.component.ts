@@ -124,6 +124,7 @@ export class LoginComponent implements OnInit {
               if (resp.tipo_usuario.trim() == "administrador") {
                 this.ruta.navigateByUrl("/administrador/questions/options");
                 AdministradorComponent.userType = "administrador";
+                sessionStorage.setItem('userType', "administrador")
               } else if (resp.tipo_usuario.trim() == "estudiante") {
                 this.ruta.navigateByUrl("/elegir-lenguaje");
               }
