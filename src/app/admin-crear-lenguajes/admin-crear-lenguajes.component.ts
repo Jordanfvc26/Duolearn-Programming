@@ -21,10 +21,10 @@ export class AdminCrearLenguajesComponent implements OnInit {
     private lenguajeService: LenguajesService
   ) { }
 
+  
   ngOnInit(): void {
     this.crear_form_lenguaje()
   }
-
 
   //Método que crea el formulario
   crear_form_lenguaje() {

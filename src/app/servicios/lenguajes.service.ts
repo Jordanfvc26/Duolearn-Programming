@@ -31,4 +31,12 @@ export class LenguajesService {
   nuevo_lenguaje(datos:any): Observable<any> {
     return this.clientHttp.post(this.Api + "/admin/lenguaje/agregar", datos);
   }
+
+  editar_lenguaje(lenguajeID:number, datos: any): Observable<any> {
+    return this.clientHttp.patch(this.Api + "/admin/lenguaje/modificar/"+lenguajeID, datos);
+  }
+
+  obtener_lenguaje_por_id_admin(lenguajeID: number): Observable<any> {
+    return this.clientHttp.get(this.Api + "/admin/lenguajes/obtener/"+lenguajeID);
+  }
 }

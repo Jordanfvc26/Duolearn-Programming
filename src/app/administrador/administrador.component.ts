@@ -38,12 +38,13 @@ export class AdministradorComponent implements AfterViewInit {
   activeLink: string = '';
   indice: number = 0;
   static userType: string = '';
+  userTypeRecived : string = "";
 
   constructor(public tema_serv: TemasService, public act_serv: PreguntasService, public ruta: Router) { }
 
   /*ngOnInit*/
   ngOnInit(): void {
-
+    this.userTypeRecived = AdministradorComponent.userType;
   }
 
   toggleNavbar() {
