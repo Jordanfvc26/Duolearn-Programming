@@ -59,7 +59,7 @@ export class AdminCrearLenguajesComponent implements OnInit {
 
     const imagen: File = this.languageForm.get('portada').value;
     if (imagen) {
-      formData.append("portada", imagen);
+      formData.append("images", imagen);
       this.lenguajeService.nuevo_lenguaje(formData)
         .subscribe({
           next: (data) => {

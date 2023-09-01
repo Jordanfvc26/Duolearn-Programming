@@ -28,12 +28,12 @@
                         <tbody>
                             <ng-container *ngIf="lenguajes.length > 0; else noResults">
                                 <tr *ngFor="let lenguaje of lenguajes; let i = index">
-                                    <th scope="row">{{i+1}}</th>
-                                    <td>{{lenguaje.titulo.replaceAll('-', ' ').toUpperCase()}}</td>
-                                    <td>{{lenguaje.descripcion}}</td>
-                                    <td>{{lenguaje.lenguaje_activo?"Activo":"Inactivo"}}</td>
-                                    <td>{{lenguaje.portada}}</td>
-                                    <td class="actions">
+                                    <th *ngIf="lenguaje.lenguaje_activo" scope="row">{{i+1}}</th>
+                                    <td *ngIf="lenguaje.lenguaje_activo"> {{lenguaje.titulo.replaceAll('-', ' ').toUpperCase()}}</td>
+                                    <td *ngIf="lenguaje.lenguaje_activo">{{lenguaje.descripcion}}</td>
+                                    <td *ngIf="lenguaje.lenguaje_activo">{{lenguaje.lenguaje_activo?"Activo":"Inactivo"}}</td>
+                                    <td *ngIf="lenguaje.lenguaje_activo">{{lenguaje.portada}}</td>
+                                    <td *ngIf="lenguaje.lenguaje_activo" class="actions">
                                         <fa-icon (click)="eliminar_lenguaje(lenguaje.titulo, lenguaje.lenguaje_id, lenguaje.lenguaje_activo?false:true, lenguaje.lenguaje_activo?'Desactivar':'Activar')" data-bs-toggle="mensaje" title="Eliminar" id="iconEliminar"
                                             [icon]="iconEliminar"></fa-icon>
                                     </td>
