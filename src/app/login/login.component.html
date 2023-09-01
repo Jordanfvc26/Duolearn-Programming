@@ -37,11 +37,17 @@
                                     </div>
                                     <div class="mb-5">
                                         <label class="mb-1"><b>Contraseña</b></label>
-                                        <input type="password" class="form-control form-control-lg bg-light fs-6"
+                                        <div class="input-group">
+                                            <input type="{{ showPassword ? 'text' : 'password' }}" class="form-control form-control-lg bg-light fs-6"
                                             formControlName="clave" placeholder="Contraseña*"
                                             [ngClass]="{
                                             'is-invalid': form_login.get('clave')?.hasError('required') && form_login.get('clave')?.touched || form_login.get('clave')?.hasError('pattern'),
                                             'is-valid': form_login.get('clave')?.value?.length >= 10 && form_login.get('clave')?.hasError('pattern') == false}">
+                                            <span class="input-group-text" (click)="togglePasswordVisibility()">
+                                                <fa-icon [icon]="showPassword ? iconEyeSlash : iconEye"></fa-icon>
+                                              </span>
+                                        </div>
+                                       
                                         <div class="validators"
                                             *ngIf="form_login.get('clave')?.hasError('required') && form_login.get('clave')?.touched">
                                             <small>¡Este campo es requerido!</small>
