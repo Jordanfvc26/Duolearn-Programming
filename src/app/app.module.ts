@@ -39,6 +39,7 @@ import { AdminListLenguajesComponent } from './admin-list-lenguajes/admin-list-l
 import { AdminCrearLenguajesComponent } from './admin-crear-lenguajes/admin-crear-lenguajes.component';
 import { AdminListarModulosComponent } from './admin-listar-modulos/admin-listar-modulos.component';
 import { AdminCrearModulosComponent } from './admin-crear-modulos/admin-crear-modulos.component';
+import { AdminEditLenguajeComponent } from './admin-edit-lenguaje/admin-edit-lenguaje.component';
 
 
 @NgModule({
@@ -70,7 +71,8 @@ import { AdminCrearModulosComponent } from './admin-crear-modulos/admin-crear-mo
     AdminListLenguajesComponent,
     AdminCrearLenguajesComponent,
     AdminListarModulosComponent,
-    AdminCrearModulosComponent
+    AdminCrearModulosComponent,
+    AdminEditLenguajeComponent
   ],
   imports: [
     BrowserModule,

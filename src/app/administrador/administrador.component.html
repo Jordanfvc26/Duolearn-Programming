@@ -19,7 +19,7 @@
                         <i class='bx bx-grid-alt nav_icon'></i>
                         <span class="nav_name"><fa-icon [icon]="iconHome"></fa-icon>&nbsp;&nbsp;&nbsp;Inicio</span>
                     </a>
-                    <a (click)="cambiarIndice(1)" class="nav_link" [class.active]="indice === 1 || indice === 2 || indice === 3" style="height: 55px;">
+                    <a (click)="cambiarIndice(1)" class="nav_link" [class.active]="indice === 1 || indice === 2 || indice === 3 || indice === 12" style="height: 55px;">
                         <i class='bx bx-user nav_icon'></i>
                         <span class="nav_name"><fa-icon [icon]="iconLanguage"></fa-icon>&nbsp;&nbsp;&nbsp;Lenguajes</span>
                     </a>
@@ -60,6 +60,10 @@
                 <fa-icon [icon]="iconCrear"></fa-icon>
                 <h5>Crear lenguajes</h5>
             </button>
+            <button class="col-6 option-link" (click)="cambiarIndice(12)">
+                <fa-icon [icon]="iconEditar"></fa-icon>
+                <h5>Editar lenguaje</h5>
+            </button>
         </div>
 
         <!--Opción de Módulos-->
@@ -92,6 +96,7 @@
 
         <app-admin-list-lenguajes *ngSwitchCase="2"></app-admin-list-lenguajes>
         <app-admin-crear-lenguajes *ngSwitchCase="3"></app-admin-crear-lenguajes>
+        <app-admin-edit-lenguaje *ngSwitchCase="12"></app-admin-edit-lenguaje>
         <app-admin-listar-modulos *ngSwitchCase="5"></app-admin-listar-modulos>
         <app-admin-crear-modulos *ngSwitchCase="6"></app-admin-crear-modulos>
 
