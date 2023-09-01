@@ -64,13 +64,12 @@ export class AdminCrearModulosComponent implements OnInit {
 
   //Método que manda a guardar el módulo
   registrarModulo() {
-    let body = {
-      titulo: this.moduloForm.get('titulo').value,
-      iconos: this.moduloForm.get('icono').value,
-      descripcion: this.moduloForm.get('descripcion').value,
-    }
 
-    this.modulosService.agregar_modulo(this.moduloForm.get('lenguaje').value, body).subscribe({
+    const formData = new FormData();
+    formData.append('titulo', this.moduloForm.value.titulo);
+    formData.append('concepto', this.moduloForm.value.descripcion);
+
+    this.modulosService.agregar_modulo(this.moduloForm.get('lenguaje').value, formData).subscribe({
       next: (data) => {
         if (data.estado == "1") {
           Swal.fire(
