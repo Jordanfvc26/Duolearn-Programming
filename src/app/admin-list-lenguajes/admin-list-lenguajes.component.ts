@@ -17,16 +17,21 @@ export class AdminListLenguajesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.obtener_listado_lenguajes();
+  }
+
+  //Método que obtiene el listado de los lenguajes
+  obtener_listado_lenguajes(){
     this.lenguajeService.listar_lenguajes().subscribe(resp =>{
       this.lenguajes = resp;
     })
   }
 
   //Método que cambia de estado un lenguaje
-  eliminar_lenguaje(nombreLenguaje: string, lenguajeID: number){
+  eliminar_lenguaje(nombreLenguaje: string, lenguajeID: number, status: boolean, statusText: string){
     Swal.fire({
-      title: 'Eliminar lenguaje',
-      text: "¿Está seguro de eliminar el lenguaje \""+nombreLenguaje+"\" de DuoLearn Programming?",
+      title: statusText +' lenguaje',
+      text: "¿Está seguro de "+statusText.toLowerCase()+" el lenguaje \""+nombreLenguaje+"\" de DuoLearn Programming?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -35,20 +40,24 @@ export class AdminListLenguajesComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.lenguajeService.cambiar_estado_lenguaje(lenguajeID, false).subscribe(resp => {
-          if(resp.estado == "1"){
+        this.lenguajeService.cambiar_estado_lenguaje(lenguajeID, status).subscribe(resp => {
+          if(resp.estado == 1){
             Swal.fire(
               '¡Proceso exitoso!',
-              'El lenguaje fue eliminado con éxito',
+              'Estado del lenguaje modificado con éxito',
               'success'
             )
+            this.lenguajes = [];
+            this.obtener_listado_lenguajes();
           }
           else{
             Swal.fire(
               '¡Error!',
-              'No se pudo eliminar el lenguaje',
+              'No se pudo modificar el estado del lenguaje',
               'error'
             )
+            this.lenguajes = [];
+            this.obtener_listado_lenguajes();
           }
         })
       }
@@ -58,5 +67,4 @@ export class AdminListLenguajesComponent implements OnInit {
   iconLanguages = iconos.faGlobe;
   iconEditar = iconos.faEdit;
   iconEliminar = iconos.faTrashAlt;
-
 }

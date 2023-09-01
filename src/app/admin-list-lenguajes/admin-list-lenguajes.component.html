@@ -6,6 +6,10 @@
             </div>
             <br />
 
+<!--             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Launch demo modal
+              </button> -->
+
             <!--Tabla con la lista de tareas-->
             <div class="card" id="htmlTablePDF">
                 <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true"
@@ -30,7 +34,7 @@
                                     <td>{{lenguaje.lenguaje_activo?"Activo":"Inactivo"}}</td>
                                     <td>{{lenguaje.portada}}</td>
                                     <td class="actions">
-                                        <fa-icon (click)="eliminar_lenguaje(lenguaje.titulo, lenguaje.id)" data-bs-toggle="mensaje" title="Eliminar" id="iconEliminar"
+                                        <fa-icon (click)="eliminar_lenguaje(lenguaje.titulo, lenguaje.lenguaje_id, lenguaje.lenguaje_activo?false:true, lenguaje.lenguaje_activo?'Desactivar':'Activar')" data-bs-toggle="mensaje" title="Eliminar" id="iconEliminar"
                                             [icon]="iconEliminar"></fa-icon>
                                     </td>
                                 </tr>

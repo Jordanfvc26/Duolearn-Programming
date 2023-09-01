@@ -7,6 +7,8 @@ import * as iconos from '@fortawesome/free-solid-svg-icons';
 
 import Swal from 'sweetalert2';
 import { MatStepper } from '@angular/material/stepper';
+import { DatePipe } from '@angular/common';
+import { AdministradorComponent } from '../administrador/administrador.component';
 
 @Component({
   selector: 'app-login',
@@ -21,13 +23,17 @@ export class LoginComponent implements OnInit {
   bol: boolean = true;
   status: string = "login";
   optionTypeUser: string = "";
+  public showPassword = false;
+  public showPassword2 = false;
+
 
   fanombre = iconos.faClosedCaptioning;
 
   @ViewChild('stepper') stepper!: MatStepper;
   @ViewChild("container") public contenedor: ElementRef;
 
-  constructor(public ruta: Router,
+  constructor(
+    public ruta: Router,
     public formulario: FormBuilder,
     public formulario_registro: FormBuilder,
     public user_service: UsuariosService,
@@ -37,9 +43,26 @@ export class LoginComponent implements OnInit {
       clave: ['', Validators.required]
     });
     this.form_registro = this.formulario_registro.group({
-      nombres: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/)]],
-      apellidos: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/)]],
-      usuario: ['', [Validators.required]],
+      nombres: ['',
+        [
+          Validators.required,
+          Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/),
+          Validators.minLength(3)
+        ]
+      ],
+      apellidos: ['', 
+      [
+        Validators.required, 
+        Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/),
+        Validators.minLength(3)
+      ]
+    ],
+      usuario: ['', 
+      [
+        Validators.required,
+        Validators.minLength(3)
+      ]
+    ],
       tipo: ['', [Validators.required]],
       fecha_nacimiento: ['', [Validators.required]],
       correo: ['', [Validators.email, Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{1,}))$/)]],
@@ -100,8 +123,13 @@ export class LoginComponent implements OnInit {
             if (resp.estado == 1) {
               if (resp.tipo_usuario.trim() == "administrador") {
                 this.ruta.navigateByUrl("/administrador/questions/options");
+                AdministradorComponent.userType = "administrador";
               } else if (resp.tipo_usuario.trim() == "estudiante") {
                 this.ruta.navigateByUrl("/elegir-lenguaje");
+              }
+              else{
+                AdministradorComponent.userType = "docente";
+                this.ruta.navigateByUrl("/administrador/questions/options");
               }
             }
           });
@@ -121,7 +149,7 @@ export class LoginComponent implements OnInit {
     if (this.form_registro.valid) {
       const { confirmClave, ...dataWithoutConfirmClave } = this.form_registro.value;
       console.log(dataWithoutConfirmClave);
-      this.user_service.user_register(this.form_registro.value).subscribe(resp => {
+      this.user_service.user_register(this.getForm()).subscribe(resp => {
         let val = resp.estado;
         if (val == 1) {
           this.mensaje_bien("Usuario registrado con éxito");
@@ -135,6 +163,20 @@ export class LoginComponent implements OnInit {
     } else {
       this.mensaje_mal("Revise la información de registro");
     }
+  }
+
+  //Obtiene los datos para registrar el usuario
+  getForm(){
+    let body:any = {
+      nombres: this.form_registro.get('nombres')?.value,
+      apellidos: this.form_registro.get('apellidos')?.value,
+      usuario: this.form_registro.get('usuario')?.value,
+      tipo: this.form_registro.get('tipo')?.value,
+      fecha_nacimiento: this.form_registro.get('fecha_nacimiento')?.value,
+      correo: this.form_registro.get('correo')?.value,
+      clave: this.form_registro.get('clave')?.value,
+    }
+    return body;
   }
 
   mensaje_bien(mensaje: any) {
@@ -192,7 +234,27 @@ export class LoginComponent implements OnInit {
     this.stepper.next();
   }
 
+
+  isFechaInvalida(): boolean {
+    const fechaNacimientoControl = this.form_registro.get('fecha_nacimiento');
+    if (fechaNacimientoControl?.value) {
+      const fechaNacimiento = new Date(fechaNacimientoControl?.value);
+      const fechaActual = new Date();
+      fechaActual.setHours(0, 0, 0, 0); // Establece horas, minutos, segundos y milisegundos a cero
+      return fechaNacimiento > fechaActual;
+    }
+    return false;
+  }
+
+   //Ojo para la contraseña
+   togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+
   //Iconos a utilizar
   iconNextStep = iconos.faArrowRight;
   iconPreviousStep = iconos.faArrowLeft;
+  iconEye = iconos.faEye;
+  iconEyeSlash = iconos.faEyeSlash;
 }
