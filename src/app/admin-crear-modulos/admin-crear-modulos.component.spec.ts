@@ -1,14 +1,28 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdminCrearModulosComponent } from './admin-crear-modulos.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientModule } from '@angular/common/http';
+import { LenguajesService } from '../servicios/lenguajes.service';
 
 describe('AdminCrearModulosComponent', () => {
+
   let component: AdminCrearModulosComponent;
   let fixture: ComponentFixture<AdminCrearModulosComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AdminCrearModulosComponent ]
+      imports: [
+        ReactiveFormsModule,
+        FormsModule,
+        RouterTestingModule, 
+        HttpClientModule
+      ],
+      declarations: [ AdminCrearModulosComponent ],
+      providers: [
+        LenguajesService
+      ]
     })
     .compileComponents();
   });
@@ -20,6 +34,25 @@ describe('AdminCrearModulosComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    const app = fixture.componentInstance;
+    expect(app).toBeTruthy();
   });
+
+  it('Datos correctos', () => {
+    var form=component.moduloForm;
+    form.controls['titulo'].setValue('Hola');
+    form.controls['icono'].setValue('Hola');
+    form.controls['lenguaje'].setValue('Hola');
+    form.controls['descripcion'].setValue('Descripcion de modulos');
+    expect(form.valid).toBeTrue();
+  })
+
+  it('Datos incorrectos', () => {
+    var form=component.moduloForm;
+    form.controls['titulo'].setValue('Hola');
+    form.controls['icono'].setValue('Hola');
+    form.controls['lenguaje'].setValue('Hola');
+    form.controls['descripcion'].setValue('Hola');
+    expect(form.invalid).toBeTrue();
+  })
 });

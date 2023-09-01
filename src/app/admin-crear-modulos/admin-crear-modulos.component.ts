@@ -25,7 +25,7 @@ export class AdminCrearModulosComponent implements OnInit {
 
   ngOnInit(): void {
     this.crear_form_modulo();
-    this.lenguajeService.listar_lenguajes().subscribe(resp =>{
+    this.lenguajeService.listar_lenguajes().subscribe(resp => {
       this.arrayLenguajes = resp;
     })
   }
@@ -48,10 +48,10 @@ export class AdminCrearModulosComponent implements OnInit {
         ]
       ],
       lenguaje: ['',
-      [
-        Validators.required,
-      ]
-    ],
+        [
+          Validators.required,
+        ]
+      ],
       descripcion: ['',
         [
           Validators.minLength(8),
@@ -63,7 +63,7 @@ export class AdminCrearModulosComponent implements OnInit {
   }
 
   //Método que manda a guardar el módulo
-  registrarModulo(){
+  registrarModulo() {
     let body = {
       titulo: this.moduloForm.get('titulo').value,
       iconos: this.moduloForm.get('icono').value,
@@ -72,14 +72,14 @@ export class AdminCrearModulosComponent implements OnInit {
 
     this.modulosService.agregar_modulo(this.moduloForm.get('lenguaje').value, body).subscribe({
       next: (data) => {
-        if(data.estado == "1"){
+        if (data.estado == "1") {
           Swal.fire(
             '¡Éxito!',
             'Módulo creado correctamentes',
             'success'
           )
         }
-        else{
+        else {
           Swal.fire(
             '¡Error!',
             'No se pudo crear el módulo',

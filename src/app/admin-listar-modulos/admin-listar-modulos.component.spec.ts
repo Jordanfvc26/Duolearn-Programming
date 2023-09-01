@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdminListarModulosComponent } from './admin-listar-modulos.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientModule } from '@angular/common/http';
+import { LenguajesService } from '../servicios/lenguajes.service';
 
 describe('AdminListarModulosComponent', () => {
   let component: AdminListarModulosComponent;
@@ -8,7 +12,16 @@ describe('AdminListarModulosComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AdminListarModulosComponent ]
+      imports: [
+        ReactiveFormsModule,
+        FormsModule,
+        RouterTestingModule, 
+        HttpClientModule
+      ],
+      declarations: [ AdminListarModulosComponent ],
+      providers: [
+        LenguajesService
+      ]
     })
     .compileComponents();
   });

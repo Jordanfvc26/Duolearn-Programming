@@ -18,7 +18,7 @@ export class ListComponent implements OnInit {
   iconAdd=iconos.faPlusCircle;
   iconMyPatients=iconos.faQuestionCircle;
 
-  actividades: any[];
+  actividades: any[]=[];
   ngOnInit(): void {
     this.act_serv.get_questionsAll().subscribe(resp => {
       this.actividades = resp;

@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
   constructor(public ruta: Router,
     public formulario: FormBuilder,
     public formulario_registro: FormBuilder,
-    private user_service: UsuariosService,
+    public user_service: UsuariosService,
     public activatedRoute: ActivatedRoute) {
     this.form_login = this.formulario.group({
       usuario: ['', Validators.required],

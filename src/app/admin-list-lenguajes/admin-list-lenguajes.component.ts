@@ -13,7 +13,7 @@ export class AdminListLenguajesComponent implements OnInit {
   /*Variables*/
   lenguajes: any[] = [];
   constructor(
-    private lenguajeService: LenguajesService,
+    public lenguajeService: LenguajesService,
   ) { }
 
   ngOnInit(): void {

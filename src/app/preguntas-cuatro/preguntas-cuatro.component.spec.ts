@@ -1,25 +1,31 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PreguntasCuatroComponent } from './preguntas-cuatro.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { PreguntasService } from '../servicios/preguntas.service';
 
 describe('PreguntasCuatroComponent', () => {
-  let component: PreguntasCuatroComponent;
-  let fixture: ComponentFixture<PreguntasCuatroComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PreguntasCuatroComponent ]
+      imports: [
+        ReactiveFormsModule,
+        FormsModule,
+        RouterTestingModule, HttpClientModule
+      ],
+      declarations: [ PreguntasCuatroComponent ],
+      providers: [
+        PreguntasService
+      ]
     })
     .compileComponents();
   });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(PreguntasCuatroComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('Debe existir el componente', () => {
+    const fixture = TestBed.createComponent(PreguntasCuatroComponent);
+    const app = fixture.componentInstance;
+    expect(app).toBeTruthy();
   });
 });

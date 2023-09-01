@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PreguntasDosComponent } from './preguntas-dos.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('PreguntasDosComponent', () => {
   let component: PreguntasDosComponent;
@@ -8,6 +11,12 @@ describe('PreguntasDosComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        ReactiveFormsModule,
+        FormsModule,
+        RouterTestingModule, 
+        HttpClientModule
+      ],
       declarations: [ PreguntasDosComponent ]
     })
     .compileComponents();

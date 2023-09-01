@@ -1,14 +1,28 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdminListLenguajesComponent } from './admin-list-lenguajes.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterTestingModule } from '@angular/router/testing';
+import { LenguajesService } from '../servicios/lenguajes.service';
 
 describe('AdminListLenguajesComponent', () => {
+
   let component: AdminListLenguajesComponent;
   let fixture: ComponentFixture<AdminListLenguajesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AdminListLenguajesComponent ]
+      imports: [
+        ReactiveFormsModule,
+        FormsModule,
+        RouterTestingModule, 
+        HttpClientModule
+      ],
+      declarations: [ AdminListLenguajesComponent ],
+      providers: [
+        LenguajesService
+      ]
     })
     .compileComponents();
   });
@@ -20,6 +34,7 @@ describe('AdminListLenguajesComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    const app = fixture.componentInstance;
+    expect(app).toBeTruthy();
   });
 });
