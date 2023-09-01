@@ -26,7 +26,6 @@ import { OlvideContraseniaComponent } from './olvide-contrasenia/olvide-contrase
 import { PerfilUsuarioComponent } from './perfil-usuario/perfil-usuario.component';
 import { CoronasComponent } from './coronas/coronas.component';
 import { EstadisticasComponent } from './estadisticas/estadisticas.component';
-import { ForoDiscusionComponent } from './foro-discusion/foro-discusion.component';
 import { TeoriasComponent } from './teorias/teorias.component';
 import { AdministradorComponent } from './administrador/administrador.component';
 import { ListComponent } from './administrador/list/list.component';
@@ -60,7 +59,6 @@ import { AdminCrearModulosComponent } from './admin-crear-modulos/admin-crear-mo
     PerfilUsuarioComponent,
     CoronasComponent,
     EstadisticasComponent,
-    ForoDiscusionComponent,
     TeoriasComponent,
     AdministradorComponent,
     ListComponent,

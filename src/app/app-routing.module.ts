@@ -10,7 +10,6 @@ import { PreguntasCuatroComponent } from './preguntas-cuatro/preguntas-cuatro.co
 import { PreguntasCincoComponent } from './preguntas-cinco/preguntas-cinco.component';
 import { PreguntasComponent } from './preguntas/preguntas.component';
 import { PrincipalComponent } from './principal/principal.component';
-import { ForoDiscusionComponent } from './foro-discusion/foro-discusion.component';
 import { MapaPreguntasComponent } from './mapa-preguntas/mapa-preguntas.component';
 import { OlvideContraseniaComponent } from './olvide-contrasenia/olvide-contrasenia.component';
 import { PerfilUsuarioComponent } from './perfil-usuario/perfil-usuario.component';
@@ -39,7 +38,6 @@ const routes: Routes = [
   {path: "olvide-contrasenia/:token", component:OlvideContraseniaComponent},
   {path: "coronas", component:CoronasComponent},
   {path: "estadisticas", component:EstadisticasComponent},
-  {path: "foro-discusion", component:ForoDiscusionComponent},
   {path: "mapa-preguntas", component:MapaPreguntasComponent},
   {path: "teorias", component:TeoriasComponent},
   {path: "administrador/questions/options", component:AdministradorComponent},
