@@ -16,8 +16,8 @@ export class LenguajesService {
     return this.clientHttp.post(this.Api + "/lenguajes/nuevo", datos);
   }
 
-  listar_lenguajes(): Observable<any> {
-    return this.clientHttp.get(this.Api + "/admin/lenguajes/obtener");
+  listar_lenguajes(estado: any): Observable<any> {
+    return this.clientHttp.get(this.Api + "/admin/lenguajes/obtener?estado=" + estado);
   }
 
   obtener_lenguaje_por_id(id: any): Observable<any> {

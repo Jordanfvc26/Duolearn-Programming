@@ -35,13 +35,12 @@
                                         'Pendiente' }}
                                     </td>
                                     <td class="actions">
-                                        <fa-icon *ngIf="usuario.tipo_usuario.trim()=='docente'" (click)="aprobarComoProfesor(usuario.nombres, usuario.usuario_id)" data-bs-toggle="mensaje" title="Aprobar Docente" id="iconVerDetalles"
+                                        <fa-icon *ngIf="usuario.tipo_usuario.trim()=='docente' && !usuario.aprobado" (click)="aprobarComoProfesor(usuario.nombres, usuario.usuario_id)" data-bs-toggle="mensaje" title="Aprobar Docente" id="iconVerDetalles"
                                             [icon]="iconAprobar"></fa-icon>
-                                        <!--(click)="goToEditMyTask(task)"-->
-                                        <fa-icon data-bs-toggle="mensaje" title="Editar" id="iconEditar"
-                                            [icon]="iconEditar"></fa-icon>
-                                        <fa-icon (click)="eliminarUsuario(usuario.nombres, usuario.usuario_id)" data-bs-toggle="mensaje" title="Eliminar" id="iconEliminar"
+                                        <fa-icon *ngIf="usuario.usuario_activo" (click)="eliminarUsuario(usuario.nombres, usuario.usuario_id)" data-bs-toggle="mensaje" title="Eliminar" id="iconEliminar"
                                             [icon]="iconEliminar"></fa-icon>
+                                            <fa-icon *ngIf="!usuario.usuario_activo" (click)="reactivaUsuario(usuario.nombres, usuario.usuario_id)"  data-bs-toggle="mensaje" title="Reactivar" id="iconVerDetalles"
+                                            [icon]="iconReactivar"></fa-icon>
                                     </td>
                                 </tr>
                             </ng-container>

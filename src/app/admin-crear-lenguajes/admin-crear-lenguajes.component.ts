@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 export class AdminCrearLenguajesComponent implements OnInit {
   /*Variables*/
   languageForm: FormGroup;
+  img1;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -24,6 +25,15 @@ export class AdminCrearLenguajesComponent implements OnInit {
   
   ngOnInit(): void {
     this.crear_form_lenguaje()
+  }
+
+  
+  vista_preliminar1 = (event) => {
+    let id_img = document.getElementById('img-vista-previa1');
+    let path = URL.createObjectURL(event.target.files[0]);
+    id_img.setAttribute("src", path);
+    console.log(event.target.files);
+    this.img1 = event.target.files[0];
   }
 
   //Método que crea el formulario
@@ -54,37 +64,46 @@ export class AdminCrearLenguajesComponent implements OnInit {
   //Método que registra el lenguaje
   registrarLenguaje() {
     const formData = new FormData();
-    formData.append('titulo', this.languageForm.value.titulo);
-    formData.append('descripcion', this.languageForm.value.descripcion);
-
-    const imagen: File = this.languageForm.get('portada').value;
-    if (imagen) {
-      formData.append("images", imagen);
+    this.languageForm.markAllAsTouched();
+    if (this.languageForm.valid) {
+      formData.append('titulo', this.languageForm.value.titulo);
+      formData.append('descripcion', this.languageForm.value.descripcion);
+      formData.append('images', this.img1);
       this.lenguajeService.nuevo_lenguaje(formData)
-        .subscribe({
-          next: (data) => {
-            Swal.fire(
-              '¡Proceso exitoso!',
-              'El lenguaje fue agregado con éxito',
-              'success'
-            )
-            this.ruta.navigateByUrl("administrador/questions/options")
-          },
-          error: (error) => {
-            Swal.fire(
-              '¡Error!',
-              'No se ha podido cargar el video',
-              'success'
-            )
-          }
-        });
-    } else {
-      Swal.fire(
-        '¡Error!',
-        'Tipo de archivo no permitido',
-        'error'
-      )
+          .subscribe({
+            next: (data) => {
+              console.log(data);
+              if(data.estado==1){
+                Swal.fire(
+                  '¡Proceso exitoso!',
+                  'El lenguaje '+this.languageForm.value.titulo+' fue agregado con éxito',
+                  'success'
+                )
+                this.ruta.navigate(['/administrador/lenguaje/list']);
+              }else if(data.estado==2){
+                Swal.fire(
+                  '¡Error!',
+                  'El lenguaje '+this.languageForm.value.titulo+' ya ha sido registrado',
+                  'error'
+                )
+              }else{
+                Swal.fire(
+                  '¡Error!',
+                  'No se ha podido agregar el lenguaje '+this.languageForm.value.titulo,
+                  'error'
+                )
+              }
+            },
+            error: (error) => {
+              Swal.fire(
+                '¡Error!',
+                'No se ha podido agregar el lenguaje',
+                'success'
+              )
+            }
+          });
     }
+
   }
 
   //Iconos

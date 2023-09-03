@@ -45,7 +45,7 @@ export class CreateComponent implements AfterViewInit {
   lenguajes = [];
 
   ngAfterViewInit(): void {
-    this.lenguajeService.listar_lenguajes().subscribe(resp => {
+    this.lenguajeService.listar_lenguajes(true).subscribe(resp => {
       this.lenguajes = resp;
       console.log(this.lenguajes);
     })

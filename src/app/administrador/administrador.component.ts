@@ -10,7 +10,7 @@ import { TemasService } from '../servicios/temas.service';
   templateUrl: './administrador.component.html',
   styleUrls: ['./administrador.component.css']
 })
-export class AdministradorComponent implements AfterViewInit {
+export class AdministradorComponent implements OnInit {
 
   //cuestionario
   @ViewChild("escoge1") public select1: ElementRef;
@@ -32,6 +32,7 @@ export class AdministradorComponent implements AfterViewInit {
   Temas: any;
   faPlus = iconos.faPlusCircle;
   faCerrarSesion = iconos.faSignOutAlt;
+  iconArrowDown=iconos.faArrowDown;
   img1;
   img2;
   img3;
@@ -45,6 +46,17 @@ export class AdministradorComponent implements AfterViewInit {
   /*ngOnInit*/
   ngOnInit(): void {
     this.userTypeRecived = sessionStorage.getItem('userType');
+    const currentUrl = this.ruta.url;
+    if (currentUrl.includes('users')) {
+      this.indice = 4;
+    } else if (currentUrl.includes('modulos')) {
+      this.indice = 2;
+    } else if (currentUrl.includes('questions')) {
+      this.indice = 3;
+    } else if (currentUrl.includes('lenguajes')) {
+      this.indice = 1;
+    }
+
   }
 
   toggleNavbar() {
@@ -64,19 +76,6 @@ export class AdministradorComponent implements AfterViewInit {
       this.activeLink = linkName;
     }
   }
-
-  ngAfterViewInit(): void {
-    this.tema_serv.listar_temas().subscribe(resp => {
-      this.Temas = resp;
-      for (let index = 0; index < this.Temas.length; index++) {
-        if (this.Temas[index]["lenguaje"] == "csh") {
-          this.Temas[index]["lenguaje"] = "C#";
-        }
-      }
-    });
-  }
-
-
 
   vista_preliminar1 = (event) => {
     let id_img = document.getElementById('img-vista-previa1');
@@ -288,8 +287,25 @@ export class AdministradorComponent implements AfterViewInit {
   /*Método que cambia el índice para ver la opción del menú*/
   cambiarIndice(indice: number) {
     this.indice = indice;
-    if (indice == 999) {
-      this.close_session();
+    switch (indice) {
+      case 0:
+        this.ruta.navigate(['administrador']);
+        break;
+      case 1:
+        this.ruta.navigate(['administrador/lenguaje/list']);
+        break;
+      case 2:
+        this.ruta.navigate(['administrador/modulos/list']);
+        break;
+      case 3:
+        this.ruta.navigate(['administrador/questions/list']);
+        break;
+      case 4:
+        this.ruta.navigate(['administrador/users/list']);
+        break;
+      default:
+        this.close_session();
+        break;
     }
   }
 

@@ -1,54 +1,73 @@
 <body>
     <div class="row justify-content-center">
-        <div class="col-12 container-info">
-            <div class="div mt-3 mx-1">
-                <h4 id="titulo"><fa-icon [icon]="iconLanguages" class="icon-title"></fa-icon> Lenguajes registrados</h4>
-            </div>
-            <br />
-
-<!--             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Launch demo modal
-              </button> -->
-
-            <!--Tabla con la lista de tareas-->
-            <div class="card" id="htmlTablePDF">
-                <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true"
-                    style="position: relative;">
-                    <table class="table table-striped mb-0" id="htmlExcelTable">
-                        <thead>
-                            <tr>
-                                <th scope="col">N°</th>
-                                <th scope="col">Título</th>
-                                <th scope="col">Descripción</th>
-                                <th scope="col">Estado</th>
-                                <th scope="col">URL Portada</th>
-                                <th scope="col">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <ng-container *ngIf="lenguajes.length > 0; else noResults">
-                                <tr *ngFor="let lenguaje of lenguajes; let i = index">
-                                    <th *ngIf="lenguaje.lenguaje_activo" scope="row">{{i+1}}</th>
-                                    <td *ngIf="lenguaje.lenguaje_activo"> {{lenguaje.titulo.replaceAll('-', ' ').toUpperCase()}}</td>
-                                    <td *ngIf="lenguaje.lenguaje_activo">{{lenguaje.descripcion}}</td>
-                                    <td *ngIf="lenguaje.lenguaje_activo">{{lenguaje.lenguaje_activo?"Activo":"Inactivo"}}</td>
-                                    <td *ngIf="lenguaje.lenguaje_activo">{{lenguaje.portada}}</td>
-                                    <td *ngIf="lenguaje.lenguaje_activo" class="actions">
-                                        <fa-icon (click)="eliminar_lenguaje(lenguaje.titulo, lenguaje.lenguaje_id, lenguaje.lenguaje_activo?false:true, lenguaje.lenguaje_activo?'Desactivar':'Activar')" data-bs-toggle="mensaje" title="Eliminar" id="iconEliminar"
-                                            [icon]="iconEliminar"></fa-icon>
-                                    </td>
-                                </tr>
-                            </ng-container>
-                            <!--Para cuando no cargue la data-->
-                            <ng-template #noResults>
-                                <tr>
-                                    <td colspan="7" class="no-results">Sin resultados...</td>
-                                </tr>
-                            </ng-template>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+      <div class="col-12 container-info">
+        <div class="div mt-3 mx-1">
+          <h2 id="titulo"><fa-icon [icon]="iconLanguage" class="icon-title"></fa-icon> Lenguajes</h2>
+          <button [routerLink]="'/administrador/lenguaje/create'" type="button" class="btn btn-primary btn-sm">
+            <fa-icon [icon]="iconAdd"></fa-icon> Nuevo lenguaje</button>
         </div>
+        <br />
+        <!--Inputs para buscar e importar-->
+        <div class="row">
+          <!--Buscar paciente por nombre-->
+          <div class="col-12 col-md-4 col-lg-4 mb-3">
+            <form>
+              <select class="form-select" aria-label="Default select example" style="margin-bottom: 12px;"
+                  (change)="onFilterChange($event)">
+                  <option value="true" selected>Activos</option>
+                  <option value="false">Inactivos</option>
+              </select>
+          </form>
+          </div>
+         
+        </div>
+  
+        <!--Tabla con la lista de tareas-->
+        <div class="card">
+          <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative;">
+            <table class="table table-striped mb-0">
+              <thead>
+                <tr>
+                    <th scope="col">N°</th>
+                    <th scope="col">Título</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">URL Portada</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngIf="lenguajes.length > 0; else noResults">
+                  <tr
+                  *ngFor="let lenguaje of lenguajes | slice:initialPage:finalPage; let i = index">
+                  <th  scope="row">{{i+1}}</th>
+                  <td > {{lenguaje.titulo.toUpperCase()}}</td>
+                  <td >{{lenguaje.descripcion}}</td>
+                  <td >{{lenguaje.lenguaje_activo?"Activo":"Inactivo"}}</td>
+                  <td >{{lenguaje.portada}}</td>
+                  <td  class="actions">
+                      <fa-icon *ngIf="lenguaje.lenguaje_activo" (click)="eliminar_lenguaje(lenguaje.titulo, lenguaje.lenguaje_id, false, 'Desactivar')" data-bs-toggle="mensaje" title="Eliminar" id="iconEliminar"
+                          [icon]="iconOn"></fa-icon>
+                        <fa-icon *ngIf="!lenguaje.lenguaje_activo" (click)="eliminar_lenguaje(lenguaje.titulo, lenguaje.lenguaje_id, true, 'Activar')" data-bs-toggle="mensaje" title="Eliminar" id="iconEliminar"
+                          [icon]="iconOff"></fa-icon>
+                  </td>
+                    
+                  </tr>
+                </ng-container>
+                <!--Para cuando no cargue la data-->
+                <ng-template #noResults>
+                  <tr>
+                    <td colspan="7" class="no-results">Sin resultados...</td>
+                  </tr>
+                </ng-template>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!--Paginación-->
+        <mat-paginator id="paginacion" [pageSizeOptions]="[5, 10, 25]" [pageSize]="itemsForPage"
+          [length]="lenguajes.length" (page)="changePage($event)">
+        </mat-paginator>
+      </div>
     </div>
-</body>
+  </body>

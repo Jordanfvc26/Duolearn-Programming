@@ -86,7 +86,7 @@ export class DashboardComponent implements AfterViewInit {
     AOS.init();
     const observable = this.user_serv.get_user({ usuario: sessionStorage.getItem("user") });
     const observable1 = this.lenguajeService.obtener_lenguaje_por_id(sessionStorage.getItem("lenguaje"));
-    const observable2 = this.lenguajeService.listar_lenguajes();
+    const observable2 = this.lenguajeService.listar_lenguajes(true);
     const observable3 = this.user_serv.get_user({ usuario: sessionStorage.getItem("user") });
     const observable4 = this.temas_serv.obtener_temas_por_lenguaje(sessionStorage.getItem("lenguaje"));
     forkJoin([observable, observable1, observable2, observable3, observable4]).subscribe(

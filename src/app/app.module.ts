@@ -14,6 +14,7 @@ import { InstruccionesComponent } from './instrucciones/instrucciones.component'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule,ReactiveFormsModule }   from '@angular/forms';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { PreguntasDosComponent } from './preguntas-dos/preguntas-dos.component';
 import { PreguntasTresComponent } from './preguntas-tres/preguntas-tres.component';
@@ -83,7 +84,8 @@ import { AdminEditLenguajeComponent } from './admin-edit-lenguaje/admin-edit-len
     ReactiveFormsModule,
     FontAwesomeModule,
     MatStepperModule,
-    BrowserAnimationsModule, 
+    BrowserAnimationsModule,
+    MatPaginatorModule
     ],
   providers: [
     InstruccionesComponent

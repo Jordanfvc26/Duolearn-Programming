@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as iconos from '@fortawesome/free-solid-svg-icons';
 import { LenguajesService } from '../servicios/lenguajes.service';
 import Swal from 'sweetalert2';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-admin-list-lenguajes',
@@ -12,17 +13,22 @@ export class AdminListLenguajesComponent implements OnInit {
 
   /*Variables*/
   lenguajes: any[] = [];
+  itemsForPage: number = 10;
+  initialPage: number = 0;
+  finalPage: number = 10;
+  iconLanguage = iconos.faGlobe;
+
   constructor(
     public lenguajeService: LenguajesService,
   ) { }
 
   ngOnInit(): void {
-    this.obtener_listado_lenguajes();
+    this.obtener_listado_lenguajes(true);
   }
 
   //Método que obtiene el listado de los lenguajes
-  obtener_listado_lenguajes(){
-    this.lenguajeService.listar_lenguajes().subscribe(resp =>{
+  obtener_listado_lenguajes(estado: boolean){
+    this.lenguajeService.listar_lenguajes(estado).subscribe(resp =>{
       this.lenguajes = resp;
     })
   }
@@ -48,7 +54,7 @@ export class AdminListLenguajesComponent implements OnInit {
               'success'
             )
             this.lenguajes = [];
-            this.obtener_listado_lenguajes();
+            this.obtener_listado_lenguajes(true);
           }
           else{
             Swal.fire(
@@ -57,14 +63,34 @@ export class AdminListLenguajesComponent implements OnInit {
               'error'
             )
             this.lenguajes = [];
-            this.obtener_listado_lenguajes();
+            this.obtener_listado_lenguajes(true);
           }
         })
       }
     })
   }
 
+  onFilterChange(event: any) {
+    const value = event.target.value;
+    if (value === "true")
+      this.obtener_listado_lenguajes(true);
+    else if (value === "false")
+      this.obtener_listado_lenguajes(false);
+  }
+
+  changePage(e: PageEvent) {
+    this.itemsForPage = e.pageSize;
+    this.initialPage = e.pageIndex * this.itemsForPage;
+    this.finalPage = this.initialPage + this.itemsForPage;
+    if (this.finalPage > this.lenguajes.length) {
+      this.finalPage = this.lenguajes.length;
+    }
+  }
+
   iconLanguages = iconos.faGlobe;
   iconEditar = iconos.faEdit;
   iconEliminar = iconos.faTrashAlt;
+  iconAdd = iconos.faPlusCircle;
+  iconOn = iconos.faToggleOn;
+  iconOff = iconos.faToggleOff;
 }

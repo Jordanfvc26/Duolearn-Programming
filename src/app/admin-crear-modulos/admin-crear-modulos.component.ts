@@ -25,7 +25,7 @@ export class AdminCrearModulosComponent implements OnInit {
 
   ngOnInit(): void {
     this.crear_form_modulo();
-    this.lenguajeService.listar_lenguajes().subscribe(resp => {
+    this.lenguajeService.listar_lenguajes(true).subscribe(resp => {
       this.arrayLenguajes = resp;
     })
   }

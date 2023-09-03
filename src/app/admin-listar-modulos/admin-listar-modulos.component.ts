@@ -21,7 +21,7 @@ export class AdminListarModulosComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.lenguajeService.listar_lenguajes().subscribe(resp =>{
+    this.lenguajeService.listar_lenguajes(true).subscribe(resp =>{
       this.lenguajes = resp;
       console.log(this.lenguajes)
     })

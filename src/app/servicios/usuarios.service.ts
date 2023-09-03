@@ -39,7 +39,7 @@ export class UsuariosService {
   }
 
   get_user(usuario: any): Observable<any> {
-    return this.clientHttp.get(this.Api + "/usuario/datos/" + usuario.usuario);
+    return this.clientHttp.get(this.Api + "/usuario/datos/" + usuario);
   }
 
   update_info(datos_nuevos: any): Observable<any> {
@@ -58,7 +58,7 @@ export class UsuariosService {
     return this.clientHttp.patch(this.Api + "/profesor/aprobacion/"+idUser, null);
   }
 
-  eliminar_usuario(idUser: number):Observable<any>{
-    return this.clientHttp.delete(this.Api + "/usuario/eliminar/"+idUser);
+  eliminar_usuario(idUser: number, estado:boolean):Observable<any>{
+    return this.clientHttp.patch(this.Api + "/usuario/cambiar-estado/"+idUser+"/"+estado, null);
   }
 }

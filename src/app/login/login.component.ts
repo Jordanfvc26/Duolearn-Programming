@@ -101,15 +101,17 @@ export class LoginComponent implements OnInit {
       this.bol = !this.bol;
     }, 1250);
 
-    this.user_service.get_user({ usuario: sessionStorage.getItem("user") }).subscribe(resp => {
-      if (resp.estado == 1) {
-        if (resp.tipo.trim() == "administrador") {
-          this.ruta.navigateByUrl("/administrador/questions/options");
-        } else {
-          this.ruta.navigateByUrl("/dashboard");
+    if(sessionStorage.getItem("user")){
+      this.user_service.get_user(sessionStorage.getItem("user")).subscribe(resp => {
+        if (resp.estado == 1) {
+          if (resp.tipo.trim() == "administrador") {
+            this.ruta.navigateByUrl("/administrador");
+          } else {
+            this.ruta.navigateByUrl("/dashboard");
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   login() {
@@ -119,10 +121,10 @@ export class LoginComponent implements OnInit {
         if (resp.estado == 1) {
           this.mensaje_bien(resp.mensaje);
           sessionStorage.setItem('user', resp.data);
-          this.user_service.get_user({ usuario: sessionStorage.getItem("user") }).subscribe(resp => {
+          this.user_service.get_user(sessionStorage.getItem("user")).subscribe(resp => {
             if (resp.estado == 1) {
               if (resp.tipo_usuario.trim() == "administrador") {
-                this.ruta.navigateByUrl("/administrador/questions/options");
+                this.ruta.navigateByUrl("/administrador");
                 AdministradorComponent.userType = "administrador";
                 sessionStorage.setItem('userType', "administrador")
               } else if (resp.tipo_usuario.trim() == "estudiante") {
@@ -130,7 +132,7 @@ export class LoginComponent implements OnInit {
               }
               else{
                 AdministradorComponent.userType = "docente";
-                this.ruta.navigateByUrl("/administrador/questions/options");
+                this.ruta.navigateByUrl("/administrador");
               }
             }
           });

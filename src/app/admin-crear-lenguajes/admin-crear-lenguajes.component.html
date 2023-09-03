@@ -23,14 +23,16 @@
                             <small>¡Solo se permiten letras!</small>
                         </div>
                     </div>
-                     <!--Portada-->
-                     <div class="col-12 col-md-6 mb-3">
+                    <!--Portada-->
+
+                    <div class="col-12 col-md-6 mb-3">
                         <label class="mb-1"><b>Portada</b></label>
+
                         <input type="file" accept="image/*" class="form-control form-control-lg bg-light fs-6"
-                            formControlName="portada" [ngClass]="{
+                            (change)="vista_preliminar1($event)" formControlName="portada" [ngClass]="{
                                 'is-invalid': languageForm.get('portada')?.hasError('required') && languageForm.get('portada')?.touched || languageForm.get('portada')?.hasError('pattern'),
                                 'is-valid': languageForm.get('portada')?.value?.length >= 4 && languageForm.get('portada')?.hasError('pattern') == false
-                              }"/>
+                              }" />
                         <div class="validators"
                             *ngIf="languageForm.get('portada')?.hasError('required') && languageForm.get('portada')?.touched">
                             <small>¡Este campo es requerido!</small>
@@ -38,9 +40,14 @@
                         <div class="validators" *ngIf="languageForm.get('portada')?.hasError('pattern')">
                             <small>¡Solo se permiten letras!</small>
                         </div>
+
                     </div>
                 </div>
-
+                <div class="row">
+                    <div class="col-12" style="display: flex; justify-content: center;align-items: center;">
+                        <img class="img-fluid" width="20%" height="20%" alt="" id="img-vista-previa1" />
+                    </div>
+                </div>
 
                 <!--Descripción-->
                 <div class="row">
@@ -60,6 +67,8 @@
                 </div>
 
                 <div class="action-buttons mb-3">
+                    <button routerLink="/administrador/lenguaje/list" mat-button type="button"
+                    class="btn btn-danger btn-md">Volver</button>
                     <button (click)="registrarLenguaje()" [disabled]="!languageForm.valid" mat-button type="button"
                         class="btn btn-primary btn-md">Guardar</button>
                 </div>

@@ -44,7 +44,7 @@ export class EditComponent implements AfterViewInit {
       this.act_serv.get_questionId(this.activityId).subscribe(resp => {
         this.activityInfo = resp;
         this.tema_select = this.activityInfo.tema;
-        switch (this.activityInfo.tipo.trim()) {
+        switch (this.activityInfo.tipo_actividad.trim()) {
           case "cuestionario":
             this.seleccionado = 2;
             break;
@@ -62,8 +62,6 @@ export class EditComponent implements AfterViewInit {
     });
 
   }
-
-
 
   vista_preliminar1 = (event) => {
     let id_img = document.getElementById('img-vista-previa1');

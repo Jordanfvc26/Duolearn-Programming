@@ -1,15 +1,31 @@
-<body>
+  <body>
     <div class="row justify-content-center">
       <div class="col-12 container-info">
         <div class="div mt-3 mx-1">
-          <h4 id="titulo"><fa-icon [icon]="iconPreguntas" class="icon-title"></fa-icon> Preguntas</h4>
+          <h2 id="titulo"><fa-icon [icon]="iconAdd" class="icon-title"></fa-icon> Actividades</h2>
+          <button [routerLink]="'/administrador/questions/create'" type="button" class="btn btn-primary btn-sm">
+            <fa-icon [icon]="iconAdd"></fa-icon> Nueva actividad</button>
         </div>
         <br />
+        <!--Inputs para buscar e importar-->
+        <div class="row">
+          <!--Buscar paciente por nombre-->
+          <div class="col-12 col-md-4 col-lg-4 mb-3">
+            <form>
+              <select class="form-select" aria-label="Default select example" style="margin-bottom: 12px;"
+                  (change)="onFilterChange($event)">
+                  <option value="true" selected>Activos</option>
+                  <option value="false">Inactivos</option>
+              </select>
+          </form>
+          </div>
+         
+        </div>
   
         <!--Tabla con la lista de tareas-->
-        <div class="card" id="htmlTablePDF">
+        <div class="card">
           <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative;">
-            <table class="table table-striped mb-0" id="htmlExcelTable">
+            <table class="table table-striped mb-0">
               <thead>
                 <tr>
                   <th scope="col">N°</th>
@@ -22,7 +38,7 @@
               <tbody>
                 <ng-container *ngIf="actividades.length > 0; else noResults">
                   <tr
-                    *ngFor="let actividad of actividades; let i=index;">
+                  *ngFor="let actividad of actividades | slice:initialPage:finalPage; let i = index">
                     <th scope="row">{{i+1}}</th>
                     <td>{{actividad.tipo_actividad.replaceAll('-', ' ').toUpperCase()}}</td>
                     <td>{{actividad.nombre_lenguaje}}</td>
@@ -31,7 +47,7 @@
                       <!--(click)="openModalViewTaskDetail(viewTaskDetail, task.id)"-->
                       
                         <!--(click)="goToEditMyTask(task)"-->
-                      <fa-icon data-bs-toggle="mensaje" title="Editar" id="iconEditar"
+                      <fa-icon (click)="editarPregunta(actividad.actividad_id)" data-bs-toggle="mensaje" title="Editar" id="iconEditar"
                         [icon]="iconEdit"></fa-icon>
                         <!--(click)="deleteTask(task.id, task.title)" -->
                       <fa-icon data-bs-toggle="mensaje" title="Eliminar"
@@ -52,9 +68,9 @@
           </div>
         </div>
         <!--Paginación-->
-       <!--  <mat-paginator id="paginacion" [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="itemsForPage"
-          [length]="arrayTasks.length" (page)="changePage($event)">
-        </mat-paginator> -->
+        <mat-paginator id="paginacion" [pageSizeOptions]="[5, 10, 25]" [pageSize]="itemsForPage"
+          [length]="actividades.length" (page)="changePage($event)">
+        </mat-paginator>
       </div>
     </div>
   </body>

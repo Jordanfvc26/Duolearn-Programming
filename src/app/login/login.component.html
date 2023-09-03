@@ -26,6 +26,7 @@
                                     <div class="mb-3 mt-4">
                                         <label class="mb-1"><b>Usuario</b></label>
                                         <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                        (keydown.enter)="login()"
                                             formControlName="usuario" placeholder="Usuario*"
                                             [ngClass]="{
                                         'is-invalid': form_login.get('usuario')?.hasError('required') && form_login.get('usuario')?.touched || form_login.get('usuario')?.hasError('pattern'),
@@ -40,6 +41,7 @@
                                         <div class="input-group">
                                             <input type="{{ showPassword ? 'text' : 'password' }}" class="form-control form-control-lg bg-light fs-6"
                                             formControlName="clave" placeholder="Contraseña*"
+                                            (keydown.enter)="login()"
                                             [ngClass]="{
                                             'is-invalid': form_login.get('clave')?.hasError('required') && form_login.get('clave')?.touched || form_login.get('clave')?.hasError('pattern'),
                                             'is-valid': form_login.get('clave')?.value?.length >= 10 && form_login.get('clave')?.hasError('pattern') == false}">

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as iconos from '@fortawesome/free-solid-svg-icons';
 import { UsuariosService } from '../servicios/usuarios.service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-usuarios',
@@ -14,20 +15,24 @@ export class UsuariosComponent implements OnInit {
 
   constructor(
     private usuarios_serv: UsuariosService,
+    public ruta:Router
   ) { }
 
   ngOnInit(): void {
+    this.cargaUsuarios();
+  }
+
+  cargaUsuarios() {
     this.usuarios_serv.listar_usuarios().subscribe(resp => {
       this.usuarios = resp;
-      console.log(this.usuarios);
     });
   }
 
   //Método que aprueba el usuario, como profesor
-  aprobarComoProfesor(nombreUsuario: string, usuarioID: number){
+  aprobarComoProfesor(nombreUsuario: string, usuarioID: number) {
     Swal.fire({
       title: 'Aceptar como profesor',
-      text: "¿Está seguro de aceptar al usuario \""+nombreUsuario+"\" como PROFESOR en DuoLearn Programming?",
+      text: "¿Está seguro de aceptar al usuario \"" + nombreUsuario + "\" como PROFESOR en DuoLearn Programming?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -37,30 +42,31 @@ export class UsuariosComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.usuarios_serv.aprobar_profesor(usuarioID).subscribe(resp => {
-          if(resp.estado == "1"){
+          if (resp.estado == "1") {
             Swal.fire(
               '¡Aprobación!',
               'El usuario fue aprobado con éxito',
               'success'
             )
           }
-          else{
+          else {
             Swal.fire(
               '¡Error!',
               'No se pudo aprobar el usuario',
               'error'
             )
           }
+          this.cargaUsuarios();
         })
       }
     })
   }
 
   //Método que elimina un usuario
-  eliminarUsuario(nombreUsuario: string, usuarioID: number){
+  eliminarUsuario(nombreUsuario: string, usuarioID: number) {
     Swal.fire({
       title: 'Eliminar usuario',
-      text: "¿Está seguro de eliminar al usuario \""+nombreUsuario+"\" de DuoLearn Programming?",
+      text: "¿Está seguro de eliminar al usuario \"" + nombreUsuario + "\" de DuoLearn Programming?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -69,21 +75,55 @@ export class UsuariosComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.usuarios_serv.eliminar_usuario(usuarioID).subscribe(resp => {
-          if(resp.estado == "1"){
+        this.usuarios_serv.eliminar_usuario(usuarioID, false).subscribe(resp => {
+          if (resp.estado == "1") {
             Swal.fire(
               '¡Proceso exitoso!',
               'El usuario fue eliminado con éxito',
               'success'
             )
           }
-          else{
+          else {
             Swal.fire(
               '¡Error!',
               'No se pudo eliminar el usuario',
               'error'
             )
           }
+          this.cargaUsuarios();
+        })
+      }
+    })
+  }
+
+  reactivaUsuario(nombreUsuario: string, usuarioID: number) {
+    Swal.fire({
+      title: 'Reactivar usuario',
+      text: "¿Está seguro de reactivar al usuario \"" + nombreUsuario + "\" de DuoLearn Programming?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.usuarios_serv.eliminar_usuario(usuarioID, true).subscribe(resp => {
+          if (resp.estado == "1") {
+            Swal.fire(
+              '¡Proceso exitoso!',
+              'El usuario fue eliminado con éxito',
+              'success'
+            )
+          }
+          else {
+            Swal.fire(
+              '¡Error!',
+              'No se pudo eliminar el usuario',
+              'error'
+            )
+          }
+          this.cargaUsuarios();
         })
       }
     })
@@ -93,4 +133,5 @@ export class UsuariosComponent implements OnInit {
   iconAprobar = iconos.faKey;
   iconEditar = iconos.faEdit;
   iconEliminar = iconos.faTrashAlt;
+  iconReactivar = iconos.faUndo;
 }

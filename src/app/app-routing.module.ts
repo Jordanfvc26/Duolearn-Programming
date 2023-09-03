@@ -21,6 +21,11 @@ import { CreateComponent } from './administrador/create/create.component';
 import { EditComponent } from './administrador/edit/edit.component';
 import { AdministradorComponent } from './administrador/administrador.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
+import { AdminCrearLenguajesComponent } from './admin-crear-lenguajes/admin-crear-lenguajes.component';
+import { AdminListLenguajesComponent } from './admin-list-lenguajes/admin-list-lenguajes.component';
+import { AdminEditLenguajeComponent } from './admin-edit-lenguaje/admin-edit-lenguaje.component';
+import { AdminListarModulosComponent } from './admin-listar-modulos/admin-listar-modulos.component';
+import { AdminCrearModulosComponent } from './admin-crear-modulos/admin-crear-modulos.component';
 
 const routes: Routes = [
   {path:"",pathMatch:"full",redirectTo:"principal"},
@@ -40,14 +45,25 @@ const routes: Routes = [
   {path: "estadisticas", component:EstadisticasComponent},
   {path: "mapa-preguntas", component:MapaPreguntasComponent},
   {path: "teorias", component:TeoriasComponent},
-  {path: "administrador/questions/options", component:AdministradorComponent},
-  {path: "administrador/questions/list", component:ListComponent},
-  {path: "administrador/questions/create", component:CreateComponent},
-  {path: "administrador/questions/edit/:id", component:EditComponent},
-  {path:"administrador",pathMatch:"full",redirectTo:"administrador/questions/options"},
-  {path: "administrador/users/list", component:UsuariosComponent},
-  {path:"administrador/questions",pathMatch:"full",redirectTo:"administrador/questions/options"}
-
+  {path: "administrador", component:AdministradorComponent, children: [
+    {path:"lenguaje", children: [
+      {path:"list", component:AdminListLenguajesComponent},
+      {path:"edit/:id", component: AdminEditLenguajeComponent},
+      {path:"create", component: AdminCrearLenguajesComponent},
+    ]},
+    {path:"modulos", children: [
+      {path:"list", component:AdminListarModulosComponent},
+      {path:"create", component: AdminCrearModulosComponent},
+    ]},
+    {path:"questions", children: [
+      {path:"list", component:ListComponent},
+      {path:"edit/:id", component: EditComponent},
+      {path:"create", component: CreateComponent},
+    ]},
+    {path:"users", children: [
+      {path:"list", component:UsuariosComponent},
+    ]},
+  ]},
 ];
 
 @NgModule({

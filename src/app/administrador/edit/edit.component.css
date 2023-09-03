@@ -177,6 +177,8 @@
 /*--------------------------------Boton guardar cambios del final------------------------------*/
 .botones{
     text-align: center;
+    display: flex;
+    justify-content: center;
 }
 
 .botones button{
@@ -185,6 +187,7 @@
     padding: 7px 15px;
     outline: none;
     border: 0;
+    margin-right: 15px;
     font-size: 17px;
     width: 245px;
     color: white;

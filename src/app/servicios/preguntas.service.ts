@@ -20,8 +20,8 @@ export class PreguntasService {
     return this.clientHttp.get(this.Api + "/actividades/obtener/"+usuario+"/"+modulo+"/"+tipo);
   }
 
-  get_questionsAll(): Observable<any> {
-    return this.clientHttp.get(this.Api + "/actividades/obtener/all");
+  get_questionsAll(estado:boolean): Observable<any> {
+    return this.clientHttp.get(this.Api + "/actividades/obtener/all?estado="+estado);
   }
 
   get_questionId(id: any): Observable<any> {

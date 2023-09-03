@@ -17,7 +17,7 @@ export class ElegirLenguajeComponent implements OnInit {
 
   ngOnInit(): void {
     AOS.init();
-    this.lenguajeService.listar_lenguajes().subscribe(resp=>{
+    this.lenguajeService.listar_lenguajes(true).subscribe(resp=>{
       this.lenguajes=resp;
     });
   }
