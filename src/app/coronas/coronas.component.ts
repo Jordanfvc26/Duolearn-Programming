@@ -32,7 +32,7 @@ export class CoronasComponent implements OnInit {
     this.lenguajeService.obtener_lenguaje_por_id(sessionStorage.getItem("lenguaje")).subscribe(resp => {
       this.lenguajeSeleccionado = resp.titulo;
     })
-    this.temas_serv.obtener_temas_por_lenguaje(sessionStorage.getItem("lenguaje")).subscribe(resp => {
+    this.temas_serv.obtener_temas_por_lenguaje(sessionStorage.getItem("lenguaje"), true).subscribe(resp => {
       this.coronas_totales = resp.length??0;
       this.modulos = resp;
       this.coronas();

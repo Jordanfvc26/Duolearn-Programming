@@ -50,8 +50,14 @@
                       <fa-icon (click)="editarPregunta(actividad.actividad_id)" data-bs-toggle="mensaje" title="Editar" id="iconEditar"
                         [icon]="iconEdit"></fa-icon>
                         <!--(click)="deleteTask(task.id, task.title)" -->
-                      <fa-icon data-bs-toggle="mensaje" title="Eliminar"
-                        id="iconEliminar" [icon]="iconDelete"></fa-icon>
+                        <fa-icon *ngIf="actividad.actividad_activa"
+                        (click)="cambiar_estado_actividad(actividad.actividad_id, false)"
+                            data-bs-toggle="mensaje" title="Desactivar" id="iconEliminar"
+                            [icon]="iconOn"></fa-icon>
+                        <fa-icon *ngIf="!actividad.actividad_activa"
+                        (click)="cambiar_estado_actividad(actividad.actividad_id, true)"
+                            data-bs-toggle="mensaje" title="Activar" id="iconEliminar"
+                            [icon]="iconOff"></fa-icon>
 
                     </td>
                     

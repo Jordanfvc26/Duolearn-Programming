@@ -2,17 +2,17 @@
     <div class="row justify-content-center">
         <div class="col-12 container-info">
             <div class="col-12 mt-3 mx-1">
-                <h4 id="titulo"><fa-icon [icon]="iconModulo" class="icon-title"></fa-icon> Crear nuevo módulo para
-                    lenguaje</h4>
+                <h4 id="titulo"><fa-icon [icon]="iconModulo" class="icon-title"></fa-icon> Editar módulo</h4>
             </div>
 
             <form [formGroup]="moduloForm">
-                <div class="row mt-4 mb-md-3">
+                <div class="row mt-4">
                     <!--Titulo-->
-                    <div class="col-12 col-md-12 mb-1">
+                    <div class="col-12 col-md-12 mb-3">
                         <label class="mb-1"><b>Título</b></label>
                         <input type="text" placeholder="Nombres*" class="form-control form-control-lg bg-light fs-6"
-                            formControlName="titulo" [ngClass]="{
+                        [ngModel]="infoModulo?.titulo_modulo"    
+                        formControlName="titulo" [ngClass]="{
                                 'is-invalid': moduloForm.get('titulo')?.hasError('required') && moduloForm.get('titulo')?.touched || moduloForm.get('titulo')?.hasError('pattern'),
                                 'is-valid': moduloForm.get('titulo')?.value?.length >= 4 && moduloForm.get('titulo')?.hasError('pattern') == false
                               }" [maxlength]="50" />
@@ -31,8 +31,9 @@
                     <div class="col-12 col-md-6 mb-3">
                         <label class="mb-1"><b>Icono</b></label>
 
-                        <input type="file" accept="image/*" class="form-control form-control-lg bg-light fs-6"
-                            (change)="vista_preliminar1($event)" formControlName="icono" [ngClass]="{
+                        <input  type="file" accept="image/*" class="form-control form-control-lg bg-light fs-6"
+                        [ngModel]="infoModulo?.icono"     
+                        (change)="vista_preliminar1($event)" formControlName="icono" [ngClass]="{
                                 'is-invalid': moduloForm.get('icono')?.hasError('required') && moduloForm.get('icono')?.touched,
                                 'is-valid': moduloForm.get('icono')?.value?.length >= 4
                               }" />
@@ -45,42 +46,23 @@
                     </div>
                     <div class="row">
                         <div class="col-12" style="display: flex; justify-content: center;align-items: center;">
-                            <img class="img-fluid" width="20%" height="20%" alt="" id="img-vista-previa1" />
+                            <img [src]="infoModulo?.icono"class="img-fluid" width="20%" height="20%" alt="" id="img-vista-previa1" />
                         </div>
-                    </div>
-
-                    <!--Lenguaje-->
-                    <div class="col-12 col-md-6">
-                        <label class="mb-1"><b>Seleccionar lenguaje</b></label>
-                        <select class="form-select form-select-md" aria-label=".form-select-lg example"
-                            [(ngModel)]="optionLenguajeSelected" formControlName="lenguaje" [ngClass]="{
-                            'is-invalid': moduloForm.get('lenguaje')?.hasError('required') && moduloForm.get('lenguaje')?.touched,
-                            'is-valid': optionLenguajeSelected!= ''
-                            }">
-                            <option value="" selected>Seleccione una opción</option>
-                            <option *ngFor="let lenguaje of arrayLenguajes" [value]="lenguaje.lenguaje_id">
-                                {{lenguaje.titulo}}</option>
-                        </select>
-                        <div class="validators"
-                            *ngIf="moduloForm.get('lenguaje')?.hasError('required') && moduloForm.get('lenguaje')?.touched">
-                            <small>¡Este campo es requerido!</small>
-                        </div>
-                    </div>
+                    </div>                    
                 </div>
-
-
                 <!--Descripción-->
                 <div class="row">
                     <div class="col-12 mb-3">
-                        <label class="mb-1" id="descripcion"><b>Descripción</b></label>
-                        <textarea class="form-control form-control-lg bg-light fs-6" formControlName="descripcion"
-                            placeholder="Descripción*" rows="10"
+                        <label class="mb-1" id="concepto"><b>Descripción</b></label>
+                        <textarea class="form-control form-control-lg bg-light fs-6" formControlName="concepto"
+                        [ngModel]="infoModulo?.conceptos"        
+                        placeholder="Descripción*" rows="10"
                             [ngClass]="{
-                                'is-invalid': moduloForm.get('descripcion')?.hasError('required') && moduloForm.get('descripcion')?.touched || moduloForm.get('descripcion')?.hasError('pattern'),
-                                'is-valid': moduloForm.get('descripcion')?.value?.length >=8 && moduloForm.get('descripcion')?.hasError('pattern') == false }">
+                                'is-invalid': moduloForm.get('concepto')?.hasError('required') && moduloForm.get('concepto')?.touched || moduloForm.get('concepto')?.hasError('pattern'),
+                                'is-valid': moduloForm.get('concepto')?.value?.length >=8 && moduloForm.get('concepto')?.hasError('pattern') == false }">
                             </textarea>
                         <div class="validators"
-                            *ngIf="moduloForm.get('descripcion')?.hasError('required') && moduloForm.get('descripcion')?.touched">
+                            *ngIf="moduloForm.get('concepto')?.hasError('required') && moduloForm.get('concepto')?.touched">
                             <small>¡Este campo es requerido!</small>
                         </div>
                     </div>

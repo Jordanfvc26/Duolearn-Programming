@@ -26,6 +26,7 @@ import { AdminListLenguajesComponent } from './admin-list-lenguajes/admin-list-l
 import { AdminEditLenguajeComponent } from './admin-edit-lenguaje/admin-edit-lenguaje.component';
 import { AdminListarModulosComponent } from './admin-listar-modulos/admin-listar-modulos.component';
 import { AdminCrearModulosComponent } from './admin-crear-modulos/admin-crear-modulos.component';
+import { AdminEditModulosComponent } from './admin-edit-modulos/admin-edit-modulos.component';
 
 const routes: Routes = [
   {path:"",pathMatch:"full",redirectTo:"principal"},
@@ -54,6 +55,7 @@ const routes: Routes = [
     {path:"modulos", children: [
       {path:"list", component:AdminListarModulosComponent},
       {path:"create", component: AdminCrearModulosComponent},
+      {path:"edit/:id", component: AdminEditModulosComponent},
     ]},
     {path:"questions", children: [
       {path:"list", component:ListComponent},

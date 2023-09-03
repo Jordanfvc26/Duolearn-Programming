@@ -4,6 +4,7 @@ import * as iconos from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 import { PreguntasService } from '../servicios/preguntas.service';
 import { TemasService } from '../servicios/temas.service';
+import { UsuariosService } from '../servicios/usuarios.service';
 
 @Component({
   selector: 'app-administrador',
@@ -40,8 +41,12 @@ export class AdministradorComponent implements OnInit {
   indice: number = 0;
   static userType: string = '';
   userTypeRecived : string = "";
-
-  constructor(public tema_serv: TemasService, public act_serv: PreguntasService, public ruta: Router) { }
+  infoUser : any;
+  constructor(
+    public tema_serv: TemasService, 
+    public act_serv: PreguntasService,
+    public user_serv: UsuariosService,
+    public ruta: Router) { }
 
   /*ngOnInit*/
   ngOnInit(): void {
@@ -56,7 +61,10 @@ export class AdministradorComponent implements OnInit {
     } else if (currentUrl.includes('lenguajes')) {
       this.indice = 1;
     }
-
+    this.user_serv.get_user(sessionStorage.getItem("user")).subscribe(resp => {
+      this.infoUser = resp;
+      console.log(resp);
+    });
   }
 
   toggleNavbar() {

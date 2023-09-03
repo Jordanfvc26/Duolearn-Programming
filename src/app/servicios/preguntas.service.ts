@@ -42,4 +42,8 @@ export class PreguntasService {
   realiza_pregunta(datos: any): Observable<any> {
     return this.clientHttp.post(this.Api + "/admin/actividades/agregar", datos);
   }
+
+  cambia_estado_actividad(id: any, estado:any): Observable<any> {
+    return this.clientHttp.patch(this.Api + "/admin/actividades/cambiar-estado/"+id+"/"+estado, null);
+  }
 }

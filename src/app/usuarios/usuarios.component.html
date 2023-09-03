@@ -2,15 +2,31 @@
     <div class="row justify-content-center">
         <div class="col-12 container-info">
             <div class="div mt-3 mx-1">
-                <h4 id="titulo"><fa-icon [icon]="iconUsuarios" class="icon-title"></fa-icon> Usuarios</h4>
-            </div>
+                <h2 id="titulo"><fa-icon [icon]="iconUsuarios" class="icon-title"></fa-icon> Usuarios</h2>
+                            </div>
             <br />
+            <!--Inputs para buscar e importar-->
+            <div class="row">
+                <!--Buscar paciente por nombre-->
+                
+                <div class="col-12 col-md-4 col-lg-5 mb-3">
+                    <form>
+                        <label for="lenguaje_select"> <strong>Elija el estado de los usuarios</strong></label>
+                        <select class="form-select mt-2" aria-label="Default select example"
+                            style="margin-bottom: 12px;" (change)="onFilterChange($event.target.value)">
+                            <option [value]="true" selected>Activos</option>
+                            <option [value]="false">Inactivos</option>
+                        </select>
+                    </form>
+                </div>
+
+            </div>
 
             <!--Tabla con la lista de tareas-->
-            <div class="card" id="htmlTablePDF">
+            <div class="card">
                 <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true"
                     style="position: relative;">
-                    <table class="table table-striped mb-0" id="htmlExcelTable">
+                    <table class="table table-striped mb-0">
                         <thead>
                             <tr>
                                 <th scope="col">N°</th>
@@ -24,7 +40,7 @@
                         </thead>
                         <tbody>
                             <ng-container *ngIf="usuarios.length > 0; else noResults">
-                                <tr *ngFor="let usuario of usuarios; let i = index;">
+                                <tr *ngFor="let usuario of usuarios | slice:initialPage:finalPage; let i = index">
                                     <th scope="row">{{i+1}}</th>
                                     <td>{{usuario.nombres + " " + usuario.apellidos}}</td>
                                     <td>{{usuario.usuario}}</td>
@@ -37,11 +53,12 @@
                                     <td class="actions">
                                         <fa-icon *ngIf="usuario.tipo_usuario.trim()=='docente' && !usuario.aprobado" (click)="aprobarComoProfesor(usuario.nombres, usuario.usuario_id)" data-bs-toggle="mensaje" title="Aprobar Docente" id="iconVerDetalles"
                                             [icon]="iconAprobar"></fa-icon>
-                                        <fa-icon *ngIf="usuario.usuario_activo" (click)="eliminarUsuario(usuario.nombres, usuario.usuario_id)" data-bs-toggle="mensaje" title="Eliminar" id="iconEliminar"
-                                            [icon]="iconEliminar"></fa-icon>
-                                            <fa-icon *ngIf="!usuario.usuario_activo" (click)="reactivaUsuario(usuario.nombres, usuario.usuario_id)"  data-bs-toggle="mensaje" title="Reactivar" id="iconVerDetalles"
-                                            [icon]="iconReactivar"></fa-icon>
+                                        <fa-icon *ngIf="usuario.usuario_activo" (click)="eliminarUsuario(usuario.nombres, usuario.usuario_id, false)" data-bs-toggle="mensaje" title="Eliminar" id="iconEliminar"
+                                            [icon]="iconOn"></fa-icon>
+                                            <fa-icon *ngIf="!usuario.usuario_activo" (click)="eliminarUsuario(usuario.nombres, usuario.usuario_id, true)"  data-bs-toggle="mensaje" title="Reactivar" id="iconVerDetalles"
+                                            [icon]="iconOff"></fa-icon>
                                     </td>
+
                                 </tr>
                             </ng-container>
                             <!--Para cuando no cargue la data-->
@@ -55,9 +72,9 @@
                 </div>
             </div>
             <!--Paginación-->
-            <!--  <mat-paginator id="paginacion" [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="itemsForPage"
-          [length]="arrayTasks.length" (page)="changePage($event)">
-        </mat-paginator> -->
+            <mat-paginator id="paginacion" [pageSizeOptions]="[5, 10, 25]" [pageSize]="itemsForPage"
+                [length]="usuarios.length" (page)="changePage($event)">
+            </mat-paginator>
         </div>
     </div>
 </body>

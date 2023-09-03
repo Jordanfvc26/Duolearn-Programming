@@ -61,13 +61,36 @@ export class ListComponent implements OnInit {
     }
   }
 
-  removeActivity(id:any){
-    this.act_serv.removeActivity(id).subscribe(resp=>{
-      if(resp.estado==1){
-        this.mensaje_bien("La actividad fue eliminada");
-        this.ngOnInit();
-      }else{
-        this.mensaje_mal("No se pudo eliminar la actividad");
+  
+  cambiar_estado_actividad(actividadId: number, estado: boolean){
+    Swal.fire({
+      title: ''+(estado?"Activar":"Desactivar")+' actividad',
+      text: "¿Está seguro de "+(estado?"activar":"desactivar")+" la actividad de DuoLearn Programming?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.act_serv.cambia_estado_actividad(actividadId, estado).subscribe(resp => {
+          if(resp.estado == "1"){
+            Swal.fire(
+              '¡Proceso exitoso!',
+              'La actividad fue '+(estado?"activada":"desactivada")+' con éxito',
+              'success'
+            );
+            this.cargaPreguntas(!estado);
+          }
+          else{
+            Swal.fire(
+              '¡Error!',
+              'No se pudo '+(estado?"activar":"desactivar")+' la actividad',
+              'error'
+            )
+          }
+        })
       }
     })
   }
@@ -94,4 +117,6 @@ export class ListComponent implements OnInit {
   iconPreguntas = iconos.faQuestionCircle;
   iconListar = iconos.faList;
   iconCrear = iconos.faPlusCircle;
+  iconOn = iconos.faToggleOn;
+  iconOff = iconos.faToggleOff;
 }

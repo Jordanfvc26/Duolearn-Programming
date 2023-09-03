@@ -4,6 +4,7 @@ import * as iconos from '@fortawesome/free-solid-svg-icons';
 import { ModulosService } from '../servicios/modulos.service';
 import { LenguajesService } from '../servicios/lenguajes.service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-crear-modulos',
@@ -16,9 +17,11 @@ export class AdminCrearModulosComponent implements OnInit {
   moduloForm: FormGroup;
   optionLenguajeSelected: string = "";
   arrayLenguajes: any[] = [];
+  img1:any;
 
   constructor(
     private formBuilder: FormBuilder,
+    private ruta: Router,
     private modulosService: ModulosService,
     private lenguajeService: LenguajesService
   ) { }
@@ -28,6 +31,14 @@ export class AdminCrearModulosComponent implements OnInit {
     this.lenguajeService.listar_lenguajes(true).subscribe(resp => {
       this.arrayLenguajes = resp;
     })
+  }
+
+  vista_preliminar1 = (event) => {
+    let id_img = document.getElementById('img-vista-previa1');
+    let path = URL.createObjectURL(event.target.files[0]);
+    id_img.setAttribute("src", path);
+    console.log(event.target.files);
+    this.img1 = event.target.files[0];
   }
 
   //Método que crea el formulario
@@ -42,9 +53,7 @@ export class AdminCrearModulosComponent implements OnInit {
       ],
       icono: ['',
         [
-          Validators.minLength(2),
           Validators.required,
-          Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚ\\s]*$')
         ]
       ],
       lenguaje: ['',
@@ -64,29 +73,51 @@ export class AdminCrearModulosComponent implements OnInit {
 
   //Método que manda a guardar el módulo
   registrarModulo() {
-
-    const formData = new FormData();
-    formData.append('titulo', this.moduloForm.value.titulo);
-    formData.append('concepto', this.moduloForm.value.descripcion);
-
-    this.modulosService.agregar_modulo(this.moduloForm.get('lenguaje').value, formData).subscribe({
-      next: (data) => {
-        if (data.estado == "1") {
-          Swal.fire(
-            '¡Éxito!',
-            'Módulo creado correctamentes',
-            'success'
-          )
-        }
-        else {
+   this.moduloForm.markAllAsTouched();
+    if (this.moduloForm.valid) {
+      const formData = new FormData();
+      formData.append('titulo', this.moduloForm.value.titulo);
+      formData.append('concepto', this.moduloForm.value.descripcion);
+      formData.append('images', this.img1);
+      this.modulosService.agregar_modulo(this.moduloForm.get('lenguaje').value, formData).subscribe({
+        next: (data) => {
+          if (data.estado == "1") {
+            Swal.fire(
+              '¡Éxito!',
+              'Módulo creado correctamentes',
+              'success'
+            )
+            this.ruta.navigate(['/administrador/modulos/list']);
+          }
+          else if (data.estado == "2") {
+            Swal.fire(
+              '¡Error!',
+              'Ya existe el módulo dentro del lenguaje seleccionado',
+              'error'
+            )
+          }else{
+            Swal.fire(
+              '¡Error!',
+              'No se pudo crear el módulo',
+              'error'
+            )
+          }
+        },
+        error: (error) => {
           Swal.fire(
             '¡Error!',
             'No se pudo crear el módulo',
             'error'
           )
         }
-      }
-    })
+      })
+    }else{
+      Swal.fire(
+        '¡Error!',
+        'No cumple con los campos requeridos',
+        'error'
+      )
+    }
   }
 
 

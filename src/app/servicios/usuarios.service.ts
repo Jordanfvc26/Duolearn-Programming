@@ -50,8 +50,8 @@ export class UsuariosService {
     return this.clientHttp.post(this.Api + "/cambio_clave", datos_nuevos);
   }
 
-  listar_usuarios(): Observable<any> {
-    return this.clientHttp.get(this.Api + "/admin/usuarios/listar");
+  listar_usuarios(estado:any): Observable<any> {
+    return this.clientHttp.get(this.Api + "/admin/usuarios/listar?estado="+estado);
   }
 
   aprobar_profesor(idUser: number):Observable<any>{

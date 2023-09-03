@@ -86,6 +86,7 @@ export class AdminCrearLenguajesComponent implements OnInit {
                   'El lenguaje '+this.languageForm.value.titulo+' ya ha sido registrado',
                   'error'
                 )
+                this.ruta.navigate(['/administrador/lenguaje/list']);
               }else{
                 Swal.fire(
                   '¡Error!',

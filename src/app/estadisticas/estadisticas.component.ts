@@ -23,7 +23,7 @@ export class EstadisticasComponent implements OnInit {
   bol = true;
   modulos=[];
   ngOnInit(): void {
-    const observable2 = this.temas_serv.obtener_temas_por_lenguaje(sessionStorage.getItem("lenguaje"));
+    const observable2 = this.temas_serv.obtener_temas_por_lenguaje(sessionStorage.getItem("lenguaje"), true);
     forkJoin([observable2]).subscribe(
       ([result1]) => {
         this.modulos = result1;

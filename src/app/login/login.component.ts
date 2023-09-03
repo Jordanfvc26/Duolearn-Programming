@@ -125,7 +125,6 @@ export class LoginComponent implements OnInit {
             if (resp.estado == 1) {
               if (resp.tipo_usuario.trim() == "administrador") {
                 this.ruta.navigateByUrl("/administrador");
-                AdministradorComponent.userType = "administrador";
                 sessionStorage.setItem('userType', "administrador")
               } else if (resp.tipo_usuario.trim() == "estudiante") {
                 this.ruta.navigateByUrl("/elegir-lenguaje");
@@ -153,14 +152,15 @@ export class LoginComponent implements OnInit {
       const { confirmClave, ...dataWithoutConfirmClave } = this.form_registro.value;
       console.log(dataWithoutConfirmClave);
       this.user_service.user_register(this.getForm()).subscribe(resp => {
-        let val = resp.estado;
-        if (val == 1) {
+        if (resp.estado == 1) {
           this.mensaje_bien("Usuario registrado con éxito");
           this.ruta.navigateByUrl("/login");
           this.mostrarFormLogin();
-        } else {
+        }else if (resp.estado == 2) {
           this.mensaje_mal("Usuario no registrado");
-          this.ruta.navigateByUrl("/login");
+        } 
+        else {
+          this.mensaje_mal("El usuario ya se encuentra registrado");
         }
       });
     } else {
@@ -196,7 +196,7 @@ export class LoginComponent implements OnInit {
       icon: 'error',
       title: 'Oops...',
       text: mensaje,
-      showConfirmButton: false,
+      showConfirmButton: true,
       timer: 1500
     });
   }

@@ -12,8 +12,8 @@ export class ModulosService {
 
   Api: string = environment.api;
 
-  obtener_modulos(idLenguaje:number): Observable<any> {
-    return this.clientHttp.get(this.Api + "/modulo/obtener/"+idLenguaje+"?activo=true");
+  obtener_modulos(idLenguaje:number, estado: boolean): Observable<any> {
+    return this.clientHttp.get(this.Api + "/modulo/obtener/"+idLenguaje+"?activo="+estado);
   }
 
   cambiar_estado_modulo(id: any, estado: any): Observable<any> {
@@ -22,5 +22,9 @@ export class ModulosService {
 
   agregar_modulo(idLenguaje:number, body:any): Observable<any> {
     return this.clientHttp.post(this.Api + "/admin/modulo/agregar/"+idLenguaje, body);
+  }
+
+  editar_modulo(idModulo:number, body:any): Observable<any> {
+    return this.clientHttp.put(this.Api + "/admin/modulo/modificar/"+idModulo, body);
   }
 }

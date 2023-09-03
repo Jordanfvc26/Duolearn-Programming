@@ -54,7 +54,7 @@ export class CreateComponent implements AfterViewInit {
 
   cargarModulos() {
     this.Temas=[];
-    this.tema_serv.obtener_temas_por_lenguaje(this.lenguaje_select).subscribe(resp => {
+    this.tema_serv.obtener_temas_por_lenguaje(this.lenguaje_select, true).subscribe(resp => {
       this.Temas = resp;
       console.log(this.Temas);
     });
@@ -138,11 +138,10 @@ export class CreateComponent implements AfterViewInit {
   send_question() {
     if (this.seleccionado == 0 || this.tema_select == 0) {
       if (this.seleccionado == 0) {
-        this.mensaje_mal("No ha ingresado ninguna pregunta");
+        this.mensaje_mal("No ha ingresado ninguna pregunta", "Verifica que has seleccionado el tipo de pregunta");
       } else if (this.tema_select == 0) {
-        this.mensaje_mal("Debe seleccionar el tema para su pregunta..");
+        this.mensaje_mal("Debe seleccionar el tema para su pregunta.", "Verifica que has seleccionado el modulo de tu pregunta");
       }
-
     } else {
       if (this.seleccionado == 2) {
         if (this.valida_campos(1)) {
@@ -157,17 +156,16 @@ export class CreateComponent implements AfterViewInit {
           }).subscribe(resp => {
             if (resp.estado == 1) {
               this.mensaje_bien("Pregunta agregada con éxito");
-            } else {
-              this.mensaje_mal("No se pudo agregar la pregunta");
+              this.ruta.navigateByUrl("/administrador/questions/list");
+            } else if (resp.estado == 2) {
+              this.mensaje_mal("No se pudo agregar la pregunta",'Por favor, revisa que las opciones o pregunta no sean las mismas');
+            }else{
+              this.mensaje_mal("No se pudo agregar la pregunta",'Ocurrio un error inesperado');
             }
-            this.ruta.navigateByUrl("/administrador/questions/options");
-            this.seleccionado = 0;
-            this.tema_select = 0;
           });
         } else {
-          this.mensaje_mal("Agregue todos los campos");
+          this.mensaje_mal("Agregue todos los campos", "Por favor, verifica que has ingresado todos los campos requeridos");
         }
-
       } else if (this.seleccionado == 3) {
         if (this.valida_campos(2)) {
           this.formData.append("tema", this.tema_select.toString());
@@ -177,20 +175,18 @@ export class CreateComponent implements AfterViewInit {
           this.act_serv.realiza_pregunta(this.formData).subscribe(resp => {
             if (resp.estado == 1) {
               this.mensaje_bien("Pregunta agregada con éxito");
-            } else {
-              this.mensaje_mal("No se pudo agregar la pregunta");
+              this.ruta.navigateByUrl("/administrador/questions/list");
+            }else{
+              this.mensaje_mal("No se pudo agregar la pregunta",'Ocurrio un error inesperado');
             }
-            this.ruta.navigateByUrl("/administrador/questions/options");
-            this.seleccionado = 0;
-            this.tema_select = 0;
           });
         } else {
-          this.mensaje_mal("Agregue las imagenes requeridas");
+          this.mensaje_mal("Agregue las imagenes requeridas", "Por favor, verifica que has ingresado todos los campos requeridos");
         }
       } else if (this.seleccionado == 4) {
         if (this.valida_campos(3)) {
           if (this.valida_dragandrop() == false) {
-            this.mensaje_mal("Deben ser 4 lineas de pregunta");
+            this.mensaje_mal("Deben ser 4 lineas de pregunta", "Por favor cumple con los requisitos de la pregunta");
           } else {
             this.act_serv.realiza_pregunta({
               tema: this.tema_select,
@@ -203,17 +199,17 @@ export class CreateComponent implements AfterViewInit {
             }).subscribe(resp => {
               if (resp.estado == 1) {
                 this.mensaje_bien("Pregunta agregada con éxito");
-              } else {
-                this.mensaje_mal("No se pudo agregar la pregunta");
+                this.ruta.navigateByUrl("/administrador/questions/list");
+              } else if (resp.estado == 2) {
+                this.mensaje_mal("No se pudo agregar la pregunta",'Por favor, revisa que las opciones o pregunta no sean las mismas');
+              }else{
+                this.mensaje_mal("No se pudo agregar la pregunta",'Ocurrio un error inesperado');
               }
-              this.ruta.navigateByUrl("/administrador/questions/options");
-              this.seleccionado = 0;
-              this.tema_select = 0;
             });
           }
           console.log(this.pregunta_cuest.nativeElement);
         } else {
-          this.mensaje_mal("Ingrese todos los campos necesarios");
+          this.mensaje_mal("Error","Ingrese todos los campos necesarios");
         }
       } else if (this.seleccionado == 5) {
         if (this.valida_campos(4)) {
@@ -227,15 +223,15 @@ export class CreateComponent implements AfterViewInit {
           this.act_serv.realiza_pregunta(this.formData).subscribe(resp => {
             if (resp.estado == 1) {
               this.mensaje_bien("Pregunta agregada con éxito");
-            } else {
-              this.mensaje_mal("No se pudo agregar la pregunta");
+              this.ruta.navigateByUrl("/administrador/questions/list");
+            } else if (resp.estado == 2) {
+              this.mensaje_mal("No se pudo agregar la pregunta",'Por favor, revisa que las opciones o pregunta no sean las mismas');
+            }else{
+              this.mensaje_mal("No se pudo agregar la pregunta",'Ocurrio un error inesperado');
             }
-            this.ruta.navigateByUrl("/administrador/questions/options");
-            this.seleccionado = 0;
-            this.tema_select = 0;
           });
         } else {
-          this.mensaje_mal("Ingrese todos los campos");
+          this.mensaje_mal("Error","Ingrese todos los campos");
         }
       }
       this.formData = new FormData();
@@ -251,7 +247,7 @@ export class CreateComponent implements AfterViewInit {
     Swal.fire({
       icon: 'success',
       title: mensaje,
-      showConfirmButton: false,
+      showConfirmButton: true,
       timer: 2000
     })
   }
@@ -260,12 +256,12 @@ export class CreateComponent implements AfterViewInit {
 
   }
 
-  mensaje_mal(mensaje: any) {
+  mensaje_mal(titulo:any,mensaje: any) {
     Swal.fire({
       icon: 'error',
-      title: 'Oops...',
+      title: titulo,
       text: mensaje,
-      showConfirmButton: false,
+      showConfirmButton: true,
       timer: 1500
     });
   }

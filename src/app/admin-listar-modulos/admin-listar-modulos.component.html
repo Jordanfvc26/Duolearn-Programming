@@ -2,26 +2,43 @@
     <div class="row justify-content-center">
         <div class="col-12 container-info">
             <div class="div mt-3 mx-1">
-                <h4 id="titulo"><fa-icon [icon]="iconModulos" class="icon-title"></fa-icon> Módulos de cada lenguaje</h4>
+                <h2 id="titulo"><fa-icon [icon]="iconModulos" class="icon-title"></fa-icon> Módulos</h2>
+                <button [routerLink]="'/administrador/modulos/create'" type="button" class="btn btn-primary btn-sm">
+                    <fa-icon [icon]="iconAdd"></fa-icon> Nuevo módulo</button>
             </div>
             <br />
-
+            <!--Inputs para buscar e importar-->
             <div class="row">
-                <div class="col-12 col-md-2 col-lg-2">
+                <!--Buscar paciente por nombre-->
+                <div class="col-12 col-md-4 col-lg-5 mb-3">
                     <form>
-                        <select class="form-select" aria-label="Default select example" style="margin-bottom: 12px;" (change)="listar_modulos($event.target.value)">
-                          <option *ngFor="let lenguaje of lenguajes" [value]="lenguaje.lenguaje_id" [selected]="lenguaje.lenguaje_id === selectedLenguajeId">{{lenguaje.titulo}}</option>
+                        <label for="lenguaje_select"> <strong>Elija el lenguaje</strong></label>
+                        <select name="lenguaje_select" id="lenguaje_select" class="form-select mt-2"
+                            aria-label="Default select example" style="margin-bottom: 12px;"
+                            [value]="selectedLenguajeId" (change)="changeLenguaje($event.target.value)">
+                            <option *ngFor="let lenguaje of lenguajes" [value]="lenguaje.lenguaje_id">
+                                {{lenguaje.titulo}}</option>
                         </select>
-                      </form>
-                      
+                    </form>
                 </div>
+                <div class="col-12 col-md-4 col-lg-5 mb-3">
+                    <form>
+                        <label for="lenguaje_select"> <strong>Elija el estado de los módulos</strong></label>
+                        <select class="form-select mt-2" aria-label="Default select example"
+                            style="margin-bottom: 12px;" (change)="onFilterChange($event)">
+                            <option [value]="true" selected>Activos</option>
+                            <option [value]="false">Inactivos</option>
+                        </select>
+                    </form>
+                </div>
+
             </div>
 
             <!--Tabla con la lista de tareas-->
-            <div class="card" id="htmlTablePDF">
+            <div class="card">
                 <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true"
                     style="position: relative;">
-                    <table class="table table-striped mb-0" id="htmlExcelTable">
+                    <table class="table table-striped mb-0">
                         <thead>
                             <tr>
                                 <th scope="col">N°</th>
@@ -33,16 +50,26 @@
                         </thead>
                         <tbody>
                             <ng-container *ngIf="modulos.length > 0; else noResults">
-                                <tr *ngFor="let modulo of modulos; let i = index">
+                                <tr *ngFor="let modulo of modulos | slice:initialPage:finalPage; let i = index">
                                     <th scope="row">{{i+1}}</th>
                                     <td>{{modulo.titulo_modulo}}</td>
                                     <td>{{modulo.conceptos}}</td>
                                     <td>{{modulo.modulo_activo?"Activo":"Inactivo"}}</td>
-                                    <td class="actions">
-                                        <fa-icon (click)="cambiar_estado_modulo(modulo.titulo_modulo, modulo.modulo_id)" 
-                                        data-bs-toggle="mensaje" title="Eliminar" id="iconEliminar"
-                                            [icon]="iconEliminar"></fa-icon>
+                                    <td class="d-flex justify-content-around">
+                                        <fa-icon [style.color]="'black'" *ngIf="modulo.modulo_activo"
+                                            [routerLink]="['/administrador/modulos/edit/'+modulo.modulo_id]"
+                                            data-bs-toggle="mensaje" title="Editar" [icon]="iconEditar"></fa-icon>
+                                        <fa-icon *ngIf="modulo.modulo_activo"
+                                        (click)="cambiar_estado_modulo(modulo.titulo_modulo, modulo.modulo_id, false)"
+                                            data-bs-toggle="mensaje" title="Desactivar" id="iconEliminar"
+                                            [icon]="iconOn"></fa-icon>
+                                        <fa-icon *ngIf="!modulo.modulo_activo"
+                                        (click)="cambiar_estado_modulo(modulo.titulo_modulo, modulo.modulo_id, true)"
+                                            data-bs-toggle="mensaje" title="Activar" id="iconEliminar"
+                                            [icon]="iconOff"></fa-icon>
+
                                     </td>
+
                                 </tr>
                             </ng-container>
                             <!--Para cuando no cargue la data-->
@@ -55,6 +82,10 @@
                     </table>
                 </div>
             </div>
+            <!--Paginación-->
+            <mat-paginator id="paginacion" [pageSizeOptions]="[5, 10, 25]" [pageSize]="itemsForPage"
+                [length]="lenguajes.length" (page)="changePage($event)">
+            </mat-paginator>
         </div>
     </div>
 </body>

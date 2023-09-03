@@ -43,6 +43,7 @@ export class EditComponent implements AfterViewInit {
       this.activityId = Number.parseInt(params.get('id'));
       this.act_serv.get_questionId(this.activityId).subscribe(resp => {
         this.activityInfo = resp;
+        console.log(this.activityInfo)
         this.tema_select = this.activityInfo.tema;
         switch (this.activityInfo.tipo_actividad.trim()) {
           case "cuestionario":
@@ -151,8 +152,8 @@ export class EditComponent implements AfterViewInit {
       if (this.seleccionado == 2) {
         if (this.valida_campos(1)) {
           this.act_serv.modifyActivity({
-            id: this.activityId,
-            tema: this.tema_select,
+            id: this.activityId.toString(),
+            tema: this.activityInfo.modulo_id.toString(),
             pregunta: this.pregunta_cuest.nativeElement.value.trim(),
             opcion_correcta: this.opcion_a_cuestionario.nativeElement.value.trim(),
             opcion2: this.opcion_b_cuestionario.nativeElement.value.trim(),
@@ -162,12 +163,12 @@ export class EditComponent implements AfterViewInit {
           }).subscribe(resp => {
             if (resp.estado == 1) {
               this.mensaje_bien("Pregunta editada con éxito");
-            } else {
+              this.ruta.navigateByUrl("/administrador/questions/list");
+            } else if(resp.estado==2){
+              this.mensaje_mal("Las opciones o la pregunta no deben ser iguales");
+            }else {
               this.mensaje_mal("No se pudo editar la pregunta");
             }
-            this.ruta.navigateByUrl("/administrador/questions/list");
-            this.seleccionado = 0;
-            this.tema_select = 0;
           });
         } else {
           this.mensaje_mal("Agregue todos los campos");
@@ -175,8 +176,8 @@ export class EditComponent implements AfterViewInit {
 
       } else if (this.seleccionado == 3) {
         if (this.valida_campos(2)) {
-          this.formData.append("id", this.activityId);
-          this.formData.append("tema", this.tema_select);
+          this.formData.append("id", this.activityId.toString(),);
+          this.formData.append("tema", this.activityInfo.modulo_id.toString(),);
           if (this.img1 != undefined){
             this.formData.append("images", this.img1);
           }else{
@@ -191,12 +192,12 @@ export class EditComponent implements AfterViewInit {
           this.act_serv.modifyActivity(this.formData).subscribe(resp => {
             if (resp.estado == 1) {
               this.mensaje_bien("Pregunta editada con éxito");
-            } else {
+              this.ruta.navigateByUrl("/administrador/questions/list");
+            } else if(resp.estado==2){
+              this.mensaje_mal("Las opciones o la pregunta no deben ser iguales");
+            }else {
               this.mensaje_mal("No se pudo editar la pregunta");
             }
-            this.ruta.navigateByUrl("/administrador/questions/list");
-            this.seleccionado = 0;
-            this.tema_select = 0;
           });
         } else {
           this.mensaje_mal("Agregue las imagenes requeridas");
@@ -207,8 +208,8 @@ export class EditComponent implements AfterViewInit {
             this.mensaje_mal("Deben ser 4 lineas de pregunta");
           } else {
             this.act_serv.modifyActivity({
-              id: this.activityId,
-              tema: this.tema_select,
+              id: this.activityId.toString(),
+              tema: this.activityInfo.modulo_id.toString(),
               pregunta: this.pregunta_cuest.nativeElement.value.trim(),
               opcion_correcta: this.opcion_a_cuestionario.nativeElement.value.trim(),
               opcion2: this.opcion_b_cuestionario.nativeElement.value.trim(),
@@ -218,12 +219,12 @@ export class EditComponent implements AfterViewInit {
             }).subscribe(resp => {
               if (resp.estado == 1) {
                 this.mensaje_bien("Pregunta editada con éxito");
-              } else {
+                this.ruta.navigateByUrl("/administrador/questions/list");
+              } else if(resp.estado==2){
+                this.mensaje_mal("Las opciones o la pregunta no deben ser iguales");
+              }else {
                 this.mensaje_mal("No se pudo editar la pregunta");
               }
-              this.ruta.navigateByUrl("/administrador/questions/list");
-              this.seleccionado = 0;
-              this.tema_select = 0;
             });
           }
           console.log(this.pregunta_cuest.nativeElement);
@@ -232,8 +233,8 @@ export class EditComponent implements AfterViewInit {
         }
       } else if (this.seleccionado == 5) {
         if (this.valida_campos(4)) {
-          this.formData.append("id", this.activityId);
-          this.formData.append("tema", this.tema_select);
+          this.formData.append("id", this.activityId.toString());
+          this.formData.append("tema", this.activityInfo.modulo_id.toString());
           console.log(this.img3);
           if(this.img3!=undefined){
             this.formData.append("images", this.img3);
@@ -248,12 +249,13 @@ export class EditComponent implements AfterViewInit {
           this.act_serv.modifyActivity(this.formData).subscribe(resp => {
             if (resp.estado == 1) {
               this.mensaje_bien("Pregunta editada con éxito");
-            } else {
+              this.ruta.navigateByUrl("/administrador/questions/list");
+            } else if(resp.estado==2){
+              this.mensaje_mal("Las opciones o la pregunta no deben ser iguales");
+            }else {
               this.mensaje_mal("No se pudo editar la pregunta");
             }
-            this.ruta.navigateByUrl("/administrador/questions/list");
-            this.seleccionado = 0;
-            this.tema_select = 0;
+
           });
         } else {
           this.mensaje_mal("Ingrese todos los campos");
@@ -282,8 +284,8 @@ export class EditComponent implements AfterViewInit {
       icon: 'error',
       title: 'Oops...',
       text: mensaje,
-      showConfirmButton: false,
-      timer: 1500
+      showConfirmButton: true,
+      timer: 2000
     });
   }
 
