@@ -1,8 +1,9 @@
+<app-pre-loader *ngIf="!spinnerStatus"></app-pre-loader>
 <body>
     <div class="row justify-content-center">
         <div class="col-12 container-info">
             <div class="div mt-3 mx-1">
-                <h2 id="titulo"><fa-icon [icon]="iconModulos" class="icon-title"></fa-icon> Módulos</h2>
+                <h2 id="titulo"><fa-icon [icon]="iconModulos" class="icon-title"></fa-icon> Listado de módulos</h2>
                 <button [routerLink]="'/administrador/modulos/create'" type="button" class="btn btn-primary btn-sm">
                     <fa-icon [icon]="iconAdd"></fa-icon> Nuevo módulo</button>
             </div>
@@ -12,7 +13,7 @@
                 <!--Buscar paciente por nombre-->
                 <div class="col-12 col-md-4 col-lg-5 mb-3">
                     <form>
-                        <label for="lenguaje_select"> <strong>Elija el lenguaje</strong></label>
+                        <label for="lenguaje_select"> <strong>Seleccione el lenguaje</strong></label>
                         <select name="lenguaje_select" id="lenguaje_select" class="form-select mt-2"
                             aria-label="Default select example" style="margin-bottom: 12px;"
                             [value]="selectedLenguajeId" (change)="changeLenguaje($event.target.value)">
@@ -23,7 +24,7 @@
                 </div>
                 <div class="col-12 col-md-4 col-lg-5 mb-3">
                     <form>
-                        <label for="lenguaje_select"> <strong>Elija el estado de los módulos</strong></label>
+                        <label for="lenguaje_select"> <strong>Filtrar por</strong></label>
                         <select class="form-select mt-2" aria-label="Default select example"
                             style="margin-bottom: 12px;" (change)="onFilterChange($event)">
                             <option [value]="true" selected>Activos</option>
@@ -55,10 +56,10 @@
                                     <td>{{modulo.titulo_modulo}}</td>
                                     <td>{{modulo.conceptos}}</td>
                                     <td>{{modulo.modulo_activo?"Activo":"Inactivo"}}</td>
-                                    <td class="d-flex justify-content-around">
+                                    <td>
                                         <fa-icon [style.color]="'black'" *ngIf="modulo.modulo_activo"
                                             [routerLink]="['/administrador/modulos/edit/'+modulo.modulo_id]"
-                                            data-bs-toggle="mensaje" title="Editar" [icon]="iconEditar"></fa-icon>
+                                            data-bs-toggle="mensaje" title="Editar" [icon]="iconEditar" id="iconEditar"></fa-icon>
                                         <fa-icon *ngIf="modulo.modulo_activo"
                                         (click)="cambiar_estado_modulo(modulo.titulo_modulo, modulo.modulo_id, false)"
                                             data-bs-toggle="mensaje" title="Desactivar" id="iconEliminar"

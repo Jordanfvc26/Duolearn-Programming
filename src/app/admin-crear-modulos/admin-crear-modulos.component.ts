@@ -18,6 +18,7 @@ export class AdminCrearModulosComponent implements OnInit {
   optionLenguajeSelected: string = "";
   arrayLenguajes: any[] = [];
   img1:any;
+  spinnerStatus: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,9 +28,16 @@ export class AdminCrearModulosComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.spinnerStatus = true;
     this.crear_form_modulo();
+    this.listar_lenguajes();
+  }
+
+  listar_lenguajes(){
+    this.spinnerStatus = false;
     this.lenguajeService.listar_lenguajes(true).subscribe(resp => {
       this.arrayLenguajes = resp;
+      this.spinnerStatus = true;
     })
   }
 
@@ -48,7 +56,7 @@ export class AdminCrearModulosComponent implements OnInit {
         [
           Validators.minLength(2),
           Validators.required,
-          Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚ\\s]*$')
+          Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]*$')
         ]
       ],
       icono: ['',
@@ -73,6 +81,7 @@ export class AdminCrearModulosComponent implements OnInit {
 
   //Método que manda a guardar el módulo
   registrarModulo() {
+    this.spinnerStatus = false;
    this.moduloForm.markAllAsTouched();
     if (this.moduloForm.valid) {
       const formData = new FormData();
@@ -82,42 +91,63 @@ export class AdminCrearModulosComponent implements OnInit {
       this.modulosService.agregar_modulo(this.moduloForm.get('lenguaje').value, formData).subscribe({
         next: (data) => {
           if (data.estado == "1") {
-            Swal.fire(
-              '¡Éxito!',
-              'Módulo creado correctamentes',
-              'success'
-            )
+            this.spinnerStatus = true;
+            Swal.fire({
+              icon: 'success',
+              title: 'Éxito',
+              text: 'Módulo creado correctamente',
+              confirmButtonText: 'Aceptar',
+              confirmButtonColor: '#05C458'
+            })
             this.ruta.navigate(['/administrador/modulos/list']);
           }
           else if (data.estado == "2") {
-            Swal.fire(
-              '¡Error!',
-              'Ya existe el módulo dentro del lenguaje seleccionado',
-              'error'
-            )
+            this.spinnerStatus = true;
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Ya existe el módulo dentro del lenguaje seleccionado',
+              confirmButtonText: 'Aceptar',
+              confirmButtonColor: '#FF4136'
+            })
           }else{
-            Swal.fire(
-              '¡Error!',
-              'No se pudo crear el módulo',
-              'error'
-            )
+            this.spinnerStatus = true;
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No se pudo crear el módulo',
+              confirmButtonText: 'Aceptar',
+              confirmButtonColor: '#FF4136'
+            })
           }
         },
         error: (error) => {
-          Swal.fire(
-            '¡Error!',
-            'No se pudo crear el módulo',
-            'error'
-          )
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo crear el módulo',
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#FF4136'
+          })
         }
       })
     }else{
-      Swal.fire(
-        '¡Error!',
-        'No cumple con los campos requeridos',
-        'error'
-      )
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No cumple con los campos requeridos',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#FF4136'
+      })
     }
+  }
+
+  //Método que compara que no hayan inputs con espacios (vacios)
+  compararTextoVacio(campo: string) {
+    if (this.moduloForm.get(campo)?.value.trim() === "")
+      return true;
+    else
+      return false;
   }
 
 

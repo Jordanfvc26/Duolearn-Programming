@@ -22,15 +22,19 @@ export class ListComponent implements OnInit {
   itemsForPage: number = 10;
   initialPage: number = 0;
   finalPage: number = 10;
+  spinnerStatus: boolean = false;
 
   actividades: any[]=[];
   ngOnInit(): void {
+    this.spinnerStatus = true;
     this.cargaPreguntas(true);
   }
 
   cargaPreguntas(estado:boolean){
+    this.spinnerStatus = false;
     this.act_serv.get_questionsAll(estado).subscribe(resp => {
       this.actividades = resp;
+      this.spinnerStatus = true;
       console.log(this.actividades);
     });
   }

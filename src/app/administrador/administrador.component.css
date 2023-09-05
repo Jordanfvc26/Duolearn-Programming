@@ -156,8 +156,12 @@ main {
 .option-link>fa-icon {
     font-size: 40px;
 }
-  
-  
+
+.username{
+    background-color: #c0c0c0;
+    padding: 10px;
+    border-radius: 7px;
+}
 
 /*-------------Responsive Web Design------------*/
 @media screen and (max-width: 768px) {

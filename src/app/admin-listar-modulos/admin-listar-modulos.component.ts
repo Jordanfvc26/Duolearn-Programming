@@ -20,6 +20,7 @@ export class AdminListarModulosComponent implements OnInit {
   finalPage: number = 10;
   selectedLenguajeId: number = 0;
   status: boolean = true;
+  spinnerStatus: boolean = false;
 
   constructor(
     private modulosService: ModulosService,
@@ -27,13 +28,16 @@ export class AdminListarModulosComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.spinnerStatus = true;
     this.obtener_listado_lenguajes(true);
   }
 
   obtener_listado_lenguajes(estado: boolean){
+    this.spinnerStatus = false;
     this.lenguajeService.listar_lenguajes(estado).subscribe(resp =>{
       this.lenguajes = resp;
       this.selectedLenguajeId = this.lenguajes.length > 0 ? this.lenguajes[0].lenguaje_id : null;
+      this.spinnerStatus = true;
       this.listar_modulos(true);
     })
   }
@@ -60,10 +64,13 @@ export class AdminListarModulosComponent implements OnInit {
 
   //Método que lista los módulos
   listar_modulos(estado: boolean){
+    this.spinnerStatus = false;
     this.modulosService.obtener_modulos(this.selectedLenguajeId, estado).subscribe(
       (resp) =>{
+        this.spinnerStatus = true;
         this.modulos = resp;
       }, (error) => {
+        this.spinnerStatus = true;
         console.log(error);
         this.modulos = [];
       });

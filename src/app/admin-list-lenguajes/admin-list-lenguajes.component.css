@@ -1,0 +1,26 @@
+#htmlTable td:nth-child(5),
+#htmlTable th:nth-child(5) {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+}
+
+#htmlTable td:nth-child(3),
+#htmlTable th:nth-child(3) {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+}
+
+td>fa-icon{
+    margin-right: 15px;
+}
+
+#iconEdit{
+    color: #007BBD !important;
+    cursor: pointer;
+}

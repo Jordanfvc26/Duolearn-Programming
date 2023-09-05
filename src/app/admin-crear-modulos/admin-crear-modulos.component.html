@@ -1,3 +1,5 @@
+<app-pre-loader *ngIf="!spinnerStatus"></app-pre-loader>
+
 <body>
     <div class="row justify-content-center">
         <div class="col-12 container-info">
@@ -13,7 +15,7 @@
                         <label class="mb-1"><b>Título</b></label>
                         <input type="text" placeholder="Nombres*" class="form-control form-control-lg bg-light fs-6"
                             formControlName="titulo" [ngClass]="{
-                                'is-invalid': moduloForm.get('titulo')?.hasError('required') && moduloForm.get('titulo')?.touched || moduloForm.get('titulo')?.hasError('pattern'),
+                                'is-invalid': moduloForm.get('titulo')?.hasError('required') && moduloForm.get('titulo')?.touched || moduloForm.get('titulo')?.hasError('pattern') || compararTextoVacio('titulo')===true && moduloForm.get('titulo')?.touched,
                                 'is-valid': moduloForm.get('titulo')?.value?.length >= 4 && moduloForm.get('titulo')?.hasError('pattern') == false
                               }" [maxlength]="50" />
                         <div class="validators"
@@ -23,14 +25,17 @@
                         <div class="validators" *ngIf="moduloForm.get('titulo')?.hasError('pattern')">
                             <small>¡Solo se permiten letras!</small>
                         </div>
+                        <div class="validators"
+                            *ngIf="compararTextoVacio('titulo')===true && moduloForm.get('titulo')?.touched">
+                            <small>¡No se aceptan espacios en blanco!</small>
+                        </div>
                     </div>
                 </div>
 
                 <div class="row mt-4">
                     <!--Ícono-->
-                    <div class="col-12 col-md-6 mb-3">
+                    <div class="col-6 col-md-6 mb-3">
                         <label class="mb-1"><b>Icono</b></label>
-
                         <input type="file" accept="image/*" class="form-control form-control-lg bg-light fs-6"
                             (change)="vista_preliminar1($event)" formControlName="icono" [ngClass]="{
                                 'is-invalid': moduloForm.get('icono')?.hasError('required') && moduloForm.get('icono')?.touched,
@@ -40,18 +45,10 @@
                             *ngIf="moduloForm.get('icono')?.hasError('required') && moduloForm.get('icono')?.touched">
                             <small>¡Este campo es requerido!</small>
                         </div>
-
-
                     </div>
-                    <div class="row">
-                        <div class="col-12" style="display: flex; justify-content: center;align-items: center;">
-                            <img class="img-fluid" width="20%" height="20%" alt="" id="img-vista-previa1" />
-                        </div>
-                    </div>
-
-                    <!--Lenguaje-->
-                    <div class="col-12 col-md-6">
-                        <label class="mb-1"><b>Seleccionar lenguaje</b></label>
+                     <!--Lenguaje-->
+                     <div class="col-6 col-md-6">
+                        <label class="mb-1"><b>Seleccione un lenguaje</b></label>
                         <select class="form-select form-select-md" aria-label=".form-select-lg example"
                             [(ngModel)]="optionLenguajeSelected" formControlName="lenguaje" [ngClass]="{
                             'is-invalid': moduloForm.get('lenguaje')?.hasError('required') && moduloForm.get('lenguaje')?.touched,
@@ -66,6 +63,11 @@
                             <small>¡Este campo es requerido!</small>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-12" style="display: flex; justify-content: center;align-items: center;">
+                            <img class="img-fluid" width="20%" height="20%" alt="" id="img-vista-previa1" />
+                        </div>
+                    </div>
                 </div>
 
 
@@ -76,19 +78,23 @@
                         <textarea class="form-control form-control-lg bg-light fs-6" formControlName="descripcion"
                             placeholder="Descripción*" rows="10"
                             [ngClass]="{
-                                'is-invalid': moduloForm.get('descripcion')?.hasError('required') && moduloForm.get('descripcion')?.touched || moduloForm.get('descripcion')?.hasError('pattern'),
+                                'is-invalid': moduloForm.get('descripcion')?.hasError('required') && moduloForm.get('descripcion')?.touched || moduloForm.get('descripcion')?.hasError('pattern') || compararTextoVacio('descripcion')===true && moduloForm.get('descripcion')?.touched,
                                 'is-valid': moduloForm.get('descripcion')?.value?.length >=8 && moduloForm.get('descripcion')?.hasError('pattern') == false }">
                             </textarea>
                         <div class="validators"
                             *ngIf="moduloForm.get('descripcion')?.hasError('required') && moduloForm.get('descripcion')?.touched">
                             <small>¡Este campo es requerido!</small>
                         </div>
+                        <div class="validators"
+                            *ngIf="compararTextoVacio('descripcion')===true && moduloForm.get('descripcion')?.touched">
+                            <small>¡No se aceptan espacios en blanco!</small>
+                        </div>
                     </div>
                 </div>
 
                 <div class="action-buttons mb-3">
                     <button routerLink="/administrador/modulos/list" mat-button type="button"
-                        class="btn btn-danger btn-md">Volver</button>
+                        class="btn btn-danger btn-md">Cancelar</button>
                     <button [disabled]="!moduloForm.valid" (click)="registrarModulo()" mat-button type="button"
                         class="btn btn-primary btn-md">Guardar</button>
                 </div>

@@ -1,8 +1,8 @@
 <body id="body-pd">
     <header class="header" id="header">
         <div class="header_toggle"> <fa-icon [icon]="iconBars" id="header-toggle" (click)="toggleNavbar()"></fa-icon> </div>
-        <div class="header_img">
-            <span> <strong>Usuario: {{infoUser.usuario}}</strong> </span>
+        <div class="header_img username">
+            <span><strong>Usuario:</strong> {{infoUser.usuario}}</span>
         </div>
     </header>
 
@@ -29,7 +29,7 @@
                     </a>
                     <a (click)="cambiarIndice(3)" class="nav_link" [class.active]="indice === 3" style="height: 55px;">
                         <i class='bx bx-user nav_icon'></i>
-                        <span class="nav_name"><fa-icon [icon]="iconQuestions"></fa-icon>&nbsp;&nbsp;&nbsp;Preguntas</span>
+                        <span class="nav_name"><fa-icon [icon]="iconQuestions"></fa-icon>&nbsp;&nbsp;&nbsp;Actividades</span>
                     </a>
                     <a (click)="cambiarIndice(4)"  *ngIf="userTypeRecived == 'administrador'" class="nav_link" [class.active]="indice === 4" style="height: 55px;">
                         <i class='bx bx-user nav_icon'></i>

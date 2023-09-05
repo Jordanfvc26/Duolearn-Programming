@@ -43,6 +43,12 @@ export class CreateComponent implements AfterViewInit {
   img2;
   img3;
   lenguajes = [];
+  spinnerStatus:boolean = false;
+
+  ngOnInit(){
+    this.spinnerStatus = true;
+  }
+
 
   ngAfterViewInit(): void {
     this.lenguajeService.listar_lenguajes(true).subscribe(resp => {
@@ -256,13 +262,12 @@ export class CreateComponent implements AfterViewInit {
 
   }
 
-  mensaje_mal(titulo:any,mensaje: any) {
+  mensaje_mal(titulo:any, mensaje: any) {
     Swal.fire({
       icon: 'error',
       title: titulo,
       text: mensaje,
       showConfirmButton: true,
-      timer: 1500
     });
   }
 }

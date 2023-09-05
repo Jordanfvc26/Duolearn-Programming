@@ -1,8 +1,9 @@
+<app-pre-loader *ngIf="!spinnerStatus"></app-pre-loader>  
   <body>
     <div class="row justify-content-center">
       <div class="col-12 container-info">
         <div class="div mt-3 mx-1">
-          <h2 id="titulo"><fa-icon [icon]="iconAdd" class="icon-title"></fa-icon> Actividades</h2>
+          <h2 id="titulo"><fa-icon [icon]="iconAdd" class="icon-title"></fa-icon> Listado de actividades</h2>
           <button [routerLink]="'/administrador/questions/create'" type="button" class="btn btn-primary btn-sm">
             <fa-icon [icon]="iconAdd"></fa-icon> Nueva actividad</button>
         </div>

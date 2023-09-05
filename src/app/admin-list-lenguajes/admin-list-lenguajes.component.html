@@ -1,8 +1,9 @@
+<app-pre-loader *ngIf="!spinnerStatus"></app-pre-loader>
 <body>
   <div class="row justify-content-center">
     <div class="col-12 container-info">
       <div class="div mt-3 mx-1">
-        <h2 id="titulo"><fa-icon [icon]="iconLanguage" class="icon-title"></fa-icon> Lenguajes</h2>
+        <h2 id="titulo"><fa-icon [icon]="iconLanguage" class="icon-title"></fa-icon> Listado de lenguajes</h2>
         <button [routerLink]="'/administrador/lenguaje/create'" type="button" class="btn btn-primary btn-sm">
           <fa-icon [icon]="iconAdd"></fa-icon> Nuevo lenguaje</button>
       </div>
@@ -25,7 +26,7 @@
       <!--Tabla con la lista de tareas-->
       <div class="card">
         <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative;">
-          <table class="table table-striped mb-0">
+          <table class="table table-striped mb-0" id="htmlTable">
             <thead>
               <tr>
                 <th scope="col">N°</th>
@@ -41,13 +42,13 @@
                 <tr *ngFor="let lenguaje of lenguajes | slice:initialPage:finalPage; let i = index">
                   <th scope="row">{{i+1}}</th>
                   <td> {{lenguaje.titulo.toUpperCase()}}</td>
-                  <td>{{lenguaje.descripcion}}</td>
+                  <td data-bs-toggle="mensaje" title="{{lenguaje.descripcion}}">{{lenguaje.descripcion}}</td>
                   <td>{{lenguaje.lenguaje_activo?"Activo":"Inactivo"}}</td>
-                  <td>{{lenguaje.portada}}</td>
-                  <td class="d-flex justify-content-between">
+                  <td data-bs-toggle="mensaje" title="{{lenguaje.portada}}">{{lenguaje.portada}}</td>
+                  <td>
                     <fa-icon [style.color]="'black'" *ngIf="lenguaje.lenguaje_activo"
                       [routerLink]="['/administrador/lenguaje/edit/'+lenguaje.lenguaje_id]" data-bs-toggle="mensaje"
-                      title="Editar" [icon]="iconEditar"></fa-icon>
+                      title="Editar" [icon]="iconEditar" id="iconEdit"></fa-icon>
                     <fa-icon *ngIf="lenguaje.lenguaje_activo"
                       (click)="eliminar_lenguaje(lenguaje.titulo, lenguaje.lenguaje_id, false, 'Desactivar')"
                       data-bs-toggle="mensaje" title="Desactivar" id="iconEliminar" [icon]="iconOn"></fa-icon>

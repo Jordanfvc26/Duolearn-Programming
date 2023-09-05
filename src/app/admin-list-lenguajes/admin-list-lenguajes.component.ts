@@ -17,19 +17,23 @@ export class AdminListLenguajesComponent implements OnInit {
   initialPage: number = 0;
   finalPage: number = 10;
   iconLanguage = iconos.faGlobe;
+  spinnerStatus: boolean = false;
 
   constructor(
     public lenguajeService: LenguajesService,
   ) { }
 
   ngOnInit(): void {
+    this.spinnerStatus = true;
     this.obtener_listado_lenguajes(true);
   }
 
   //Método que obtiene el listado de los lenguajes
   obtener_listado_lenguajes(estado: boolean){
+    this.spinnerStatus = false;
     this.lenguajeService.listar_lenguajes(estado).subscribe(resp =>{
       this.lenguajes = resp;
+      this.spinnerStatus = true;
     })
   }
 
