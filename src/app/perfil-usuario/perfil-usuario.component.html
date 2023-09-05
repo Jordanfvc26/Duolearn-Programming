@@ -1,7 +1,7 @@
 <div *ngIf="bolean" class="contenedorLoader">
     <div class="loader"></div>
     <a href="../../assets/imagenes/"></a>
-</div>  
+</div>
 
 <div class="body">
     <div class="caja" id="screenPreguntas">
@@ -34,7 +34,7 @@
 
             <div class="entrada-texto">
                 <p><i class="fas fa-user"></i> Nombre de usuario: </p>
-                <input disabled="true" type="text" class="form-control" formControlName="usuario"/>
+                <input disabled="true" type="text" class="form-control" formControlName="usuario" />
             </div>
             <br>
             <a style="cursor: pointer;" class="boton-cambiar-contrasenia" (click)="mostrarCambioClave()">
@@ -45,7 +45,7 @@
                 <button class="boton-cambiar-contrasenia" type="submit">
                     🔁 Modificar datos
                 </button>
-                <button class="boton-cambiar-contrasenia" routerLink="/dashboard">
+                <button *ngIf="tipo_usuario != 'ADMIN'" class="boton-cambiar-contrasenia" (click)="acciones()">
                     ◀ Volver al menú
                 </button>
             </div>
@@ -54,22 +54,72 @@
         <!-- Cambio de clave -->
         <ng-template #cambio>
             <form [formGroup]="form_contra" (ngSubmit)="update_password()">
-                <div class="entrada-texto">
-                    <p><i class="fas fa-lock"></i> Actual Contraseña: </p>
-                    <input type="password" class="form-control" formControlName="clave_actual" />
+
+                <div class="row mb-4">
+                    <div class="col-12 mb-2 mt-3">
+                        <label class="mb-1"><b>Contraseña Actual</b></label>
+                        <div class="input-group">
+                            <input type="{{ showPassword ? 'text' : 'password' }}" [maxlength]="20"
+                                class="form-control form-control-lg bg-light fs-6" formControlName="clave_actual"
+                                placeholder="Contraseña*" [ngClass]="{
+                            'is-invalid': form_contra.get('clave_actual')?.hasError('required') && form_contra.get('clave_actual')?.touched,
+                            'is-valid': form_contra.get('clave_actual')?.value?.length >= 1
+                          }" />
+                        </div>
+                        <div class="validators"
+                            *ngIf="form_contra.get('clave_actual')?.hasError('required') && form_contra.get('clave_actual')?.touched">
+                            <small>¡Este campo es requerido!</small>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-2 mt-3">
+                        <label class="mb-1"><b>Contraseña Nueva</b></label>
+                        <div class="input-group">
+                            <input type="{{ showPassword ? 'text' : 'password' }}" [maxlength]="20"
+                                class="form-control form-control-lg bg-light fs-6" formControlName="clave_nueva"
+                                placeholder="Contraseña*" [ngClass]="{
+                            'is-invalid': form_contra.get('clave_nueva')?.hasError('required') && form_contra.get('clave_nueva')?.touched || form_contra.get('clave_nueva')?.hasError('pattern'),
+                            'is-valid': form_contra.get('clave_nueva')?.value?.length >= 8 && form_contra.get('clave_nueva')?.hasError('pattern') == false
+                          }" />
+                        </div>
+                        <div class="validators"
+                            *ngIf="form_contra.get('clave_nueva')?.hasError('required') && form_contra.get('clave_nueva')?.touched">
+                            <small>¡Este campo es requerido!</small>
+                        </div>
+                        <div class="validators" *ngIf="form_contra.get('clave_nueva')?.hasError('pattern')">
+                            <small>¡Al menos una mayúscula, una minúscula, un número, un
+                                caracter especial!</small>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mb-2 mt-3">
+                        <label class="mb-1"><b>Confirmar contraseña</b></label>
+                        <div class="input-group">
+                            <input type="{{ showPassword ? 'text' : 'password' }}"
+                                class="form-control form-control-lg bg-light fs-6" [maxlength]="20"
+                                formControlName="confirmClave" placeholder="Confirmar contraseña*" [ngClass]="{
+                          'is-invalid': form_contra.get('confirmClave')?.hasError('required') && form_contra.get('confirmClave')?.touched || form_contra.get('confirmClave')?.hasError('confirmacionClaveNoCoincide'),
+                          'is-valid': form_contra.get('confirmClave')?.value?.length >= 8 && form_contra.get('confirmClave')?.hasError('confirmacionClaveNoCoincide') == false
+                        }" />
+                            <div class="input-group-append" (click)="togglePasswordVisibility()">
+                                <span class="input-group-text">
+                                    <fa-icon [icon]="showPassword ? iconEyeSlash : iconEye"></fa-icon>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="validators"
+                            *ngIf="form_contra.get('confirmClave')?.hasError('required') && form_contra.get('confirmClave')?.touched">
+                            <small>¡Este campo es requerido!</small>
+                        </div>
+                        <div class="validators"
+                            *ngIf="form_contra.get('confirmClave')?.hasError('confirmacionClaveNoCoincide')">
+                            <small>¡La confirmación de la clave no coincide con la
+                                clave!</small>
+                        </div>
+                    </div>
                 </div>
-                <div class="entrada-texto">
-                    <p><i class="fas fa-lock"></i> Nueva Contraseña: </p>
-                    <input type="password" class="form-control" formControlName="clave_nueva1" />
-                </div>
-                <div class="entrada-texto">
-                    <p><i class="fas fa-lock"></i> Confirmar Contraseña: </p>
-                    <input type="password" class="form-control" formControlName="clave_nueva" />
-                </div>
-                <br />
 
                 <div class="botones">
-                    <button type="submit">
+                    <button [disabled]="!form_contra.valid" type="submit">
                         Actualizar 💾
                     </button>
                     <button (click)="mostrarCambioClave()">

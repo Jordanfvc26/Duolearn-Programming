@@ -27,6 +27,7 @@ import { AdminEditLenguajeComponent } from './admin-edit-lenguaje/admin-edit-len
 import { AdminListarModulosComponent } from './admin-listar-modulos/admin-listar-modulos.component';
 import { AdminCrearModulosComponent } from './admin-crear-modulos/admin-crear-modulos.component';
 import { AdminEditModulosComponent } from './admin-edit-modulos/admin-edit-modulos.component';
+import { AdminResolver } from './admin.resolver';
 
 const routes: Routes = [
   {path:"",pathMatch:"full",redirectTo:"principal"},
@@ -65,6 +66,7 @@ const routes: Routes = [
     {path:"users", children: [
       {path:"list", component:UsuariosComponent},
     ]},
+    {path:"perfil", component:PerfilUsuarioComponent, resolve: {adminData:AdminResolver}},
   ]},
 ];
 

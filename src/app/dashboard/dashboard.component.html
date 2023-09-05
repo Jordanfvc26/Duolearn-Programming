@@ -68,20 +68,26 @@
         </header>
 
         <main>
-            <!--Fila 1 de los módulos-->
-            <div class="tarjetas" data-aos="zoom-in" data-aos-duration="900">
+            <!--Módulos-->
+            <div class="tarjetas" *ngIf="modulos.length > 0">
                 <div *ngFor="let modulo of modulos" class="tarjetas-simples" [ngStyle]="estilo1"
                     (click)="agregar_text(modulo.modulo_id)">
-                    <div>
-                        <h1> {{modulo.porcentaje}}% </h1>
-                        <span [ngStyle]="estiloletra1">{{modulo.titulo_modulo}}</span>
+                    <div class="fila mb-3">
+                        <div class="columna porcentaje">
+                            <h1>{{modulo.porcentaje}}%</h1>
+                        </div>
+                        <div class="columna icono">
+                            <img [src]="modulo.icono" class="img-fluid smaller-icon" alt="">
+                        </div>
                     </div>
-                    <div>
-                        <img [src]="modulo.icono" class="img-fluid" alt="">
+                    <div class="fila">
+                        <span class="titulo-modulo">{{modulo.titulo_modulo}}</span>
                     </div>
                 </div>
+                <div *ngIf="modulos.length == 0">
+                    <h1>No hay modulos</h1>
+                </div>
             </div>
-
         </main>
 
     </div>

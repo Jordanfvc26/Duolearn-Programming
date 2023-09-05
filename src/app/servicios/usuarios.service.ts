@@ -43,11 +43,11 @@ export class UsuariosService {
   }
 
   update_info(datos_nuevos: any): Observable<any> {
-    return this.clientHttp.put(this.Api + "/usuario/modificar", datos_nuevos);
+    return this.clientHttp.put(this.Api + "/usuario/modificar/"+sessionStorage.getItem("user"), datos_nuevos);
   }
 
-  update_pass(datos_nuevos: any): Observable<any> {
-    return this.clientHttp.post(this.Api + "/cambio_clave", datos_nuevos);
+  update_pass(id:any,datos_nuevos: any): Observable<any> {
+    return this.clientHttp.post(this.Api + "/cambio_clave/"+id, datos_nuevos);
   }
 
   listar_usuarios(estado:any): Observable<any> {

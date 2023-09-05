@@ -245,6 +245,8 @@ main:hover{
 .tarjetas-simples{
     justify-content: space-between;
     background:wheat;
+    display: flex;
+    flex-direction: column;
     padding: 1rem;
     border-radius: 15px;
     color: #1D2231;
@@ -253,13 +255,32 @@ main:hover{
     margin: auto;
 }
 
-.tarjetas-simples:hover{
-    cursor: pointer;
+.fila{
+    display: flex;
 }
 
-.tarjetas-simples div:last-child span{
-    font-size: 2.5rem;
-    color: rgb(5, 196, 88);
+.smaller-icon {
+    max-width: 40px; /* Ajusta el tamaño de la imagen según tu preferencia */
+}
+
+.titulo-modulo {
+    font-size: 25px;
+    color: black;
+    /* Puedes ajustar otros estilos de texto aquí */
+}
+
+.columna{
+    flex: 1;
+}
+
+.icono{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; 
+}
+
+.tarjetas-simples:hover{
+    cursor: pointer;
 }
 
 .tarjetas-simples h1{

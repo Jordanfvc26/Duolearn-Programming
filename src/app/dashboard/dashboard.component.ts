@@ -84,39 +84,43 @@ export class DashboardComponent implements AfterViewInit {
       this.bol2 = !this.bol2;
     }, 1250);
     AOS.init();
-    const observable = this.user_serv.get_user({ usuario: sessionStorage.getItem("user") });
+    const observable = this.user_serv.get_user(sessionStorage.getItem("user"));
     const observable1 = this.lenguajeService.obtener_lenguaje_por_id(sessionStorage.getItem("lenguaje"));
     const observable2 = this.lenguajeService.listar_lenguajes(true);
-    const observable3 = this.user_serv.get_user({ usuario: sessionStorage.getItem("user") });
-    const observable4 = this.temas_serv.obtener_temas_por_lenguaje(sessionStorage.getItem("lenguaje"), true);
-    forkJoin([observable, observable1, observable2, observable3, observable4]).subscribe(
-      ([inicial, result1, result2, result3, result4]) => {
-        console.log(inicial);
+    forkJoin([observable, observable1, observable2]).subscribe(
+      ([inicial, result1, result2]) => {
         if (inicial.estado != 1) {
           this.ruta.navigateByUrl("/principal");
         } else {
-          
           this.infoLenguaje = result1;
           this.lenguajes = result2??[];
-          this.infoUser = result3;
-          this.modulos = result4??[];
-          if(this.modulos.length>0){
-            this.modulos.forEach(element => {
-              this.estadisticas_serv.obtener_puntajes(sessionStorage.getItem("user"), element.modulo_id).subscribe(resp => {
-                if (resp == null) {
-                  element.porcentaje = '0';
-                } else {
-                  element.porcentaje = resp.length.toString() + "0";
-                }
-              })
-            })
-          }
+          this.infoUser = inicial;
+          this.temas_serv.obtener_temas_por_lenguaje(sessionStorage.getItem("lenguaje"), true).subscribe(
+            resp => {
+              this.modulos = resp??[];
+              if(this.modulos.length>0){
+                this.modulos.forEach(element => {
+                  this.estadisticas_serv.obtener_puntajes(sessionStorage.getItem("user"), element.modulo_id).subscribe(resp => {
+                    if (resp == null) {
+                      element.porcentaje = '0';
+                    } else {
+                      element.porcentaje = resp.length.toString() + "0";
+                    }
+                  })
+                })
+              }
+          },
+            error => {
+              this.modulos = [];
+              console.error('Murio :c :', error);
+            }
+          )
           this.nombre = this.infoUser.usuario;
           this.asigna_img();
         }
       },
       error => {
-        console.error('Error:', error);
+        console.error('Murio :c :', error);
       }
     );
   }

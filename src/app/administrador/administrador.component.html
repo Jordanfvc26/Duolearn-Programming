@@ -35,6 +35,10 @@
                         <i class='bx bx-user nav_icon'></i>
                         <span class="nav_name"><fa-icon [icon]="iconUsers"></fa-icon>&nbsp;&nbsp;&nbsp;Usuarios</span>
                     </a>
+                    <a (click)="cambiarIndice(5)"  *ngIf="userTypeRecived == 'administrador'" class="nav_link" [class.active]="indice === 5" style="height: 55px;">
+                        <i class='bx bx-user nav_icon'></i>
+                        <span class="nav_name"><fa-icon [icon]="fauser"></fa-icon>&nbsp;&nbsp;&nbsp;Mi Perfil</span>
+                    </a>
                 </div>
             </div>
             <a (click)="cambiarIndice(999)" class="nav_link" style="height: 55px;">

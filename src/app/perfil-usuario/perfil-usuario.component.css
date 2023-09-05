@@ -15,6 +15,9 @@
     align-items: center;
     min-height: 100vh;
 }
+.validators {
+    color: #FC3B56;
+}
 
 .caja{
     background-color: #fff;

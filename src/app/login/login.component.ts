@@ -24,7 +24,6 @@ export class LoginComponent implements OnInit {
   status: string = "login";
   optionTypeUser: string = "";
   public showPassword = false;
-  public showPassword2 = false;
 
 
   fanombre = iconos.faClosedCaptioning;
@@ -66,8 +65,8 @@ export class LoginComponent implements OnInit {
       tipo: ['', [Validators.required]],
       fecha_nacimiento: ['', [Validators.required]],
       correo: ['', [Validators.email, Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{1,}))$/)]],
-      clave: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%#*?&])[A-Za-z\d@$!%*#?&]{8,20}$/), Validators.maxLength(20), Validators.minLength(8)]],
-      confirmClave: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&.])[A-Za-z\d@$!#%*?&.]{8,20}$/), Validators.maxLength(20), Validators.minLength(8)]],
+      clave: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*['"!@#$%^&*()_/+{}:<>?-]).{8,20}$/), Validators.maxLength(20), Validators.minLength(8)]],
+      confirmClave: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*['"!@#$%^&*()_/+{}:<>?-]).{8,20}$/), Validators.maxLength(20), Validators.minLength(8)]],
     });
     // Adjuntar validador de usuario después de construir el formulario
     this.form_registro.get('usuario').setValidators([this.validarUsuario.bind(this)]);
@@ -157,10 +156,10 @@ export class LoginComponent implements OnInit {
           this.ruta.navigateByUrl("/login");
           this.mostrarFormLogin();
         }else if (resp.estado == 2) {
-          this.mensaje_mal("Usuario no registrado");
+          this.mensaje_mal("El usuario ya se encuentra registrado");
         } 
         else {
-          this.mensaje_mal("El usuario ya se encuentra registrado");
+          this.mensaje_mal("Usuario no registrado");
         }
       });
     } else {

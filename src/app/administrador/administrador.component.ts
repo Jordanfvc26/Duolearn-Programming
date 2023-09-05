@@ -60,10 +60,11 @@ export class AdministradorComponent implements OnInit {
       this.indice = 3;
     } else if (currentUrl.includes('lenguajes')) {
       this.indice = 1;
+    } else if (currentUrl.includes('perfil')) {
+      this.indice = 5;
     }
     this.user_serv.get_user(sessionStorage.getItem("user")).subscribe(resp => {
       this.infoUser = resp;
-      console.log(resp);
     });
   }
 
@@ -311,6 +312,9 @@ export class AdministradorComponent implements OnInit {
       case 4:
         this.ruta.navigate(['administrador/users/list']);
         break;
+      case 5:
+          this.ruta.navigate(['administrador/perfil']);
+          break;
       default:
         this.close_session();
         break;
