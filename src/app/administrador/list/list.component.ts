@@ -46,13 +46,26 @@ export class ListComponent implements OnInit {
 
   cargaLenguajes(){
     this.spinnerStatus = false;
-    this.lenguajeService.listar_lenguajes(true).subscribe(resp => {
+    this.lenguajeService.listar_lenguajes(true).subscribe(
+      resp => {
       this.spinnerStatus = true;
       this.arrayLenguajes = resp;
       this.selectedLenguajeId = this.arrayLenguajes.length > 0 ? this.arrayLenguajes[0].lenguaje_id : null;
       console.log(this.selectedLenguajeId)
       this.cargaModulos(this.selectedLenguajeId);
-    })
+    },
+    error => {
+      this.spinnerStatus = true;
+      this.arrayLenguajes = [];
+      this.arrayModulos = [];
+      this.actividades = [];
+      Swal.fire(
+        '¡Error!',
+        'No hay lenguajes disponibles',
+        'error'
+      )
+    }
+    )
   }
 
   changeLenguaje(event:any){
@@ -69,13 +82,24 @@ export class ListComponent implements OnInit {
 
   cargaModulos(idLenguaje:any){
     this.spinnerStatus = false;
-    this.tema_serv.obtener_temas_por_lenguaje(idLenguaje, true).subscribe(resp => {
+    this.tema_serv.obtener_temas_por_lenguaje(idLenguaje, true).subscribe(
+      resp => {
       this.spinnerStatus = true;
       this.arrayModulos = resp;
       this.selectedModuloId = this.arrayModulos.length > 0 ? this.arrayModulos[0].modulo_id : null;
       this.cargaPreguntas(this.statusActividad);
       console.log(this.arrayModulos);
-    })
+    },error => {
+      this.spinnerStatus = true;
+      Swal.fire(
+        '¡Error!',
+        'No hay módulos disponibles',
+        'error'
+      )
+      this.arrayModulos = [];
+      this.actividades = [];
+    }
+    )
   }
   cargaPreguntas(estado:boolean){
     this.spinnerStatus = false;
