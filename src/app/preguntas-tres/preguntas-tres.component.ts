@@ -4,6 +4,7 @@ import * as iconos from '@fortawesome/free-solid-svg-icons';
 import { PreguntasComponent } from '../preguntas/preguntas.component';
 import { PreguntasService } from '../servicios/preguntas.service';
 import * as $ from 'jquery';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -50,34 +51,42 @@ export class PreguntasTresComponent implements AfterViewInit {
     } else {
       this.valor = sessionStorage.getItem("modulo");
       this.pregservice.obtener_preguntas_sin_resolver(sessionStorage.getItem("user"), sessionStorage.getItem("modulo"), "drag-and-drop").subscribe(resp => {
-        //console.log(resp);
-        this.startTimer();
-        let rnd = this.getRandomInt(0, resp.length - 1);
-        //console.log(rnd);
-        this.preg_aleatoria = resp[rnd];
-        let lineas = this.preg_aleatoria.pregunta.split("\n");
-        this.linea1 = lineas[0];
-        this.linea2 = lineas[1];
-        this.linea3 = lineas[2];
-        this.linea4 = lineas[3];
-        this.datos = [this.opcion1, this.opcion2, this.opcion3, this.opcion4];
-        this.opciones = [this.preg_aleatoria.opcion_correcta, this.preg_aleatoria.opcion2, this.preg_aleatoria.opcion3, this.preg_aleatoria.opcion4]
-        for (let i = 0; i < 4; i++) {
-          let rnd = this.getRandomInt(0, 3);
-          let bol = true;
-          for (let j = 0; j <= this.salio.length; j++) {
-            if (this.salio[j] == rnd) {
-              bol = false;
+        if (resp.estado != 0) {
+
+          this.startTimer();
+          let rnd = this.getRandomInt(0, resp.length - 1);
+          //console.log(rnd);
+          this.preg_aleatoria = resp[rnd];
+          let lineas = this.preg_aleatoria.pregunta.split("\n");
+          this.linea1 = lineas[0];
+          this.linea2 = lineas[1];
+          this.linea3 = lineas[2];
+          this.linea4 = lineas[3];
+          this.datos = [this.opcion1, this.opcion2, this.opcion3, this.opcion4];
+          this.opciones = [this.preg_aleatoria.opcion_correcta, this.preg_aleatoria.opcion2, this.preg_aleatoria.opcion3, this.preg_aleatoria.opcion4]
+          for (let i = 0; i < 4; i++) {
+            let rnd = this.getRandomInt(0, 3);
+            let bol = true;
+            for (let j = 0; j <= this.salio.length; j++) {
+              if (this.salio[j] == rnd) {
+                bol = false;
+              }
+            }
+            if (bol) {
+              this.datos[i].nativeElement.innerText = this.opciones[rnd];
+              this.salio.push(rnd);
+            } else {
+              i--;
             }
           }
-          if (bol) {
-            this.datos[i].nativeElement.innerText = this.opciones[rnd];
-            this.salio.push(rnd);
-          } else {
-            i--;
-          }
+        }else{
+          Swal.fire(
+            '¡Error!',
+            'No hay preguntas suficientes de tipo Arrastrar y Soltar para este módulo',
+            'error'
+          )
+          this.ruta.navigateByUrl("/mapa-preguntas");
         }
-        //console.log(lineas);
       });
     }
   }
@@ -175,9 +184,9 @@ export class PreguntasTresComponent implements AfterViewInit {
     }
     var fecha = this.hoy.getFullYear() + '-' + (this.hoy.getMonth() + 1) + '-' + this.hoy.getDate();
     this.pregservice.send_solves(
-      sessionStorage.getItem("user"),{id_actividad: this.preg_aleatoria.actividad_id, minutos: this.tiempo, intentos: 1, num_actividad: Number.parseInt(sessionStorage.getItem("num_act")), puntaje: this.puntos }).subscribe(resp => {
-      console.log(resp);
-    });
+      sessionStorage.getItem("user"), { id_actividad: this.preg_aleatoria.actividad_id, minutos: this.tiempo, intentos: 1, num_actividad: Number.parseInt(sessionStorage.getItem("num_act")), puntaje: this.puntos }).subscribe(resp => {
+        console.log(resp);
+      });
   }
 
   //cronometro

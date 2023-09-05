@@ -46,4 +46,8 @@ export class PreguntasService {
   cambia_estado_actividad(id: any, estado:any): Observable<any> {
     return this.clientHttp.patch(this.Api + "/admin/actividades/cambiar-estado/"+id+"/"+estado, null);
   }
+
+  obtener_actividades_por_modulo(moduloId:any, estado:any): Observable<any> {
+    return this.clientHttp.get(this.Api + "/actividades/obtener/"+moduloId+"/"+estado);
+  }
 }

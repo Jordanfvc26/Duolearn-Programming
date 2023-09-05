@@ -5,6 +5,7 @@ import * as iconos from '@fortawesome/free-solid-svg-icons';
 import { InstruccionesComponent } from '../instrucciones/instrucciones.component';
 import { PreguntasComponent } from '../preguntas/preguntas.component';
 import { PreguntasService } from '../servicios/preguntas.service';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-preguntas-dos',
   templateUrl: './preguntas-dos.component.html',
@@ -79,6 +80,13 @@ export class PreguntasDosComponent implements AfterViewInit {
             this.pares.push([this.aleatorios[index].pregunta, this.aleatorios[index].opcion_correcta]);
           }
 
+        }else{
+          Swal.fire(
+            '¡Error!',
+            'No hay preguntas suficientes de tipo pares para este módulo',
+            'error'
+          )
+          this.ruta.navigateByUrl("/mapa-preguntas");
         }
       });
     }

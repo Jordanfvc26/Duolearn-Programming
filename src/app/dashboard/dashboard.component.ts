@@ -8,6 +8,7 @@ import { EstadisticasService } from '../servicios/estadisticas.service';
 import { LenguajesService } from '../servicios/lenguajes.service';
 import { forkJoin } from 'rxjs';
 import { TemasService } from '../servicios/temas.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dashboard',
@@ -79,18 +80,18 @@ export class DashboardComponent implements AfterViewInit {
   lenguajes = [];
   modulos = [];
   infoUser: any;
+  currentUrl: any;
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.bol = !this.bol;
       this.bol2 = !this.bol2;
     }, 1250);
-    const currentUrl = this.ruta.url;
-    console.log(currentUrl);
-    if (currentUrl.includes('estadisticas')) {
+    this.currentUrl = this.ruta.url;
+    if (this.currentUrl.includes('estadisticas')) {
       this.indice = 1;
-    } else if (currentUrl.includes('mi-perfil')) {
+    } else if (this.currentUrl.includes('mi-perfil')) {
       this.indice = 2;
-    } else if (currentUrl.includes('coronas')) {
+    } else if (this.currentUrl.includes('coronas')) {
       this.indice = 3;
     }else{
       this.indice = 0;
@@ -119,11 +120,16 @@ export class DashboardComponent implements AfterViewInit {
                     }
                   })
                 })
+              }else{
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'No hay modulos para este lenguaje'
+                })
               }
           },
             error => {
               this.modulos = [];
-              console.error('Murio :c :', error);
             }
           )
           this.nombre = this.infoUser.usuario;
@@ -145,16 +151,16 @@ export class DashboardComponent implements AfterViewInit {
     this.indice = indice;
     switch (indice) {
       case 0:
-        this.ruta.navigate(['dashboard']);
+        this.ruta.navigateByUrl('dashboard');
         break;
       case 1:
-        this.ruta.navigate(['dashboard/estadisticas']);
+        this.ruta.navigateByUrl('dashboard/estadisticas');
         break;
       case 2:
-        this.ruta.navigate(['dashboard/mi-perfil']);
+        this.ruta.navigateByUrl('dashboard/mi-perfil');
         break;
       case 3:
-        this.ruta.navigate(['dashboard/coronas']);
+        this.ruta.navigateByUrl('dashboard/coronas');
         break;
     }
   }

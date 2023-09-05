@@ -14,9 +14,7 @@
     background-color: #fff;
     border-radius: 15px;
     box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.2);
-    min-height: 550px;
-    padding: 25px;
-    margin-bottom: 20px;
+    padding: 20px;
 }
 
 .entrada-texto{
@@ -28,6 +26,7 @@
 }
 .entrada-texto input{
     height: 35px;
+    padding-left: 7px;
     border-radius: 10px;
     background-color: lightgoldenrodyellow;
     border-color: wheat;
@@ -53,13 +52,13 @@
 
 .botones{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .botones button{
     background-color: rgb(5, 196, 88); 
     border-radius: 10px;
-    padding: 7px 15px;
+    padding: 7px 10px;
     outline: none;
     border: 0;
     font-size: 17px;

@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import * as iconos from '@fortawesome/free-solid-svg-icons';
+import { LenguajesService } from 'src/app/servicios/lenguajes.service';
 import { PreguntasService } from 'src/app/servicios/preguntas.service';
+import { TemasService } from 'src/app/servicios/temas.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -12,7 +14,13 @@ import Swal from 'sweetalert2';
 })
 export class ListComponent implements OnInit {
 
-  constructor(public ruta: Router,public act_serv: PreguntasService) { }
+  constructor(
+    public ruta: Router,
+    public act_serv: PreguntasService,
+    public lenguajeService: LenguajesService,
+    public tema_serv: TemasService
+    ) { }
+
   faCerrarSesion = iconos.faSignOutAlt;
   iconDelete=iconos.faTrashAlt;
   iconEdit=iconos.faEdit;
@@ -23,20 +31,64 @@ export class ListComponent implements OnInit {
   initialPage: number = 0;
   finalPage: number = 10;
   spinnerStatus: boolean = false;
-
+  arrayLenguajes: any[]=[];
   actividades: any[]=[];
+  selectedLenguajeId: number;
+  arrayModulos: any[]=[];
+  selectedModuloId: number;
+  statusActividad= true;
+
   ngOnInit(): void {
     this.spinnerStatus = true;
-    this.cargaPreguntas(true);
+    this.cargaLenguajes();
+    //this.cargaPreguntas(true);
   }
 
+  cargaLenguajes(){
+    this.spinnerStatus = false;
+    this.lenguajeService.listar_lenguajes(true).subscribe(resp => {
+      this.spinnerStatus = true;
+      this.arrayLenguajes = resp;
+      this.selectedLenguajeId = this.arrayLenguajes.length > 0 ? this.arrayLenguajes[0].lenguaje_id : null;
+      console.log(this.selectedLenguajeId)
+      this.cargaModulos(this.selectedLenguajeId);
+    })
+  }
+
+  changeLenguaje(event:any){
+    console.log(event);
+    this.selectedLenguajeId = event;
+    this.cargaModulos(this.selectedLenguajeId);
+  }
+
+  changeModulo(event:any){
+    console.log(event);
+    this.selectedModuloId = event;
+    this.cargaPreguntas(this.statusActividad);
+  }
+
+  cargaModulos(idLenguaje:any){
+    this.spinnerStatus = false;
+    this.tema_serv.obtener_temas_por_lenguaje(idLenguaje, true).subscribe(resp => {
+      this.spinnerStatus = true;
+      this.arrayModulos = resp;
+      this.selectedModuloId = this.arrayModulos.length > 0 ? this.arrayModulos[0].modulo_id : null;
+      this.cargaPreguntas(this.statusActividad);
+      console.log(this.arrayModulos);
+    })
+  }
   cargaPreguntas(estado:boolean){
     this.spinnerStatus = false;
-    this.act_serv.get_questionsAll(estado).subscribe(resp => {
+    this.act_serv.obtener_actividades_por_modulo(this.selectedModuloId,estado).subscribe(
+      resp => {
       this.actividades = resp;
       this.spinnerStatus = true;
       console.log(this.actividades);
-    });
+    },error => {
+      this.spinnerStatus = true;
+      this.actividades = [];
+    }
+    );
   }
 
   editarPregunta(id:any){
@@ -44,11 +96,8 @@ export class ListComponent implements OnInit {
   }
 
   onFilterChange(event: any) {
-    const value = event.target.value;
-    if (value === "true")
-      this.cargaPreguntas(true);
-    else if (value === "false")
-      this.cargaPreguntas(false);
+    this.statusActividad = event.target.value;
+    this.cargaPreguntas(this.statusActividad);
   }
   
   close_session() {

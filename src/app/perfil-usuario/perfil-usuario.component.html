@@ -3,127 +3,125 @@
     <a href="../../assets/imagenes/"></a>
 </div>
 
-<div class="" style="align-items: center;">
-    <div class="caja" id="screenPreguntas">
+<div class="caja" id="screenPreguntas">
 
-        <div class="titulo">
-            <h6><i class="fas fa-user" id="icono-titulo"></i> Mi perfil</h6>
+    <div class="titulo">
+        <h6><i class="fas fa-user" id="icono-titulo"></i> Mi perfil</h6>
+    </div>
+
+    <form class="ingresar-registro-form" [formGroup]="form_registro" (ngSubmit)="update_info()"
+        *ngIf="form_clave else cambio">
+        <div class="entrada-texto">
+            <p><i class="fas fa-comment"></i> Nombres Completos: </p>
+            <input type="text" class="form-control" formControlName="nombres" />
         </div>
 
-        <form class="ingresar-registro-form" [formGroup]="form_registro" (ngSubmit)="update_info()"
-            *ngIf="form_clave else cambio">
-            <div class="entrada-texto">
-                <p><i class="fas fa-comment"></i> Nombres Completos: </p>
-                <input type="text" class="form-control" formControlName="nombres" />
-            </div>
+        <div class="entrada-texto">
+            <p><i class="fas fa-comment"></i> Apellidos Completos: </p>
+            <input type="text" class="form-control" formControlName="apellidos" />
+        </div>
 
-            <div class="entrada-texto">
-                <p><i class="fas fa-comment"></i> Apellidos Completos: </p>
-                <input type="text" class="form-control" formControlName="apellidos" />
-            </div>
+        <div class="entrada-texto">
+            <p><i class="fas fa-calendar"></i> Fecha de Nacimiento: </p>
+            <input type="date" class="form-control" formControlName="fecha_nacimiento" id="campoFecha" />
+        </div>
 
-            <div class="entrada-texto">
-                <p><i class="fas fa-calendar"></i> Fecha de Nacimiento: </p>
-                <input type="date" class="form-control" formControlName="fecha_nacimiento" id="campoFecha" />
-            </div>
+        <div class="entrada-texto">
+            <p><i class="fas fa-envelope"></i> Correo electrónico: </p>
+            <input type="text" class="form-control" formControlName="correo" />
+        </div>
 
-            <div class="entrada-texto">
-                <p><i class="fas fa-envelope"></i> Correo electrónico: </p>
-                <input type="text" class="form-control" formControlName="correo" />
-            </div>
+        <div class="entrada-texto">
+            <p><i class="fas fa-user"></i> Nombre de usuario: </p>
+            <input disabled="true" type="text" class="form-control" formControlName="usuario" />
+        </div>
+        <br>
+        <a style="cursor: pointer;" class="botones boton-cambiar-contrasenia" (click)="mostrarCambioClave()">
+            Cambiar Contraseña
+        </a>
 
-            <div class="entrada-texto">
-                <p><i class="fas fa-user"></i> Nombre de usuario: </p>
-                <input disabled="true" type="text" class="form-control" formControlName="usuario" />
-            </div>
-            <br>
-            <a style="cursor: pointer;" class="boton-cambiar-contrasenia" (click)="mostrarCambioClave()">
-                Cambiar Contraseña
-            </a>
+        <div class="botones">
+            <button class="boton-cambiar-contrasenia" type="submit">
+                🔁 Modificar datos
+            </button>
+        </div>
+    </form>
 
-            <div class="botones">
-                <button class="boton-cambiar-contrasenia" type="submit">
-                    🔁 Modificar datos
-                </button>
-            </div>
-        </form>
+    <!-- Cambio de clave -->
+    <ng-template #cambio>
+        <form [formGroup]="form_contra" (ngSubmit)="update_password()">
 
-        <!-- Cambio de clave -->
-        <ng-template #cambio>
-            <form [formGroup]="form_contra" (ngSubmit)="update_password()">
-
-                <div class="row mb-4">
-                    <div class="col-12 mb-2 mt-3">
-                        <label class="mb-1"><b>Contraseña Actual</b></label>
-                        <div class="input-group">
-                            <input type="{{ showPassword ? 'text' : 'password' }}" [maxlength]="20"
-                                class="form-control form-control-lg bg-light fs-6" formControlName="clave_actual"
-                                placeholder="Contraseña*" [ngClass]="{
+            <div class="row mb-4">
+                <div class="col-12 mb-2 mt-3">
+                    <label class="mb-1"><b>Contraseña Actual</b></label>
+                    <div class="input-group">
+                        <input type="{{ showPassword ? 'text' : 'password' }}" [maxlength]="20"
+                            class="form-control form-control-lg bg-light fs-6" formControlName="clave_actual"
+                            placeholder="Contraseña*" [ngClass]="{
                             'is-invalid': form_contra.get('clave_actual')?.hasError('required') && form_contra.get('clave_actual')?.touched,
                             'is-valid': form_contra.get('clave_actual')?.value?.length >= 1
                           }" />
-                        </div>
-                        <div class="validators"
-                            *ngIf="form_contra.get('clave_actual')?.hasError('required') && form_contra.get('clave_actual')?.touched">
-                            <small>¡Este campo es requerido!</small>
-                        </div>
                     </div>
-                    <div class="col-12 mb-2 mt-3">
-                        <label class="mb-1"><b>Contraseña Nueva</b></label>
-                        <div class="input-group">
-                            <input type="{{ showPassword ? 'text' : 'password' }}" [maxlength]="20"
-                                class="form-control form-control-lg bg-light fs-6" formControlName="clave_nueva"
-                                placeholder="Contraseña*" [ngClass]="{
+                    <div class="validators"
+                        *ngIf="form_contra.get('clave_actual')?.hasError('required') && form_contra.get('clave_actual')?.touched">
+                        <small>¡Este campo es requerido!</small>
+                    </div>
+                </div>
+                <div class="col-12 mb-2 mt-3">
+                    <label class="mb-1"><b>Contraseña Nueva</b></label>
+                    <div class="input-group">
+                        <input type="{{ showPassword ? 'text' : 'password' }}" [maxlength]="20"
+                            class="form-control form-control-lg bg-light fs-6" formControlName="clave_nueva"
+                            placeholder="Contraseña*" [ngClass]="{
                             'is-invalid': form_contra.get('clave_nueva')?.hasError('required') && form_contra.get('clave_nueva')?.touched || form_contra.get('clave_nueva')?.hasError('pattern'),
                             'is-valid': form_contra.get('clave_nueva')?.value?.length >= 8 && form_contra.get('clave_nueva')?.hasError('pattern') == false
                           }" />
-                        </div>
-                        <div class="validators"
-                            *ngIf="form_contra.get('clave_nueva')?.hasError('required') && form_contra.get('clave_nueva')?.touched">
-                            <small>¡Este campo es requerido!</small>
-                        </div>
-                        <div class="validators" *ngIf="form_contra.get('clave_nueva')?.hasError('pattern')">
-                            <small>¡Al menos una mayúscula, una minúscula, un número, un
-                                caracter especial!</small>
-                        </div>
                     </div>
+                    <div class="validators"
+                        *ngIf="form_contra.get('clave_nueva')?.hasError('required') && form_contra.get('clave_nueva')?.touched">
+                        <small>¡Este campo es requerido!</small>
+                    </div>
+                    <div class="validators" *ngIf="form_contra.get('clave_nueva')?.hasError('pattern')">
+                        <small>¡Al menos una mayúscula, una minúscula, un número, un
+                            caracter especial!</small>
+                    </div>
+                </div>
 
-                    <div class="col-12 mb-2 mt-3">
-                        <label class="mb-1"><b>Confirmar contraseña</b></label>
-                        <div class="input-group">
-                            <input type="{{ showPassword ? 'text' : 'password' }}"
-                                class="form-control form-control-lg bg-light fs-6" [maxlength]="20"
-                                formControlName="confirmClave" placeholder="Confirmar contraseña*" [ngClass]="{
+                <div class="col-12 mb-2 mt-3">
+                    <label class="mb-1"><b>Confirmar contraseña</b></label>
+                    <div class="input-group">
+                        <input type="{{ showPassword ? 'text' : 'password' }}"
+                            class="form-control form-control-lg bg-light fs-6" [maxlength]="20"
+                            formControlName="confirmClave" placeholder="Confirmar contraseña*" [ngClass]="{
                           'is-invalid': form_contra.get('confirmClave')?.hasError('required') && form_contra.get('confirmClave')?.touched || form_contra.get('confirmClave')?.hasError('confirmacionClaveNoCoincide'),
                           'is-valid': form_contra.get('confirmClave')?.value?.length >= 8 && form_contra.get('confirmClave')?.hasError('confirmacionClaveNoCoincide') == false
                         }" />
-                            <div class="input-group-append" (click)="togglePasswordVisibility()">
-                                <span class="input-group-text">
-                                    <fa-icon [icon]="showPassword ? iconEyeSlash : iconEye"></fa-icon>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="validators"
-                            *ngIf="form_contra.get('confirmClave')?.hasError('required') && form_contra.get('confirmClave')?.touched">
-                            <small>¡Este campo es requerido!</small>
-                        </div>
-                        <div class="validators"
-                            *ngIf="form_contra.get('confirmClave')?.hasError('confirmacionClaveNoCoincide')">
-                            <small>¡La confirmación de la clave no coincide con la
-                                clave!</small>
+                        <div class="input-group-append" (click)="togglePasswordVisibility()">
+                            <span class="input-group-text">
+                                <fa-icon [icon]="showPassword ? iconEyeSlash : iconEye"></fa-icon>
+                            </span>
                         </div>
                     </div>
+                    <div class="validators"
+                        *ngIf="form_contra.get('confirmClave')?.hasError('required') && form_contra.get('confirmClave')?.touched">
+                        <small>¡Este campo es requerido!</small>
+                    </div>
+                    <div class="validators"
+                        *ngIf="form_contra.get('confirmClave')?.hasError('confirmacionClaveNoCoincide')">
+                        <small>¡La confirmación de la clave no coincide con la
+                            clave!</small>
+                    </div>
                 </div>
+            </div>
 
-                <div class="botones">
-                    <button [disabled]="!form_contra.valid" type="submit">
-                        Actualizar 💾
-                    </button>
-                    <button (click)="mostrarCambioClave()">
-                        Cancelar ❌
-                    </button>
-                </div>
-            </form>
-        </ng-template>
-    </div>
+            <div class="botones">
+                <button [disabled]="!form_contra.valid" type="submit">
+                    Actualizar 💾
+                </button>
+                <button (click)="mostrarCambioClave()">
+                    Cancelar ❌
+                </button>
+            </div>
+        </form>
+    </ng-template>
 </div>

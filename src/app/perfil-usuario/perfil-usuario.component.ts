@@ -100,12 +100,20 @@ export class PerfilUsuarioComponent implements OnInit {
   }
 
   update_password(){
+    
     if(this.form_contra.get('clave_nueva').value == this.form_contra.get('confirmClave').value){
+      
       this.user_Service.update_pass(sessionStorage.getItem("user"),this.crearjson()).subscribe(resp=>{
         if (resp.estado == 1) {
-          this.mensaje_bien("SE HA MODIFICADO");
-          setTimeout(() => {
-            window.location.reload();
+          Swal.fire({
+            title: 'Debe volver a iniciar su sesión',
+            showDenyButton: false,
+            showCancelButton: false,
+            confirmButtonText: 'Entendido',
+          }).then((result) => {
+            this.close_session();
+          }).finally(() => {
+            this.close_session();
           })
         } else {
           this.mensaje_mal("NO SE HA MODIFICADO");
@@ -128,6 +136,12 @@ export class PerfilUsuarioComponent implements OnInit {
       timer: 2000
     })
   }
+
+  close_session() {
+    sessionStorage.clear();
+    this.ruta.navigateByUrl("/login");
+  }
+
 
   mensaje_mal(mensaje: any) {
     Swal.fire({

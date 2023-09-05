@@ -1,83 +1,100 @@
-<app-pre-loader *ngIf="!spinnerStatus"></app-pre-loader>  
-  <body>
-    <div class="row justify-content-center">
-      <div class="col-12 container-info">
-        <div class="div mt-3 mx-1">
-          <h2 id="titulo"><fa-icon [icon]="iconAdd" class="icon-title"></fa-icon> Listado de actividades</h2>
-          <button [routerLink]="'/administrador/questions/create'" type="button" class="btn btn-primary btn-sm">
-            <fa-icon [icon]="iconAdd"></fa-icon> Nueva actividad</button>
-        </div>
-        <br />
-        <!--Inputs para buscar e importar-->
-        <div class="row">
-          <!--Buscar paciente por nombre-->
-          <div class="col-12 col-md-4 col-lg-4 mb-3">
-            <form>
-              <select class="form-select" aria-label="Default select example" style="margin-bottom: 12px;"
-                  (change)="onFilterChange($event)">
-                  <option value="true" selected>Activos</option>
-                  <option value="false">Inactivos</option>
-              </select>
-          </form>
-          </div>
-         
-        </div>
-  
-        <!--Tabla con la lista de tareas-->
-        <div class="card">
-          <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative;">
-            <table class="table table-striped mb-0">
-              <thead>
-                <tr>
-                  <th scope="col">N°</th>
-                  <th scope="col">Tipo</th>
-                  <th scope="col">Lenguaje</th>
-                  <th scope="col">Modulo</th>
-                  <th scope="col">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <ng-container *ngIf="actividades.length > 0; else noResults">
-                  <tr
-                  *ngFor="let actividad of actividades | slice:initialPage:finalPage; let i = index">
-                    <th scope="row">{{i+1}}</th>
-                    <td>{{actividad.tipo_actividad.replaceAll('-', ' ').toUpperCase()}}</td>
-                    <td>{{actividad.nombre_lenguaje}}</td>
-                    <td>{{actividad.nombre_modulo}}</td>
-                    <td class="actions">
-                      <!--(click)="openModalViewTaskDetail(viewTaskDetail, task.id)"-->
-                      
-                        <!--(click)="goToEditMyTask(task)"-->
-                      <fa-icon (click)="editarPregunta(actividad.actividad_id)" data-bs-toggle="mensaje" title="Editar" id="iconEditar"
-                        [icon]="iconEdit"></fa-icon>
-                        <!--(click)="deleteTask(task.id, task.title)" -->
-                        <fa-icon *ngIf="actividad.actividad_activa"
-                        (click)="cambiar_estado_actividad(actividad.actividad_id, false)"
-                            data-bs-toggle="mensaje" title="Desactivar" id="iconEliminar"
-                            [icon]="iconOn"></fa-icon>
-                        <fa-icon *ngIf="!actividad.actividad_activa"
-                        (click)="cambiar_estado_actividad(actividad.actividad_id, true)"
-                            data-bs-toggle="mensaje" title="Activar" id="iconEliminar"
-                            [icon]="iconOff"></fa-icon>
+<app-pre-loader *ngIf="!spinnerStatus"></app-pre-loader>
 
-                    </td>
-                    
-                  </tr>
-                </ng-container>
-                <!--Para cuando no cargue la data-->
-                <ng-template #noResults>
-                  <tr>
-                    <td colspan="7" class="no-results">Sin resultados...</td>
-                  </tr>
-                </ng-template>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <!--Paginación-->
-        <mat-paginator id="paginacion" [pageSizeOptions]="[5, 10, 25]" [pageSize]="itemsForPage"
-          [length]="actividades.length" (page)="changePage($event)">
-        </mat-paginator>
+<body>
+  <div class="row justify-content-center">
+    <div class="col-12 container-info">
+      <div class="div mt-3 mx-1">
+        <h2 id="titulo"><fa-icon [icon]="iconAdd" class="icon-title"></fa-icon> Listado de actividades</h2>
+        <button [routerLink]="'/administrador/questions/create'" type="button" class="btn btn-primary btn-sm">
+          <fa-icon [icon]="iconAdd"></fa-icon> Nueva actividad</button>
       </div>
+      <br />
+      <!--Inputs para buscar e importar-->
+      <div class="row">
+        <!--Buscar paciente por nombre-->
+        <div class="col-12 col-md-4 col-lg-4 mb-3">
+          <form>
+            <label for="lenguaje_select"> <strong>Seleccione el lenguaje</strong></label>
+            <select name="lenguaje_select" id="lenguaje_select" class="form-select mt-2"
+              aria-label="Default select example" style="margin-bottom: 12px;" [value]="selectedLenguajeId"
+              (change)="changeLenguaje($event.target.value)">
+              <option *ngFor="let lenguaje of arrayLenguajes" [value]="lenguaje.lenguaje_id">
+                {{lenguaje.titulo}}</option>
+            </select>
+          </form>
+        </div>
+        <div class="col-12 col-md-4 col-lg-4 mb-3">
+          <form>
+            <label for="module_select"> <strong>Seleccione el modulo</strong></label>
+            <select name="module_select" id="module_select" class="form-select mt-2" aria-label="Default select example"
+              style="margin-bottom: 12px;" [value]="selectedModuloId" (change)="changeModulo($event.target.value)">
+              <option *ngFor="let modulo of arrayModulos" [value]="modulo.modulo_id">
+                {{modulo.titulo_modulo}}</option>
+            </select>
+          </form>
+        </div>
+        <div class="col-12 col-md-4 col-lg-4 mb-3">
+          <form>
+            <label for="module_select"> <strong>Seleccione el estado de la actividad</strong></label>
+            <select class="form-select mt-2" aria-label="Default select example" style="margin-bottom: 12px;"
+              (change)="onFilterChange($event)">
+              <option [value]="true" selected>Activos</option>
+              <option [value]="false">Inactivos</option>
+            </select>
+          </form>
+        </div>
+
+      </div>
+
+      <!--Tabla con la lista de tareas-->
+      <div class="card">
+        <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative;">
+          <table class="table table-striped mb-0">
+            <thead>
+              <tr>
+                <th scope="col">N°</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Lenguaje</th>
+                <th scope="col">Modulo</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngIf="actividades.length > 0; else noResults">
+                <tr *ngFor="let actividad of actividades | slice:initialPage:finalPage; let i = index">
+                  <th scope="row">{{i+1}}</th>
+                  <td>{{actividad.tipo_actividad.replaceAll('-', ' ').toUpperCase()}}</td>
+                  <td>{{actividad.nombre_lenguaje}}</td>
+                  <td>{{actividad.nombre_modulo}}</td>
+                  <td class="actions">
+                    <fa-icon (click)="editarPregunta(actividad.actividad_id)" data-bs-toggle="mensaje" title="Editar"
+                      id="iconEditar" [icon]="iconEdit"></fa-icon>
+                    <!--(click)="deleteTask(task.id, task.title)" -->
+                    <fa-icon *ngIf="actividad.actividad_activa"
+                      (click)="cambiar_estado_actividad(actividad.actividad_id, false)" data-bs-toggle="mensaje"
+                      title="Desactivar" id="iconEliminar" [icon]="iconOn"></fa-icon>
+                    <fa-icon *ngIf="!actividad.actividad_activa"
+                      (click)="cambiar_estado_actividad(actividad.actividad_id, true)" data-bs-toggle="mensaje"
+                      title="Activar" id="iconEliminar" [icon]="iconOff"></fa-icon>
+
+                  </td>
+
+                </tr>
+              </ng-container>
+              <!--Para cuando no cargue la data-->
+              <ng-template #noResults>
+                <tr>
+                  <td colspan="7" class="no-results">Sin resultados...</td>
+                </tr>
+              </ng-template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!--Paginación-->
+      <mat-paginator id="paginacion" [pageSizeOptions]="[5, 10, 25]" [pageSize]="itemsForPage"
+        [length]="actividades.length" (page)="changePage($event)">
+      </mat-paginator>
     </div>
-  </body>
+  </div>
+</body>

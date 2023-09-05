@@ -9,10 +9,14 @@
         </div>
         
         <!--El value de progress, debe ser el mismop valor de porcentaje que se indica en el modulo del dashboard-->
-        <div *ngFor="let modulo of modulos;let i=index;" class="progreso-modulos">
-            <label for="task"><b>{{i+1}}</b> {{modulo.titulo_modulo}}: </label>
-            <progress id="task" max="100" value={{modulo.porcentaje}}></progress>
-        </div>
-
+        <ng-container *ngIf="modulos.length > 0; else noResults">
+            <div *ngFor="let modulo of modulos;let i=index;" class="progreso-modulos">
+                <label for="task"><b>{{i+1}}</b> {{modulo.titulo_modulo}}: </label>
+                <progress id="task" max="100" value={{modulo.porcentaje}}></progress>
+            </div>
+        </ng-container>
+        <ng-container #noResults>
+            <h6 style="text-align: center;">No hay estadísticas</h6>
+        </ng-container>
     </div>
 </div>

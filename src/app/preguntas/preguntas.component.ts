@@ -3,12 +3,9 @@ import { PreguntasService } from '../servicios/preguntas.service';
 import { ElementRef, ViewChild } from '@angular/core';
 
 import * as iconos from '@fortawesome/free-solid-svg-icons';
-import { InstruccionesComponent } from '../instrucciones/instrucciones.component';
-
 import { Router } from '@angular/router';
-import { DashboardComponent } from '../dashboard/dashboard.component';
-import { MapaPreguntasComponent } from '../mapa-preguntas/mapa-preguntas.component';
 import { TemasService } from '../servicios/temas.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-preguntas',
@@ -49,27 +46,36 @@ export class PreguntasComponent implements OnInit {
       })
       this.pregservice.obtener_preguntas_sin_resolver(sessionStorage.getItem("user"), sessionStorage.getItem("modulo"), "cuestionario").subscribe(resp => {
         this.Pregunta = resp;
-        this.startTimer();
-        let rnd = this.getRandomInt(0, this.Pregunta.length - 1);
-        this.preg_aleatoria = resp[rnd];
-        this.cargar_elementos();
-        //console.log(this.preg_aleatoria);
-        this.opciones = [this.preg_aleatoria.opcion_correcta, this.preg_aleatoria.opcion2, this.preg_aleatoria.opcion3, this.preg_aleatoria.opcion4]
-        this.pregunta.nativeElement.innerText = this.preg_aleatoria.pregunta;
-        for (let i = 0; i < 4; i++) {
-          let rnd = this.getRandomInt(0, 3);
-          let bol = true;
-          for (let j = 0; j <= this.salio.length; j++) {
-            if (this.salio[j] == rnd) {
-              bol = false;
+        if(resp.estado!=0){
+          this.startTimer();
+          let rnd = this.getRandomInt(0, this.Pregunta.length - 1);
+          this.preg_aleatoria = resp[rnd];
+          this.cargar_elementos();
+          //console.log(this.preg_aleatoria);
+          this.opciones = [this.preg_aleatoria.opcion_correcta, this.preg_aleatoria.opcion2, this.preg_aleatoria.opcion3, this.preg_aleatoria.opcion4]
+          this.pregunta.nativeElement.innerText = this.preg_aleatoria.pregunta;
+          for (let i = 0; i < 4; i++) {
+            let rnd = this.getRandomInt(0, 3);
+            let bol = true;
+            for (let j = 0; j <= this.salio.length; j++) {
+              if (this.salio[j] == rnd) {
+                bol = false;
+              }
+            }
+            if (bol) {
+              this.datos[i].nativeElement.innerText = this.opciones[rnd];
+              this.salio.push(rnd);
+            } else {
+              i--;
             }
           }
-          if (bol) {
-            this.datos[i].nativeElement.innerText = this.opciones[rnd];
-            this.salio.push(rnd);
-          } else {
-            i--;
-          }
+        }else{
+          Swal.fire(
+            '¡Error!',
+            'No hay preguntas suficientes de tipo cuestionario para este módulo',
+            'error'
+          )
+          this.ruta.navigateByUrl("/mapa-preguntas");
         }
       })
       
