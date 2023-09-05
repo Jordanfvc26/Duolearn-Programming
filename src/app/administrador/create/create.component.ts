@@ -127,17 +127,27 @@ export class CreateComponent implements AfterViewInit {
 
   }
 
-  valida_dragandrop(): boolean {
+  valida_dragandrop(): number {
     let v = this.pregunta_cuest.nativeElement.value.split("\n");
     if (v.length == 4) {
       for (let index = 0; index < v.length; index++) {
         if (v[index] == "") {
-          return false;
+          return 0;
+        }
+        if(!v[index].includes("//")){
+          return 2;
         }
       }
-      return true;
+      for (let i = 0; i < v.length; i++) {
+        for (let j = i + 1; j < v.length; j++) {
+          if (v[i].toLowerCase() == v[j].toLowerCase()) {
+            return 3; // Se encontró una igualdad, los elementos no son todos diferentes.
+          }
+        }
+      }
+      return 1;
     } else {
-      return false;
+      return 4;
     }
   }
 
@@ -191,8 +201,23 @@ export class CreateComponent implements AfterViewInit {
         }
       } else if (this.seleccionado == 4) {
         if (this.valida_campos(3)) {
-          if (this.valida_dragandrop() == false) {
-            this.mensaje_mal("Deben ser 4 lineas de pregunta", "Por favor cumple con los requisitos de la pregunta");
+          const validado=this.valida_dragandrop();
+          if (validado != 1) {
+            switch (validado) {
+              case 0:
+                this.mensaje_mal("No debe estar vacío", "Por favor cumple con los requisitos de la pregunta");
+                break;
+              case 2:
+                this.mensaje_mal("Las lineas deben llevar comentarios (//)", "Por favor cumple con los requisitos de la pregunta");
+                break;
+                case 3:
+                  this.mensaje_mal("Las 4 lineas deben ser diferentes", "Por favor cumple con los requisitos de la pregunta");
+                  break;
+                case 4:
+                  this.mensaje_mal("Deben ser 4 lineas de pregunta", "Por favor cumple con los requisitos de la pregunta");
+                  break;
+
+            }
           } else {
             this.act_serv.realiza_pregunta({
               tema: this.tema_select,
