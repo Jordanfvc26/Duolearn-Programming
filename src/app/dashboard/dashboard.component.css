@@ -111,6 +111,8 @@
 .main-content{
     transition: margin-left 300ms;
     margin-left: 345px;
+    width: auto;
+
 }
 
 /*---------------------Parte superior header---------------*/
@@ -216,8 +218,8 @@ main{
     margin-top: 85px;
     padding: 2rem 1.5rem;
     background: white;
-    min-height: calc(100vh - 90px);
     text-decoration: none;
+    width: 100%;
 }
 
 main:hover{

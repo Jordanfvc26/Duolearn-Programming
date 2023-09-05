@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  api:"https://duolearn-programming-server.onrender.com"
+  api:"https://duolearn-programming.onrender.com"
 };

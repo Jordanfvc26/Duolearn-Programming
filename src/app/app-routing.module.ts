@@ -31,7 +31,11 @@ import { AdminResolver } from './admin.resolver';
 
 const routes: Routes = [
   {path:"",pathMatch:"full",redirectTo:"principal"},
-  {path:"dashboard", component:DashboardComponent},
+  {path:"dashboard", component:DashboardComponent, children:[
+    {path: "mi-perfil", component:PerfilUsuarioComponent},
+    {path: "coronas", component:CoronasComponent},
+    {path: "estadisticas", component:EstadisticasComponent},
+  ]},
   {path:"principal", component:PrincipalComponent},
   {path:"login", component:LoginComponent},
   {path:"elegir-lenguaje", component:ElegirLenguajeComponent},
@@ -41,10 +45,7 @@ const routes: Routes = [
   {path: "preguntas-cuatro", component:PreguntasCuatroComponent},
   {path: "preguntas-cinco", component:PreguntasCincoComponent},
   {path:"instrucciones", component:InstruccionesComponent},
-  {path: "mi-perfil", component:PerfilUsuarioComponent},
   {path: "olvide-contrasenia/:token", component:OlvideContraseniaComponent},
-  {path: "coronas", component:CoronasComponent},
-  {path: "estadisticas", component:EstadisticasComponent},
   {path: "mapa-preguntas", component:MapaPreguntasComponent},
   {path: "teorias", component:TeoriasComponent},
   {path: "administrador", component:AdministradorComponent, children: [

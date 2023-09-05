@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  api:"https://duolearn-programming-server.onrender.com"
+  api:"https://duolearn-programming.onrender.com"
 };
 
 /*

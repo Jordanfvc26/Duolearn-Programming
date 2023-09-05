@@ -5,7 +5,7 @@
 
 <div class="container" *ngIf="bol2">
     <input type="checkbox" id="nav-toggle">
-    <div class="sidebar" data-aos="fade-right">
+    <div class="sidebar" >
         <div class="sidebar-brand">
             <h2><span><fa-icon [icon]="fagraduation"></fa-icon></span><span>Duolearn</span></h2>
         </div>
@@ -14,20 +14,19 @@
         <div class="sidebar-menu">
             <ul>
                 <li>
-                    <a href="" class="active"> <span><fa-icon [icon]="fahome"></fa-icon></span>
-
+                    <a [class.active]="indice === 0" (click)="cambiarIndice(0)"> <span><fa-icon [icon]="fahome"></fa-icon></span>
                         <span>Tablero</span> </a>
                 </li>
                 <li>
-                    <a routerLink="/estadisticas"> <span><fa-icon [icon]="fachart"></fa-icon></span>
+                    <a [class.active]="indice === 1" (click)="cambiarIndice(1)"> <span><fa-icon [icon]="fachart"></fa-icon></span>
                         <span>Estadísticas</span></a>
                 </li>
                 <li>
-                    <a routerLink="/mi-perfil"> <span><fa-icon [icon]="fauser"></fa-icon></span>
+                    <a [class.active]="indice === 2" (click)="cambiarIndice(2)"> <span><fa-icon [icon]="fauser"></fa-icon></span>
                         <span> Mi Perfil</span></a>
                 </li>
                 <li>
-                    <a routerLink="/coronas"> <span><fa-icon [icon]="facrown"></fa-icon></span>
+                    <a [class.active]="indice === 3" (click)="cambiarIndice(3)"> <span><fa-icon [icon]="facrown"></fa-icon></span>
                         <span>Coronas</span></a>
                 </li>
                 <li (click)="close_session()">
@@ -40,7 +39,7 @@
 
 
     <div class="main-content">
-        <header data-aos="fade-right">
+        <header>
             <h2>
                 <label for="nav-toggle">
                     <span id="logo-menu"><fa-icon [icon]="fabars"></fa-icon></span>
@@ -58,36 +57,36 @@
             <div class="user-wrapper">
                 <!--Cambiar el logo del lenguaje según el que se seleccione-->
                 <img [src]="img" id="lenguaje-practicando" width="50px" height="50px">
-
                 <div>
-
                     <h4>{{nombre}}</h4>
-
                 </div>
             </div>
         </header>
 
         <main>
             <!--Módulos-->
-            <div class="tarjetas" *ngIf="modulos.length > 0">
-                <div *ngFor="let modulo of modulos" class="tarjetas-simples" [ngStyle]="estilo1"
-                    (click)="agregar_text(modulo.modulo_id)">
-                    <div class="fila mb-3">
-                        <div class="columna porcentaje">
-                            <h1>{{modulo.porcentaje}}%</h1>
+            <div *ngIf="indice==0">
+                <div class="tarjetas" *ngIf="modulos.length > 0">
+                    <div *ngFor="let modulo of modulos" class="tarjetas-simples" [ngStyle]="estilo1"
+                        (click)="agregar_text(modulo.modulo_id)">
+                        <div class="fila mb-3">
+                            <div class="columna porcentaje">
+                                <h1>{{modulo.porcentaje}}%</h1>
+                            </div>
+                            <div class="columna icono">
+                                <img [src]="modulo.icono" class="img-fluid smaller-icon" alt="">
+                            </div>
                         </div>
-                        <div class="columna icono">
-                            <img [src]="modulo.icono" class="img-fluid smaller-icon" alt="">
+                        <div class="fila">
+                            <span class="titulo-modulo">{{modulo.titulo_modulo}}</span>
                         </div>
                     </div>
-                    <div class="fila">
-                        <span class="titulo-modulo">{{modulo.titulo_modulo}}</span>
+                    <div *ngIf="modulos.length == 0">
+                        <h1>No hay modulos</h1>
                     </div>
-                </div>
-                <div *ngIf="modulos.length == 0">
-                    <h1>No hay modulos</h1>
                 </div>
             </div>
+            <router-outlet></router-outlet>
         </main>
 
     </div>

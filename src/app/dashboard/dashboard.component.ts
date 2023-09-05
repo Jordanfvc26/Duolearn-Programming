@@ -71,6 +71,7 @@ export class DashboardComponent implements AfterViewInit {
   estiloletra6: any;
   estiloletra7: any;
   estiloletra8: any;
+  indice: number = 0;
 
   //nummod
   nun_mod: any = 0;
@@ -83,7 +84,17 @@ export class DashboardComponent implements AfterViewInit {
       this.bol = !this.bol;
       this.bol2 = !this.bol2;
     }, 1250);
-    AOS.init();
+    const currentUrl = this.ruta.url;
+    console.log(currentUrl);
+    if (currentUrl.includes('estadisticas')) {
+      this.indice = 1;
+    } else if (currentUrl.includes('mi-perfil')) {
+      this.indice = 2;
+    } else if (currentUrl.includes('coronas')) {
+      this.indice = 3;
+    }else{
+      this.indice = 0;
+    }
     const observable = this.user_serv.get_user(sessionStorage.getItem("user"));
     const observable1 = this.lenguajeService.obtener_lenguaje_por_id(sessionStorage.getItem("lenguaje"));
     const observable2 = this.lenguajeService.listar_lenguajes(true);
@@ -128,6 +139,24 @@ export class DashboardComponent implements AfterViewInit {
   agregar_text(entrada: any) {
     sessionStorage.setItem("modulo", entrada);
     this.ruta.navigateByUrl("/teorias");
+  }
+
+  cambiarIndice(indice: number) {
+    this.indice = indice;
+    switch (indice) {
+      case 0:
+        this.ruta.navigate(['dashboard']);
+        break;
+      case 1:
+        this.ruta.navigate(['dashboard/estadisticas']);
+        break;
+      case 2:
+        this.ruta.navigate(['dashboard/mi-perfil']);
+        break;
+      case 3:
+        this.ruta.navigate(['dashboard/coronas']);
+        break;
+    }
   }
 
   close_session() {
