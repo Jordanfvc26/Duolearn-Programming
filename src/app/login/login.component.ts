@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
   status: string = "login";
   optionTypeUser: string = "";
   public showPassword = false;
+  spinnerStatus: boolean = false;
 
 
   fanombre = iconos.faClosedCaptioning;
@@ -49,19 +50,19 @@ export class LoginComponent implements OnInit {
           Validators.minLength(3)
         ]
       ],
-      apellidos: ['', 
-      [
-        Validators.required, 
-        Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/),
-        Validators.minLength(3)
-      ]
-    ],
-      usuario: ['', 
-      [
-        Validators.required,
-        Validators.minLength(3)
-      ]
-    ],
+      apellidos: ['',
+        [
+          Validators.required,
+          Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/),
+          Validators.minLength(3)
+        ]
+      ],
+      usuario: ['',
+        [
+          Validators.required,
+          Validators.minLength(3)
+        ]
+      ],
       tipo: ['', [Validators.required]],
       fecha_nacimiento: ['', [Validators.required]],
       correo: ['', [Validators.email, Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{1,}))$/)]],
@@ -96,11 +97,12 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.spinnerStatus = true;
     setTimeout(() => {
       this.bol = !this.bol;
     }, 1250);
 
-    if(sessionStorage.getItem("user")){
+    if (sessionStorage.getItem("user")) {
       this.user_service.get_user(sessionStorage.getItem("user")).subscribe(resp => {
         if (resp.estado == 1) {
           if (resp.tipo.trim() == "administrador") {
@@ -114,6 +116,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    this.spinnerStatus = false;
     this.form_login.markAllAsTouched();
     if (this.form_login.valid) {
       this.user_service.user_login(this.form_login.value).subscribe(resp => {
@@ -122,54 +125,62 @@ export class LoginComponent implements OnInit {
           sessionStorage.setItem('user', resp.data);
           this.user_service.get_user(sessionStorage.getItem("user")).subscribe(resp => {
             if (resp.estado == 1) {
+              this.spinnerStatus = true;
               if (resp.tipo_usuario.trim() == "administrador") {
                 this.ruta.navigateByUrl("/administrador");
                 sessionStorage.setItem('userType', "administrador")
               } else if (resp.tipo_usuario.trim() == "estudiante") {
                 this.ruta.navigateByUrl("/elegir-lenguaje");
               }
-              else{
+              else {
                 AdministradorComponent.userType = "docente";
                 this.ruta.navigateByUrl("/administrador");
               }
             }
           });
         } else {
+          this.spinnerStatus = true;
           this.mensaje_mal(resp.mensaje);
           this.ruta.navigateByUrl("/login");
         }
       });
     } else {
+      this.spinnerStatus = true;
       this.mensaje_mal("Faltan datos");
     }
 
   }
 
   registro_user(): any {
+    this.spinnerStatus = false;
     this.form_registro.markAllAsTouched();
     if (this.form_registro.valid) {
       const { confirmClave, ...dataWithoutConfirmClave } = this.form_registro.value;
       console.log(dataWithoutConfirmClave);
       this.user_service.user_register(this.getForm()).subscribe(resp => {
         if (resp.estado == 1) {
+          this.spinnerStatus = true;
           this.mensaje_bien("Usuario registrado con éxito");
           this.ruta.navigateByUrl("/login");
           this.mostrarFormLogin();
-        }else if (resp.estado == 2) {
+        } else if (resp.estado == 2) {
+          this.spinnerStatus = true;
           this.mensaje_mal("El usuario ya se encuentra registrado");
-        } 
+        }
         else {
+          this.spinnerStatus = true;
           this.mensaje_mal("Usuario no registrado");
         }
       });
     } else {
+      this.spinnerStatus = true;
       this.mensaje_mal("Revise la información de registro");
     }
   }
 
   //Obtiene los datos para registrar el usuario
-  getForm(){
-    let body:any = {
+  getForm() {
+    let body: any = {
       nombres: this.form_registro.get('nombres')?.value,
       apellidos: this.form_registro.get('apellidos')?.value,
       usuario: this.form_registro.get('usuario')?.value,
@@ -184,20 +195,21 @@ export class LoginComponent implements OnInit {
   mensaje_bien(mensaje: any) {
     Swal.fire({
       icon: 'success',
-      title: mensaje,
-      showConfirmButton: false,
-      timer: 1500
+      title: 'Éxito',
+      text: mensaje,
+      confirmButtonText: 'Aceptar',
+      confirmButtonColor: '#05C458'
     })
   }
 
   mensaje_mal(mensaje: any) {
     Swal.fire({
       icon: 'error',
-      title: 'Oops...',
+      title: 'Error',
       text: mensaje,
-      showConfirmButton: true,
-      timer: 1500
-    });
+      confirmButtonText: 'Aceptar',
+      confirmButtonColor: '#FF4136'
+    })
   }
 
   MostrarElegirLenguaje() {
@@ -248,11 +260,19 @@ export class LoginComponent implements OnInit {
     return false;
   }
 
-   //Ojo para la contraseña
-   togglePasswordVisibility() {
+  //Ojo para la contraseña
+  togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
 
+
+  //Método que elimina los espcios y compara si no hay texto ingresado
+  compararTextoVacio(campo: string) {
+    if (this.form_registro.get(campo)?.value.trim() === "")
+      return true;
+    else
+      return false;
+  }
 
   //Iconos a utilizar
   iconNextStep = iconos.faArrowRight;

@@ -1,3 +1,5 @@
+<app-pre-loader *ngIf="!spinnerStatus"></app-pre-loader>
+
 <body>
     <!-- Section: Design Block -->
     <section class="background-radial-gradient overflow-hidden">
@@ -26,8 +28,7 @@
                                     <div class="mb-3 mt-4">
                                         <label class="mb-1"><b>Usuario</b></label>
                                         <input type="text" class="form-control form-control-lg bg-light fs-6"
-                                        (keydown.enter)="login()"
-                                            formControlName="usuario" placeholder="Usuario*"
+                                            (keydown.enter)="login()" formControlName="usuario" placeholder="Usuario*"
                                             [ngClass]="{
                                         'is-invalid': form_login.get('usuario')?.hasError('required') && form_login.get('usuario')?.touched || form_login.get('usuario')?.hasError('pattern'),
                                         'is-valid': form_login.get('usuario')?.value?.length >= 10 && form_login.get('usuario')?.hasError('pattern') == false}">
@@ -39,17 +40,18 @@
                                     <div class="mb-5">
                                         <label class="mb-1"><b>Contraseña</b></label>
                                         <div class="input-group">
-                                            <input type="{{ showPassword ? 'text' : 'password' }}" class="form-control form-control-lg bg-light fs-6"
-                                            formControlName="clave" placeholder="Contraseña*"
-                                            (keydown.enter)="login()"
-                                            [ngClass]="{
+                                            <input type="{{ showPassword ? 'text' : 'password' }}"
+                                                class="form-control form-control-lg bg-light fs-6"
+                                                formControlName="clave" placeholder="Contraseña*"
+                                                (keydown.enter)="login()"
+                                                [ngClass]="{
                                             'is-invalid': form_login.get('clave')?.hasError('required') && form_login.get('clave')?.touched || form_login.get('clave')?.hasError('pattern'),
                                             'is-valid': form_login.get('clave')?.value?.length >= 10 && form_login.get('clave')?.hasError('pattern') == false}">
                                             <span class="input-group-text" (click)="togglePasswordVisibility()">
                                                 <fa-icon [icon]="showPassword ? iconEyeSlash : iconEye"></fa-icon>
-                                              </span>
+                                            </span>
                                         </div>
-                                       
+
                                         <div class="validators"
                                             *ngIf="form_login.get('clave')?.hasError('required') && form_login.get('clave')?.touched">
                                             <small>¡Este campo es requerido!</small>
@@ -87,8 +89,8 @@
                                                             class="form-control form-control-lg bg-light fs-6"
                                                             formControlName="nombres" placeholder="Nombres*"
                                                             [ngClass]="{
-                                                        'is-invalid': form_registro.get('nombres')?.hasError('required') && form_registro.get('nombres')?.touched || form_registro.get('nombres')?.hasError('pattern') || form_registro.get('nombres')?.hasError('minlength'),
-                                                        'is-valid': form_registro.get('nombres')?.value?.length >= 3 && form_registro.get('nombres')?.hasError('pattern') == false}">
+                                                        'is-invalid': form_registro.get('nombres')?.hasError('required') && form_registro.get('nombres')?.touched || form_registro.get('nombres')?.hasError('pattern') || form_registro.get('nombres')?.hasError('minlength') || compararTextoVacio('nombres')===true && form_registro.get('nombres')?.touched,
+                                                        'is-valid': form_registro.get('nombres')?.value?.length >= 3 && form_registro.get('nombres')?.hasError('pattern') == false && compararTextoVacio('apellidos')===false}">
                                                         <div class="validators"
                                                             *ngIf="form_registro.get('nombres')?.hasError('required') && form_registro.get('nombres')?.touched">
                                                             <small>¡Este campo es requerido!</small>
@@ -100,6 +102,10 @@
                                                         <div class="validators"
                                                             *ngIf="form_registro.get('nombres')?.hasError('minlength')">
                                                             <small>¡Mínimo 3 caracteres!</small>
+                                                        </div>
+                                                        <div class="validators"
+                                                            *ngIf="compararTextoVacio('nombres')===true && form_registro.get('apellidos')?.touched">
+                                                            <small>¡No se aceptan espacios en blanco!</small>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -113,8 +119,8 @@
                                                             class="form-control form-control-lg bg-light fs-6"
                                                             formControlName="apellidos" placeholder="Apellidos*"
                                                             [ngClass]="{
-                                                            'is-invalid': form_registro.get('apellidos')?.hasError('required') && form_registro.get('apellidos')?.touched || form_registro.get('apellidos')?.hasError('pattern') || form_registro.get('apellidos')?.hasError('minlength'),
-                                                            'is-valid': form_registro.get('apellidos')?.value?.length >= 4 && form_registro.get('apellidos')?.hasError('pattern') == false}">
+                                                            'is-invalid': form_registro.get('apellidos')?.hasError('required') && form_registro.get('apellidos')?.touched || form_registro.get('apellidos')?.hasError('pattern') || form_registro.get('apellidos')?.hasError('minlength') || compararTextoVacio('apellidos')===true && form_registro.get('apellidos')?.touched,
+                                                            'is-valid': form_registro.get('apellidos')?.value?.length >= 3 && form_registro.get('apellidos')?.hasError('pattern') == false && compararTextoVacio('apellidos')===false}">
                                                         <div class="validators"
                                                             *ngIf="form_registro.get('apellidos')?.hasError('required') && form_registro.get('apellidos')?.touched">
                                                             <small>¡Este campo es requerido!</small>
@@ -126,6 +132,10 @@
                                                         <div class="validators"
                                                             *ngIf="form_registro.get('apellidos')?.hasError('minlength')">
                                                             <small>¡Mínimo 3 caracteres!</small>
+                                                        </div>
+                                                        <div class="validators"
+                                                            *ngIf="compararTextoVacio('apellidos')===true && form_registro.get('apellidos')?.touched">
+                                                            <small>¡No se aceptan espacios en blanco!</small>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -161,7 +171,8 @@
                                                         'is-invalid': form_registro.get('tipo')?.hasError('required') && form_registro.get('tipo')?.touched,
                                                         'is-valid': optionTypeUser!= ''
                                                     }">
-                                                            <option value="" selected>Seleccione una opción</option>
+                                                            <option value="" selected disabled>Seleccione una opción
+                                                            </option>
                                                             <option value="estudiante">Estudiante</option>
                                                             <option value="docente">Profesor</option>
                                                         </select>
@@ -216,7 +227,7 @@
                                                             class="form-control form-control-lg bg-light fs-6"
                                                             formControlName="usuario" placeholder="Nombre de suario*"
                                                             [ngClass]="{
-                                                            'is-invalid': (form_registro.get('usuario')?.hasError('required') || form_registro.get('usuario')?.hasError('nombreApellidoEnUsuario')) && form_registro.get('usuario')?.touched || form_registro.get('usuario')?.hasError('pattern'),
+                                                            'is-invalid': (form_registro.get('usuario')?.hasError('required') || form_registro.get('usuario')?.hasError('nombreApellidoEnUsuario')) && form_registro.get('usuario')?.touched || form_registro.get('usuario')?.hasError('pattern') || compararTextoVacio('usuario')===true && form_registro.get('usuario')?.touched,
                                                             'is-valid': form_registro.get('usuario')?.value?.length >= 4 && form_registro.get('usuario')?.hasError('pattern') == false}">
                                                         <div class="validators"
                                                             *ngIf="form_registro.get('usuario')?.hasError('required') && form_registro.get('usuario')?.touched">
@@ -227,6 +238,10 @@
                                                             <small>¡El nombre de usuario no puede contener el nombre ni
                                                                 el apellido!</small>
                                                         </div>
+                                                        <div class="validators"
+                                                            *ngIf="compararTextoVacio('usuario')===true && form_registro.get('usuario')?.touched">
+                                                            <small>¡No se aceptan espacios en blanco!</small>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -235,10 +250,11 @@
                                                 <div class="col-6 mb-2 mt-3">
                                                     <label class="mb-1"><b>Contraseña</b></label>
                                                     <div class="input-group">
-                                                        <input type="{{ showPassword ? 'text' : 'password' }}" [maxlength]="20"
+                                                        <input type="{{ showPassword ? 'text' : 'password' }}"
+                                                            [maxlength]="20"
                                                             class="form-control form-control-lg bg-light fs-6"
                                                             formControlName="clave" placeholder="Contraseña*" [ngClass]="{
-                                                        'is-invalid': form_registro.get('clave')?.hasError('required') && form_registro.get('clave')?.touched || form_registro.get('clave')?.hasError('pattern'),
+                                                        'is-invalid': form_registro.get('clave')?.hasError('required') && form_registro.get('clave')?.touched || form_registro.get('clave')?.hasError('pattern') || compararTextoVacio('clave')===true && form_registro.get('clave')?.touched,
                                                         'is-valid': form_registro.get('clave')?.value?.length >= 4 && form_registro.get('clave')?.hasError('pattern') == false
                                                       }" />
                                                     </div>
@@ -251,23 +267,33 @@
                                                         <small>¡Al menos una mayúscula, una minúscula, un número, un
                                                             caracter especial!</small>
                                                     </div>
+                                                    <div class="validators"
+                                                        *ngIf="form_registro.get('clave')?.minlength">
+                                                        <small>¡Mínimo 8 caracteres!</small>
+                                                    </div>
+                                                    <div class="validators"
+                                                        *ngIf="compararTextoVacio('clave')===true && form_registro.get('clave')?.touched">
+                                                        <small>¡No se aceptan espacios en blanco!</small>
+                                                    </div>
                                                 </div>
 
                                                 <div class="col-6 mb-2 mt-3">
                                                     <label class="mb-1"><b>Confirmar contraseña</b></label>
                                                     <div class="input-group">
                                                         <input type="{{ showPassword ? 'text' : 'password' }}"
-                                                        class="form-control form-control-lg bg-light fs-6" [maxlength]="20"
-                                                        formControlName="confirmClave"
-                                                        placeholder="Confirmar contraseña*" [ngClass]="{
-                                                      'is-invalid': form_registro.get('confirmClave')?.hasError('required') && form_registro.get('confirmClave')?.touched || form_registro.get('confirmClave')?.hasError('confirmacionClaveNoCoincide'),
+                                                            class="form-control form-control-lg bg-light fs-6"
+                                                            [maxlength]="20" formControlName="confirmClave"
+                                                            placeholder="Confirmar contraseña*" [ngClass]="{
+                                                      'is-invalid': form_registro.get('confirmClave')?.hasError('required') && form_registro.get('confirmClave')?.touched || form_registro.get('confirmClave')?.hasError('confirmacionClaveNoCoincide') || compararTextoVacio('confirmClave')===true && form_registro.get('confirmClave')?.touched,
                                                       'is-valid': form_registro.get('confirmClave')?.value?.length >= 4 && form_registro.get('confirmClave')?.hasError('confirmacionClaveNoCoincide') == false
                                                     }" />
-                                                        <div class="input-group-append" (click)="togglePasswordVisibility()">
+                                                        <div class="input-group-append"
+                                                            (click)="togglePasswordVisibility()">
                                                             <span class="input-group-text">
-                                                              <fa-icon [icon]="showPassword ? iconEyeSlash : iconEye"></fa-icon>
+                                                                <fa-icon
+                                                                    [icon]="showPassword ? iconEyeSlash : iconEye"></fa-icon>
                                                             </span>
-                                                          </div>
+                                                        </div>
                                                     </div>
                                                     <div class="validators"
                                                         *ngIf="form_registro.get('confirmClave')?.hasError('required') && form_registro.get('confirmClave')?.touched">
@@ -277,6 +303,14 @@
                                                         *ngIf="form_registro.get('confirmClave')?.hasError('confirmacionClaveNoCoincide')">
                                                         <small>¡La confirmación de la clave no coincide con la
                                                             clave!</small>
+                                                    </div>
+                                                    <div class="validators"
+                                                        *ngIf="form_registro.get('confirmClave')?.minlength">
+                                                        <small>¡Mínimo 8 caracteres!</small>
+                                                    </div>
+                                                    <div class="validators"
+                                                        *ngIf="compararTextoVacio('confirmClave')===true && form_registro.get('confirmClave')?.touched">
+                                                        <small>¡No se aceptan espacios en blanco!</small>
                                                     </div>
                                                 </div>
                                             </div>
