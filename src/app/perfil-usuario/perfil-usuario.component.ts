@@ -143,6 +143,7 @@ export class PerfilUsuarioComponent implements OnInit {
     this.form_clave = this.form_clave ? false : true;
   }
 
-
-
+  volver(){
+    this.ruta.navigateByUrl("/dashboard");
+  }
 }
