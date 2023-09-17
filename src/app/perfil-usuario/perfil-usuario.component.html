@@ -13,12 +13,12 @@
         *ngIf="form_clave else cambio">
         <div class="entrada-texto">
             <p><i class="fas fa-comment"></i> Nombres Completos: </p>
-            <input type="text" class="form-control" formControlName="nombres" />
+            <input (keydown)="soloLetras($event)" type="text" class="form-control" formControlName="nombres" />
         </div>
 
         <div class="entrada-texto">
             <p><i class="fas fa-comment"></i> Apellidos Completos: </p>
-            <input type="text" class="form-control" formControlName="apellidos" />
+            <input (keydown)="soloLetras($event)" type="text" class="form-control" formControlName="apellidos" />
         </div>
 
         <div class="entrada-texto">

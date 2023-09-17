@@ -14,7 +14,7 @@
                         [ngModel]="infoModulo?.titulo_modulo"    
                         formControlName="titulo" [ngClass]="{
                                 'is-invalid': moduloForm.get('titulo')?.hasError('required') && moduloForm.get('titulo')?.touched || moduloForm.get('titulo')?.hasError('pattern'),
-                                'is-valid': moduloForm.get('titulo')?.value?.length >= 4 && moduloForm.get('titulo')?.hasError('pattern') == false
+                                'is-valid': moduloForm.get('titulo')?.hasError('required')== false&& moduloForm.get('titulo')?.hasError('minlength') == false
                               }" [maxlength]="30" />
                         <div class="validators"
                             *ngIf="moduloForm.get('titulo')?.hasError('required') && moduloForm.get('titulo')?.touched">

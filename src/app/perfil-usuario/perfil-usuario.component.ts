@@ -20,12 +20,12 @@ export class PerfilUsuarioComponent implements OnInit {
   iconEye = iconos.faEye;
   iconEyeSlash = iconos.faEyeSlash;
   public showPassword2 = false;
-  tipo_usuario="";
+  tipo_usuario = "";
 
   constructor(
     public formulario_registro: FormBuilder,
     public formulario_password: FormBuilder,
-    private route:ActivatedRoute,
+    private route: ActivatedRoute,
     public user_Service: UsuariosService,
     public ruta: Router) {
 
@@ -34,13 +34,13 @@ export class PerfilUsuarioComponent implements OnInit {
       usuario: ['', [Validators.required]],
       fecha_nacimiento: ['', [Validators.required]],
       nombres: ['', [Validators.required]],
-      apellidos: ['',[Validators.required]]
+      apellidos: ['', [Validators.required]]
     });
 
     this.form_contra = this.formulario_password.group({
       clave_actual: ['', [Validators.required]],
       confirmClave: ['', [Validators.required]],
-      clave_nueva: ['',[Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*['"!@#$%^&*()_/+{}:<>?-]).{8,20}$/), Validators.maxLength(20)]]
+      clave_nueva: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*['"!@#$%^&*()_/+{}:<>?-]).{8,20}$/), Validators.maxLength(20)]]
     });
     //this.form_contra.get('confirmClave').setValidators([this.validarConfirmacionClave.bind(this)]);
 
@@ -67,6 +67,20 @@ export class PerfilUsuarioComponent implements OnInit {
     return null;
   }
 
+
+  soloLetras(event: any) {
+    const key = event.key;
+    // Verificar si la tecla presionada es una letra (a-z o A-Z)
+    if (/^[a-zA-ZáéíóúÁÉÍÓÚüÜ]$/.test(key) || (key === "'" && /^[a-zA-ZáéíóúÁÉÍÓÚüÜ]$/.test(event.key))) {
+      // La tecla presionada es permitida, permitirlo
+    } else if (key === "Backspace" || key === " " || /^Arrow(Up|Down|Left|Right)$/.test(key) || key === "Delete" || (event.ctrlKey && (key === "c" || key === "x" || key === "v"))) {
+      // Permitir las teclas adicionales
+    } else {
+      // La tecla presionada no es permitida, prevenir su acción por defecto
+      event.preventDefault();
+    }
+  }
+
   ngOnInit(): void {
     this.route.data.subscribe(data => {
       this.tipo_usuario = data['adminData'].role;
@@ -83,27 +97,27 @@ export class PerfilUsuarioComponent implements OnInit {
         this.mensaje_bien("Se ha modificado");
         setTimeout(() => {
           window.location.reload();
-        })      
+        })
       } else {
         this.mensaje_mal("No se ha modificado");
       }
     });
   }
 
-     //Ojo para la contraseña
-     togglePasswordVisibility() {
-      this.showPassword = !this.showPassword;
-    }
-
-  returnDataUpdate(){
-    return {'usuario_id':Number.parseInt(sessionStorage.getItem("user")),'nombres':this.form_registro.value.nombres,'apellidos':this.form_registro.value.apellidos, 'fecha_nacimiento':this.form_registro.value.fecha_nacimiento, 'correo':this.form_registro.value.correo}
+  //Ojo para la contraseña
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 
-  update_password(){
-    
-    if(this.form_contra.get('clave_nueva').value == this.form_contra.get('confirmClave').value){
-      
-      this.user_Service.update_pass(sessionStorage.getItem("user"),this.crearjson()).subscribe(resp=>{
+  returnDataUpdate() {
+    return { 'usuario_id': Number.parseInt(sessionStorage.getItem("user")), 'nombres': this.form_registro.value.nombres, 'apellidos': this.form_registro.value.apellidos, 'fecha_nacimiento': this.form_registro.value.fecha_nacimiento, 'correo': this.form_registro.value.correo }
+  }
+
+  update_password() {
+
+    if (this.form_contra.get('clave_nueva').value == this.form_contra.get('confirmClave').value) {
+
+      this.user_Service.update_pass(sessionStorage.getItem("user"), this.crearjson()).subscribe(resp => {
         if (resp.estado == 1) {
           Swal.fire({
             title: 'Debe volver a iniciar su sesión',
@@ -119,13 +133,13 @@ export class PerfilUsuarioComponent implements OnInit {
           this.mensaje_mal("NO SE HA MODIFICADO");
         }
       });
-    }else{
+    } else {
       this.mensaje_mal("LAS CONTRASEÑAS NO COINCIDEN");
     }
   }
 
-  crearjson():any{
-    return {clave_actual:this.form_contra.value.clave_actual, clave_nueva:this.form_contra.value.clave_nueva}
+  crearjson(): any {
+    return { clave_actual: this.form_contra.value.clave_actual, clave_nueva: this.form_contra.value.clave_nueva }
   }
 
   mensaje_bien(mensaje: any) {
@@ -157,7 +171,7 @@ export class PerfilUsuarioComponent implements OnInit {
     this.form_clave = this.form_clave ? false : true;
   }
 
-  volver(){
+  volver() {
     this.ruta.navigateByUrl("/dashboard");
   }
 }
