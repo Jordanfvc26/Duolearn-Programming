@@ -54,9 +54,8 @@ export class AdminCrearModulosComponent implements OnInit {
     this.moduloForm = this.formBuilder.group({
       titulo: ['',
         [
-          Validators.minLength(2),
+          Validators.minLength(1),
           Validators.required,
-          Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]*$')
         ]
       ],
       icono: ['',
@@ -71,9 +70,8 @@ export class AdminCrearModulosComponent implements OnInit {
       ],
       descripcion: ['',
         [
-          Validators.minLength(8),
+          Validators.minLength(10),
           Validators.required,
-          Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚ\\s]*$')
         ]
       ],
     })

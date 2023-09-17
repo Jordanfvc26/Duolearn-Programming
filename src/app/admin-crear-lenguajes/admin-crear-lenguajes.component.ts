@@ -43,9 +43,8 @@ export class AdminCrearLenguajesComponent implements OnInit {
     this.languageForm = this.formBuilder.group({
       titulo: ['',
         [
-          Validators.minLength(2),
-          Validators.required,
-          Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]*$')
+          Validators.minLength(1),
+          Validators.required
         ]
       ],
       portada: [null,
@@ -105,7 +104,7 @@ export class AdminCrearLenguajesComponent implements OnInit {
             Swal.fire(
               '¡Error!',
               'No se ha podido agregar el lenguaje',
-              'success'
+              'error'
             )
           }
         });

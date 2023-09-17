@@ -16,8 +16,8 @@
                         <input type="text" placeholder="Nombres*" class="form-control form-control-lg bg-light fs-6"
                             formControlName="titulo" [ngClass]="{
                                 'is-invalid': moduloForm.get('titulo')?.hasError('required') && moduloForm.get('titulo')?.touched || moduloForm.get('titulo')?.hasError('pattern') || compararTextoVacio('titulo')===true && moduloForm.get('titulo')?.touched,
-                                'is-valid': moduloForm.get('titulo')?.value?.length >= 4 && moduloForm.get('titulo')?.hasError('pattern') == false
-                              }" [maxlength]="50" />
+                                'is-valid': moduloForm.get('titulo')?.hasError('required')== false && moduloForm.get('titulo')?.hasError('minlength') == false
+                              }" [maxlength]="30" />
                         <div class="validators"
                             *ngIf="moduloForm.get('titulo')?.hasError('required') && moduloForm.get('titulo')?.touched">
                             <small>¡Este campo es requerido!</small>
@@ -79,7 +79,7 @@
                             placeholder="Descripción*" rows="10"
                             [ngClass]="{
                                 'is-invalid': moduloForm.get('descripcion')?.hasError('required') && moduloForm.get('descripcion')?.touched || moduloForm.get('descripcion')?.hasError('pattern') || compararTextoVacio('descripcion')===true && moduloForm.get('descripcion')?.touched,
-                                'is-valid': moduloForm.get('descripcion')?.value?.length >=8 && moduloForm.get('descripcion')?.hasError('pattern') == false }">
+                                'is-valid': moduloForm.get('descripcion')?.hasError('required')==false && moduloForm.get('descripcion')?.hasError('minlength') == false }">
                             </textarea>
                         <div class="validators"
                             *ngIf="moduloForm.get('descripcion')?.hasError('required') && moduloForm.get('descripcion')?.touched">

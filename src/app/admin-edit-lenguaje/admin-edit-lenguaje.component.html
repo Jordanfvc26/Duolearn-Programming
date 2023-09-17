@@ -60,7 +60,7 @@
                 <div class="action-buttons mb-3">
                     <button routerLink="/administrador/lenguaje/list" mat-button type="button"
                         class="btn btn-danger btn-md">Volver</button>
-                    <button (click)="editar_lenguaje()" [disabled]="!editLanguageForm.valid" mat-button type="button"
+                    <button (click)="editar_lenguaje()" [disabled]="editLanguageForm.invalid && img1" mat-button type="button"
                         class="btn btn-primary btn-md">Guardar</button>
                 </div>
             </form>

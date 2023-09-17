@@ -15,7 +15,7 @@
                         formControlName="titulo" [ngClass]="{
                                 'is-invalid': moduloForm.get('titulo')?.hasError('required') && moduloForm.get('titulo')?.touched || moduloForm.get('titulo')?.hasError('pattern'),
                                 'is-valid': moduloForm.get('titulo')?.value?.length >= 4 && moduloForm.get('titulo')?.hasError('pattern') == false
-                              }" [maxlength]="50" />
+                              }" [maxlength]="30" />
                         <div class="validators"
                             *ngIf="moduloForm.get('titulo')?.hasError('required') && moduloForm.get('titulo')?.touched">
                             <small>¡Este campo es requerido!</small>
@@ -59,7 +59,7 @@
                         placeholder="Descripción*" rows="10"
                             [ngClass]="{
                                 'is-invalid': moduloForm.get('concepto')?.hasError('required') && moduloForm.get('concepto')?.touched || moduloForm.get('concepto')?.hasError('pattern'),
-                                'is-valid': moduloForm.get('concepto')?.value?.length >=8 && moduloForm.get('concepto')?.hasError('pattern') == false }">
+                                'is-valid': moduloForm.get('concepto')?.hasError('required') ==false && moduloForm.get('concepto')?.hasError('minlength') == false }">
                             </textarea>
                         <div class="validators"
                             *ngIf="moduloForm.get('concepto')?.hasError('required') && moduloForm.get('concepto')?.touched">
@@ -71,7 +71,7 @@
                 <div class="action-buttons mb-3">
                     <button routerLink="/administrador/modulos/list" mat-button type="button"
                         class="btn btn-danger btn-md">Volver</button>
-                    <button [disabled]="!moduloForm.valid" (click)="registrarModulo()" mat-button type="button"
+                    <button [disabled]="!moduloForm.valid  || (this.moduloForm.value.icono=='' && !img1)" (click)="registrarModulo()" mat-button type="button"
                         class="btn btn-primary btn-md">Guardar</button>
                 </div>
             </form>

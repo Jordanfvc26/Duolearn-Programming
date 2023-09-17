@@ -12,11 +12,11 @@
                     <!--Titulo-->
                     <div class="col-12 col-md-6 mb-3">
                         <label class="mb-1"><b>Título</b></label>
-                        <input type="text" placeholder="Nombres*" class="form-control form-control-lg bg-light fs-6"
+                        <input maxlength="20" type="text" placeholder="Nombres*" class="form-control form-control-lg bg-light fs-6"
                             formControlName="titulo" [ngClass]="{
                                 'is-invalid': languageForm.get('titulo')?.hasError('required') && languageForm.get('titulo')?.touched || languageForm.get('titulo')?.hasError('pattern') || compararTextoVacio('titulo')===true && languageForm.get('titulo')?.touched,
-                                'is-valid': languageForm.get('titulo')?.value?.length >= 2 && languageForm.get('titulo')?.hasError('pattern') == false
-                              }" [maxlength]="50" />
+                                'is-valid': languageForm.get('titulo')?.hasError('minlength')==false && languageForm.get('titulo')?.hasError('required') == false
+                              }" />
                         <div class="validators"
                             *ngIf="languageForm.get('titulo')?.hasError('required') && languageForm.get('titulo')?.touched">
                             <small>¡Este campo es requerido!</small>
@@ -59,11 +59,11 @@
                 <div class="row">
                     <div class="col-12 mb-3">
                         <label class="mb-1" id="descripcion"><b>Descripción</b></label>
-                        <textarea class="form-control form-control-lg bg-light fs-6" formControlName="descripcion"
+                        <textarea maxlength="255" class="form-control form-control-lg bg-light fs-6" formControlName="descripcion"
                             placeholder="Descripción*" rows="10"
                             [ngClass]="{
                                 'is-invalid': languageForm.get('descripcion')?.hasError('required') && languageForm.get('descripcion')?.touched || languageForm.get('descripcion')?.hasError('pattern') || languageForm.get('descripcion')?.hasError('minlength') || compararTextoVacio('descripcion')===true && languageForm.get('descripcion')?.touched,
-                                'is-valid': languageForm.get('descripcion')?.value?.length >=5 && languageForm.get('descripcion')?.hasError('pattern') == false }">
+                                'is-valid': languageForm.get('descripcion')?.hasError('required')==false && languageForm.get('descripcion')?.hasError('minlength') == false }">
                             </textarea>
                         <div class="validators"
                             *ngIf="languageForm.get('descripcion')?.hasError('required') && languageForm.get('descripcion')?.touched">
