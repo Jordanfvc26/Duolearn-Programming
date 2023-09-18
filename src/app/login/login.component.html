@@ -231,7 +231,7 @@
                                                             formControlName="usuario" placeholder="Nombre de suario*"
                                                             maxlength="12"
                                                             [ngClass]="{
-                                                            'is-invalid': form_registro.get('usuario')?.hasError('required') || form_registro.get('usuario')?.hasError('nombreApellidoEnUsuario') || form_registro.get('usuario')?.hasError('pattern') || compararTextoVacio('usuario') && form_registro.get('usuario')?.touched,
+                                                            'is-invalid': form_registro.get('usuario')?.hasError('required') || form_registro.get('usuario')?.hasError('nombreApellidoEnUsuario') || form_registro.get('usuario')?.hasError('pattern') || form_registro.get('usuario')?.hasError('minlength') || compararTextoVacio('usuario') && form_registro.get('usuario')?.touched,
                                                             'is-valid': form_registro.get('usuario')?.hasError('minlength')==false && form_registro.get('usuario')?.hasError('pattern') == false && form_registro.get('usuario')?.hasError('nombreApellidoEnUsuario')==false}">
                                                         <div class="validators"
                                                             *ngIf="form_registro.get('usuario')?.hasError('required') && form_registro.get('usuario')?.touched">
@@ -239,8 +239,13 @@
                                                         </div>
                                                         <div class="validators"
                                                             *ngIf="form_registro.get('usuario')?.hasError('pattern') && form_registro.get('usuario')?.touched">
-                                                            <small>¡El formato debe ser letras, numeros y caracteres
+                                                            <small>¡El nombre de usuario debe incluir al menos una
+                                                                letra, y puede contener numeros y caracteres
                                                                 (.-_), sin espacios!</small>
+                                                        </div>
+                                                        <div class="validators"
+                                                            *ngIf="form_registro.get('usuario')?.hasError('minlength') && form_registro.get('usuario')?.touched">
+                                                            <small>¡Minimo 3 caracteres!</small>
                                                         </div>
                                                         <div class="validators"
                                                             *ngIf="form_registro.get('usuario')?.hasError('nombreApellidoEnUsuario') && form_registro.get('usuario')?.touched">
