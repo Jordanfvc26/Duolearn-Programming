@@ -19,16 +19,16 @@ export class UsuariosComponent implements OnInit {
 
   constructor(
     private usuarios_serv: UsuariosService,
-    public ruta:Router
+    public ruta: Router
   ) { }
 
   ngOnInit(): void {
     this.cargaUsuarios(true);
   }
 
-  cargaUsuarios(estado:boolean) {
+  cargaUsuarios(estado: boolean) {
     this.usuarios_serv.listar_usuarios(estado).subscribe(resp => {
-      this.usuarios = resp;
+      this.usuarios = resp.filter(usuario => usuario.tipo_usuario != 'administrador');
     });
   }
 
@@ -80,10 +80,10 @@ export class UsuariosComponent implements OnInit {
   }
 
   //Método que elimina un usuario
-  eliminarUsuario(nombreUsuario: string, usuarioID: number, estado:any) {
+  eliminarUsuario(nombreUsuario: string, usuarioID: number, estado: any) {
     Swal.fire({
-      title: ''+(estado?"Activar":"Desactivar")+' usuario',
-      text: "¿Está seguro de "+(estado?"activar":"desactivar")+" al usuario \"" + nombreUsuario + "\" de DuoLearn Programming?",
+      title: '' + (estado ? "Activar" : "Desactivar") + ' usuario',
+      text: "¿Está seguro de " + (estado ? "activar" : "desactivar") + " al usuario \"" + nombreUsuario + "\" de DuoLearn Programming?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -96,14 +96,14 @@ export class UsuariosComponent implements OnInit {
           if (resp.estado == "1") {
             Swal.fire(
               '¡Proceso exitoso!',
-              'El usuario fue '+(estado?"activado":"desactivado")+' con éxito',
+              'El usuario fue ' + (estado ? "activado" : "desactivado") + ' con éxito',
               'success'
             )
           }
           else {
             Swal.fire(
               '¡Error!',
-              'No se pudo '+(estado?"activar":"desactivar")+' el usuario',
+              'No se pudo ' + (estado ? "activar" : "desactivar") + ' el usuario',
               'error'
             )
           }

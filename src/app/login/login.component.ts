@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
   optionTypeUser: string = "";
   public showPassword = false;
   spinnerStatus: boolean = false;
-
+  isLinear: boolean = true;
 
   fanombre = iconos.faClosedCaptioning;
 
@@ -44,14 +44,14 @@ export class LoginComponent implements OnInit {
       nombres: ['',
         [
           Validators.required,
-          Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/),
+          Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/),
           Validators.minLength(3)
         ]
       ],
       apellidos: ['',
         [
           Validators.required,
-          Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/),
+          Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/),
           Validators.minLength(3),
         ]
       ],
@@ -366,9 +366,11 @@ export class LoginComponent implements OnInit {
 
   validaFirstStepper() {
     if (this.compararTextoVacio("nombres") || this.isFechaInvalida() || this.form_registro.get("nombres").invalid || this.compararTextoVacio("apellidos") || this.form_registro.get("apellidos").invalid || this.form_registro.get("fecha_nacimiento").invalid || this.form_registro.get("tipo").invalid) {
+      this.isLinear = true;
       return true;
     }
     else {
+      this.isLinear = false;
       return false;
     }
   }

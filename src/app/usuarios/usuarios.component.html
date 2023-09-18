@@ -3,12 +3,12 @@
         <div class="col-12 container-info">
             <div class="div mt-3 mx-1">
                 <h2 id="titulo"><fa-icon [icon]="iconUsuarios" class="icon-title"></fa-icon> Usuarios</h2>
-                            </div>
+            </div>
             <br />
             <!--Inputs para buscar e importar-->
             <div class="row">
                 <!--Buscar paciente por nombre-->
-                
+
                 <div class="col-12 col-md-4 col-lg-5 mb-3">
                     <form>
                         <label for="lenguaje_select"> <strong>Elija el estado de los usuarios</strong></label>
@@ -51,11 +51,17 @@
                                         'Pendiente' }}
                                     </td>
                                     <td class="actions">
-                                        <fa-icon *ngIf="usuario.tipo_usuario.trim()=='docente' && !usuario.aprobado" (click)="aprobarComoProfesor(usuario.nombres, usuario.usuario_id)" data-bs-toggle="mensaje" title="Aprobar Docente" id="iconVerDetalles"
+                                        <fa-icon *ngIf="usuario.tipo_usuario.trim()=='docente' && !usuario.aprobado"
+                                            (click)="aprobarComoProfesor(usuario.nombres, usuario.usuario_id)"
+                                            data-bs-toggle="mensaje" title="Aprobar Docente" id="iconVerDetalles"
                                             [icon]="iconAprobar"></fa-icon>
-                                        <fa-icon *ngIf="usuario.usuario_activo" (click)="eliminarUsuario(usuario.nombres, usuario.usuario_id, false)" data-bs-toggle="mensaje" title="Eliminar" id="iconEliminar"
+                                        <fa-icon *ngIf="usuario.usuario_activo"
+                                            (click)="eliminarUsuario(usuario.nombres, usuario.usuario_id, false)"
+                                            data-bs-toggle="mensaje" title="Eliminar" id="iconEliminar"
                                             [icon]="iconOn"></fa-icon>
-                                            <fa-icon *ngIf="!usuario.usuario_activo" (click)="eliminarUsuario(usuario.nombres, usuario.usuario_id, true)"  data-bs-toggle="mensaje" title="Reactivar" id="iconVerDetalles"
+                                        <fa-icon *ngIf="!usuario.usuario_activo"
+                                            (click)="eliminarUsuario(usuario.nombres, usuario.usuario_id, true)"
+                                            data-bs-toggle="mensaje" title="Reactivar" id="iconVerDetalles"
                                             [icon]="iconOff"></fa-icon>
                                     </td>
 

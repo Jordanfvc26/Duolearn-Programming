@@ -74,9 +74,9 @@
                             <!--Formulario de REGISTRO-->
                             <ng-template #registro>
                                 <h2 class="text-center">Registro de usuario</h2>
-                                <mat-horizontal-stepper #stepper="matHorizontalStepper">
+                                <mat-horizontal-stepper [linear]="isLinear" #stepper="matHorizontalStepper">
                                     <!--Paso 1-->
-                                    <mat-step [stepControl]="form_registro">
+                                    <mat-step [stepControl]="form_registro" linear>
                                         <form [formGroup]="form_registro">
                                             <ng-template matStepLabel>Información personal</ng-template>
                                             <!--Nombres-->
