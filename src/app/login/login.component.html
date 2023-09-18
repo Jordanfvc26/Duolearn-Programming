@@ -62,7 +62,7 @@
                                         <button type="button" class="mb-3 btn btn-lg btn-primary w-100 fs-6"
                                             (click)="login()">Iniciar
                                             sesión</button>
-                                        
+
                                     </div>
 
                                     <div class="row text-center no-account">
@@ -86,10 +86,11 @@
                                                         <label class="mb-1"><b>Nombres</b></label>
                                                         <input type="text"
                                                             class="form-control form-control-lg bg-light fs-6"
-                                                            formControlName="nombres" placeholder="Nombres*"
+                                                            maxlength="30" formControlName="nombres"
+                                                            placeholder="Nombres*" (keydown)="soloLetras($event)"
                                                             [ngClass]="{
-                                                        'is-invalid': form_registro.get('nombres')?.hasError('required') && form_registro.get('nombres')?.touched || form_registro.get('nombres')?.hasError('pattern') || form_registro.get('nombres')?.hasError('minlength') || compararTextoVacio('nombres')===true && form_registro.get('nombres')?.touched,
-                                                        'is-valid': form_registro.get('nombres')?.value?.length >= 3 && form_registro.get('nombres')?.hasError('pattern') == false && compararTextoVacio('apellidos')===false}">
+                                                        'is-invalid': form_registro.get('nombres')?.hasError('required') && form_registro.get('nombres')?.touched || form_registro.get('nombres')?.hasError('pattern') || form_registro.get('nombres')?.hasError('minlength') || compararTextoVacio('nombres') && form_registro.get('nombres')?.touched,
+                                                        'is-valid': form_registro.get('nombres')?.hasError('required')==false && form_registro.get('nombres')?.hasError('minlength') == false && form_registro.get('nombres')?.hasError('pattern') == false && compararTextoVacio('nombres')==false}">
                                                         <div class="validators"
                                                             *ngIf="form_registro.get('nombres')?.hasError('required') && form_registro.get('nombres')?.touched">
                                                             <small>¡Este campo es requerido!</small>
@@ -103,7 +104,7 @@
                                                             <small>¡Mínimo 3 caracteres!</small>
                                                         </div>
                                                         <div class="validators"
-                                                            *ngIf="compararTextoVacio('nombres')===true && form_registro.get('apellidos')?.touched">
+                                                            *ngIf="compararTextoVacio('nombres')==true && form_registro.get('nombres')?.touched">
                                                             <small>¡No se aceptan espacios en blanco!</small>
                                                         </div>
                                                     </div>
@@ -114,12 +115,13 @@
                                                 <div class="col-12">
                                                     <div class="mb-2 mt-2">
                                                         <label class="mb-1"><b>Apellidos</b></label>
-                                                        <input type="text"
+                                                        <input type="text" maxlength="30"
                                                             class="form-control form-control-lg bg-light fs-6"
                                                             formControlName="apellidos" placeholder="Apellidos*"
+                                                            (keydown)="soloLetras($event)"
                                                             [ngClass]="{
                                                             'is-invalid': form_registro.get('apellidos')?.hasError('required') && form_registro.get('apellidos')?.touched || form_registro.get('apellidos')?.hasError('pattern') || form_registro.get('apellidos')?.hasError('minlength') || compararTextoVacio('apellidos')===true && form_registro.get('apellidos')?.touched,
-                                                            'is-valid': form_registro.get('apellidos')?.value?.length >= 3 && form_registro.get('apellidos')?.hasError('pattern') == false && compararTextoVacio('apellidos')===false}">
+                                                            'is-valid': form_registro.get('apellidos')?.hasError('required')==false && form_registro.get('apellidos')?.hasError('minlength')==false && form_registro.get('apellidos')?.hasError('pattern') == false && compararTextoVacio('apellidos')===false}">
                                                         <div class="validators"
                                                             *ngIf="form_registro.get('apellidos')?.hasError('required') && form_registro.get('apellidos')?.touched">
                                                             <small>¡Este campo es requerido!</small>
@@ -149,13 +151,13 @@
                                                             formControlName="fecha_nacimiento" [ngClass]="{
                                                             'is-invalid': form_registro.get('fecha_nacimiento')?.hasError('required') && form_registro.get('fecha_nacimiento')?.touched || isFechaInvalida(),
                                                             'is-valid': form_registro.get('fecha_nacimiento')?.value?.length >= 10
-                                                        }" [max]="getTodayDateString()">
+                                                        }" [max]="getTodayDateString()" [min]="getMinDate()">
                                                         <div class="validators"
                                                             *ngIf="form_registro.get('fecha_nacimiento')?.hasError('required') && form_registro.get('fecha_nacimiento')?.touched">
                                                             <small>¡Este campo es requerido!</small>
                                                         </div>
                                                         <div class="validators" *ngIf="isFechaInvalida()">
-                                                            <small>¡Fecha inválida!</small>
+                                                            <small>¡Debes tener mínimo 5 años y máximo 100!</small>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -184,7 +186,8 @@
                                             </div>
                                             <!--Botón de siguiente-->
                                             <div style="text-align: end;">
-                                                <button mat-button matStepperNext class="btn btn-primary">Siguiente
+                                                <button [disabled]="validaFirstStepper()" mat-button matStepperNext
+                                                    class="btn btn-primary">Siguiente
                                                     <fa-icon [icon]="iconNextStep"></fa-icon>
                                                 </button>
                                             </div>
@@ -202,9 +205,10 @@
                                                         <input type="text"
                                                             class="form-control form-control-lg bg-light fs-6"
                                                             formControlName="correo" placeholder="Correo*"
+                                                            maxlength="50"
                                                             [ngClass]="{
                                                             'is-invalid': form_registro.get('correo')?.hasError('required') && form_registro.get('correo')?.touched || form_registro.get('correo')?.hasError('pattern'),
-                                                            'is-valid': form_registro.get('correo')?.value?.length >= 4 && form_registro.get('correo')?.hasError('pattern') == false}">
+                                                            'is-valid': form_registro.get('correo')?.hasError('required')==false && form_registro.get('correo')?.hasError('minlength')==false && form_registro.get('correo')?.hasError('pattern') == false}">
                                                         <div class="validators"
                                                             *ngIf="form_registro.get('correo')?.hasError('required') && form_registro.get('correo')?.touched">
                                                             <small>¡Este campo es requerido!</small>
@@ -225,20 +229,26 @@
                                                         <input type="text"
                                                             class="form-control form-control-lg bg-light fs-6"
                                                             formControlName="usuario" placeholder="Nombre de suario*"
+                                                            maxlength="12"
                                                             [ngClass]="{
-                                                            'is-invalid': (form_registro.get('usuario')?.hasError('required') || form_registro.get('usuario')?.hasError('nombreApellidoEnUsuario')) && form_registro.get('usuario')?.touched || form_registro.get('usuario')?.hasError('pattern') || compararTextoVacio('usuario')===true && form_registro.get('usuario')?.touched,
-                                                            'is-valid': form_registro.get('usuario')?.value?.length >= 4 && form_registro.get('usuario')?.hasError('pattern') == false}">
+                                                            'is-invalid': form_registro.get('usuario')?.hasError('required') || form_registro.get('usuario')?.hasError('nombreApellidoEnUsuario') || form_registro.get('usuario')?.hasError('pattern') || compararTextoVacio('usuario') && form_registro.get('usuario')?.touched,
+                                                            'is-valid': form_registro.get('usuario')?.hasError('minlength')==false && form_registro.get('usuario')?.hasError('pattern') == false && form_registro.get('usuario')?.hasError('nombreApellidoEnUsuario')==false}">
                                                         <div class="validators"
                                                             *ngIf="form_registro.get('usuario')?.hasError('required') && form_registro.get('usuario')?.touched">
                                                             <small>¡Este campo es requerido!</small>
                                                         </div>
                                                         <div class="validators"
-                                                            *ngIf="form_registro.get('usuario')?.hasError('nombreApellidoEnUsuario')">
+                                                            *ngIf="form_registro.get('usuario')?.hasError('pattern') && form_registro.get('usuario')?.touched">
+                                                            <small>¡El formato debe ser letras, numeros y caracteres
+                                                                (.-_), sin espacios!</small>
+                                                        </div>
+                                                        <div class="validators"
+                                                            *ngIf="form_registro.get('usuario')?.hasError('nombreApellidoEnUsuario') && form_registro.get('usuario')?.touched">
                                                             <small>¡El nombre de usuario no puede contener el nombre ni
                                                                 el apellido!</small>
                                                         </div>
                                                         <div class="validators"
-                                                            *ngIf="compararTextoVacio('usuario')===true && form_registro.get('usuario')?.touched">
+                                                            *ngIf="compararTextoVacio('usuario')==true && form_registro.get('usuario')?.touched">
                                                             <small>¡No se aceptan espacios en blanco!</small>
                                                         </div>
                                                     </div>
