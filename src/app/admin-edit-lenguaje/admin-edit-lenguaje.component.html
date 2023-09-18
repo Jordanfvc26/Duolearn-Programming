@@ -2,7 +2,9 @@
     <div class="row justify-content-center">
         <div class="col-12 container-info">
             <div class="col-12 mt-3 mx-1">
-                <h3 id="titulo"><fa-icon [icon]="iconLanguage" class="icon-title"></fa-icon> Editar lenguaje <strong>{{infoLenguaje?.titulo}}</strong></h3>
+                <h3 id="titulo"><fa-icon [icon]="iconLanguage" class="icon-title"></fa-icon> Editar lenguaje
+                    <strong>{{infoLenguaje?.titulo}}</strong>
+                </h3>
             </div>
 
             <form [formGroup]="editLanguageForm">
@@ -12,56 +14,69 @@
                         <label class="mb-1"><b>Título</b></label>
                         <input type="text" placeholder="Nombres*" class="form-control form-control-lg bg-light fs-6"
                             [ngModel]="infoLenguaje?.titulo" formControlName="titulo" [ngClass]="{
-                                'is-invalid': editLanguageForm.get('titulo')?.hasError('required') && editLanguageForm.get('titulo')?.touched || editLanguageForm.get('titulo')?.hasError('pattern'),
-                                'is-valid': editLanguageForm.get('titulo')?.value?.length >= 4 && editLanguageForm.get('titulo')?.hasError('pattern') == false
-                              }" [maxlength]="50" />
+                                'is-invalid': editLanguageForm.get('titulo')?.hasError('required') && editLanguageForm.get('titulo')?.touched,
+                                'is-valid': !editLanguageForm.get('titulo')?.hasError('required') && !editLanguageForm.get('titulo')?.hasError('minlength')
+                              }" [maxlength]="20" />
                         <div class="validators"
                             *ngIf="editLanguageForm.get('titulo')?.hasError('required') && editLanguageForm.get('titulo')?.touched">
                             <small>¡Este campo es requerido!</small>
                         </div>
-                        <div class="validators" *ngIf="editLanguageForm.get('titulo')?.hasError('pattern')">
-                            <small>¡Solo se permiten letras!</small>
-                        </div>
                     </div>
                     <!--Portada-->
-
                     <div class="col-12 col-md-6 mb-3">
-                        <label class="mb-1"><b>Portada</b></label>
+                        <label class="mb-1"><b>portada</b></label>
 
                         <input type="file" accept="image/*" class="form-control form-control-lg bg-light fs-6"
-                            (change)="vista_preliminar1($event)" formControlName="portada" />
+                            [ngModel]="infoLenguaje?.portada" (change)="vista_preliminar1($event)"
+                            formControlName="portada" [ngClass]="{
+                                'is-invalid': editLanguageForm.get('portada')?.hasError('required') && editLanguageForm.get('portada')?.touched,
+                                'is-valid': editLanguageForm.get('portada')?.hasError('required') ==false
+                              }" />
+                        <div class="validators"
+                            *ngIf="editLanguageForm.get('portada')?.hasError('required') && editLanguageForm.get('portada')?.touched">
+                            <small>¡Este campo es requerido!</small>
+                        </div>
+
 
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-12" style="display: flex; justify-content: center;align-items: center;">
-                        <img [src]="infoLenguaje?.portada" class="img-fluid" width="20%" height="20%" alt=""
-                            id="img-vista-previa1" />
+                    <div class="row">
+                        <div class="col-12" style="display: flex; justify-content: center;align-items: center;">
+                            <img [src]="infoLenguaje?.portada" class="img-fluid" width="20%" height="20%" alt=""
+                                id="img-vista-previa1" />
+                        </div>
                     </div>
+
                 </div>
+
 
                 <!--Descripción-->
                 <div class="row">
                     <div class="col-12 mb-3">
                         <label class="mb-1" id="descripcion"><b>Descripción</b></label>
-                        <textarea class="form-control form-control-lg bg-light fs-6" formControlName="descripcion"
-                            [ngModel]="infoLenguaje?.descripcion" placeholder="Descripción*" rows="10"
+                        <textarea maxlength="255" class="form-control form-control-lg bg-light fs-6"
+                            formControlName="descripcion" [ngModel]="infoLenguaje?.descripcion"
+                            placeholder="Descripción*" rows="10"
                             [ngClass]="{
-                                'is-invalid': editLanguageForm.get('descripcion')?.hasError('required') && editLanguageForm.get('descripcion')?.touched || editLanguageForm.get('descripcion')?.hasError('pattern'),
-                                'is-valid': editLanguageForm.get('descripcion')?.value?.length >=5 && editLanguageForm.get('descripcion')?.hasError('pattern') == false }">
+                                'is-invalid': editLanguageForm.get('descripcion')?.hasError('required') && editLanguageForm.get('descripcion')?.touched,
+                                'is-valid': !editLanguageForm.get('descripcion')?.hasError('minlength') && !editLanguageForm.get('descripcion')?.hasError('required') }">
                             </textarea>
                         <div class="validators"
                             *ngIf="editLanguageForm.get('descripcion')?.hasError('required') && editLanguageForm.get('descripcion')?.touched">
                             <small>¡Este campo es requerido!</small>
                         </div>
+                        <div class="validators" *ngIf="editLanguageForm.get('descripcion')?.hasError('minlength')">
+                            <small>¡Se requiere mínimo 10 caracteres!</small>
+                        </div>
+
                     </div>
                 </div>
 
                 <div class="action-buttons mb-3">
                     <button routerLink="/administrador/lenguaje/list" mat-button type="button"
                         class="btn btn-danger btn-md">Volver</button>
-                    <button (click)="editar_lenguaje()" [disabled]="editLanguageForm.invalid && img1" mat-button type="button"
-                        class="btn btn-primary btn-md">Guardar</button>
+                    <button (click)="editar_lenguaje()"
+                        [disabled]="editLanguageForm.invalid || (this.editLanguageForm.value.portada=='' && !img1)"
+                        mat-button type="button" class="btn btn-primary btn-md">Guardar</button>
                 </div>
             </form>
         </div>

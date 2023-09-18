@@ -11,7 +11,7 @@
                     <div class="col-12 col-md-12 mb-3">
                         <label class="mb-1"><b>Título</b></label>
                         <input type="text" placeholder="Nombres*" class="form-control form-control-lg bg-light fs-6"
-                        [ngModel]="infoModulo?.titulo_modulo"    
+                        [ngModel]="infoModulo?.titulo_modulo" maxlength="30"
                         formControlName="titulo" [ngClass]="{
                                 'is-invalid': moduloForm.get('titulo')?.hasError('required') && moduloForm.get('titulo')?.touched || moduloForm.get('titulo')?.hasError('pattern'),
                                 'is-valid': moduloForm.get('titulo')?.hasError('required')== false&& moduloForm.get('titulo')?.hasError('minlength') == false
@@ -35,14 +35,12 @@
                         [ngModel]="infoModulo?.icono"     
                         (change)="vista_preliminar1($event)" formControlName="icono" [ngClass]="{
                                 'is-invalid': moduloForm.get('icono')?.hasError('required') && moduloForm.get('icono')?.touched,
-                                'is-valid': moduloForm.get('icono')?.value?.length >= 4
+                                'is-valid': !moduloForm.get('icono')?.hasError('required')
                               }" />
                         <div class="validators"
                             *ngIf="moduloForm.get('icono')?.hasError('required') && moduloForm.get('icono')?.touched">
                             <small>¡Este campo es requerido!</small>
                         </div>
-
-
                     </div>
                     <div class="row">
                         <div class="col-12" style="display: flex; justify-content: center;align-items: center;">
@@ -55,7 +53,7 @@
                     <div class="col-12 mb-3">
                         <label class="mb-1" id="concepto"><b>Descripción</b></label>
                         <textarea class="form-control form-control-lg bg-light fs-6" formControlName="concepto"
-                        [ngModel]="infoModulo?.conceptos"        
+                        [ngModel]="infoModulo?.conceptos" maxlength="255"
                         placeholder="Descripción*" rows="10"
                             [ngClass]="{
                                 'is-invalid': moduloForm.get('concepto')?.hasError('required') && moduloForm.get('concepto')?.touched || moduloForm.get('concepto')?.hasError('pattern'),

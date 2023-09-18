@@ -36,16 +36,16 @@ export class CreateComponent implements AfterViewInit {
 
   seleccionado = 0;
   tema_select = 0;
-  lenguaje_select=0;
-  Temas=[];
+  lenguaje_select = 0;
+  Temas = [];
   faPlus = iconos.faPlusCircle;
   img1;
   img2;
   img3;
   lenguajes = [];
-  spinnerStatus:boolean = false;
+  spinnerStatus: boolean = false;
 
-  ngOnInit(){
+  ngOnInit() {
     this.spinnerStatus = true;
   }
 
@@ -59,7 +59,7 @@ export class CreateComponent implements AfterViewInit {
   }
 
   cargarModulos() {
-    this.Temas=[];
+    this.Temas = [];
     this.tema_serv.obtener_temas_por_lenguaje(this.lenguaje_select, true).subscribe(resp => {
       this.Temas = resp;
       console.log(this.Temas);
@@ -134,8 +134,11 @@ export class CreateComponent implements AfterViewInit {
         if (v[index] == "") {
           return 0;
         }
-        if(!v[index].includes("//")){
+        if (!v[index].includes("//")) {
           return 2;
+        }
+        if (v[index].trim().length == 2) {
+          return 5;
         }
       }
       for (let i = 0; i < v.length; i++) {
@@ -174,9 +177,9 @@ export class CreateComponent implements AfterViewInit {
               this.mensaje_bien("Pregunta agregada con éxito");
               this.ruta.navigateByUrl("/administrador/questions/list");
             } else if (resp.estado == 2) {
-              this.mensaje_mal("No se pudo agregar la pregunta",'Por favor, revisa que las opciones o pregunta no sean las mismas');
-            }else{
-              this.mensaje_mal("No se pudo agregar la pregunta",'Ocurrio un error inesperado');
+              this.mensaje_mal("No se pudo agregar la pregunta", 'Por favor, revisa que las opciones o pregunta no sean las mismas');
+            } else {
+              this.mensaje_mal("No se pudo agregar la pregunta", 'Ocurrio un error inesperado');
             }
           });
         } else {
@@ -192,8 +195,8 @@ export class CreateComponent implements AfterViewInit {
             if (resp.estado == 1) {
               this.mensaje_bien("Pregunta agregada con éxito");
               this.ruta.navigateByUrl("/administrador/questions/list");
-            }else{
-              this.mensaje_mal("No se pudo agregar la pregunta",'Ocurrio un error inesperado');
+            } else {
+              this.mensaje_mal("No se pudo agregar la pregunta", 'Ocurrio un error inesperado');
             }
           });
         } else {
@@ -201,7 +204,7 @@ export class CreateComponent implements AfterViewInit {
         }
       } else if (this.seleccionado == 4) {
         if (this.valida_campos(3)) {
-          const validado=this.valida_dragandrop();
+          const validado = this.valida_dragandrop();
           if (validado != 1) {
             switch (validado) {
               case 0:
@@ -210,13 +213,15 @@ export class CreateComponent implements AfterViewInit {
               case 2:
                 this.mensaje_mal("Las lineas deben llevar comentarios (//)", "Por favor cumple con los requisitos de la pregunta");
                 break;
-                case 3:
-                  this.mensaje_mal("Las 4 lineas deben ser diferentes", "Por favor cumple con los requisitos de la pregunta");
-                  break;
-                case 4:
-                  this.mensaje_mal("Deben ser 4 lineas de pregunta", "Por favor cumple con los requisitos de la pregunta");
-                  break;
-
+              case 3:
+                this.mensaje_mal("Las 4 lineas deben ser diferentes", "Por favor cumple con los requisitos de la pregunta");
+                break;
+              case 4:
+                this.mensaje_mal("Deben ser 4 lineas de pregunta", "Por favor cumple con los requisitos de la pregunta");
+                break;
+              case 5:
+                this.mensaje_mal("Los comentarios deben llevar indicaciones", "Por favor cumple con los requisitos de la pregunta");
+                break;
             }
           } else {
             this.act_serv.realiza_pregunta({
@@ -232,15 +237,15 @@ export class CreateComponent implements AfterViewInit {
                 this.mensaje_bien("Pregunta agregada con éxito");
                 this.ruta.navigateByUrl("/administrador/questions/list");
               } else if (resp.estado == 2) {
-                this.mensaje_mal("No se pudo agregar la pregunta",'Por favor, revisa que las opciones o pregunta no sean las mismas');
-              }else{
-                this.mensaje_mal("No se pudo agregar la pregunta",'Ocurrio un error inesperado');
+                this.mensaje_mal("No se pudo agregar la pregunta", 'Por favor, revisa que las opciones o pregunta no sean las mismas');
+              } else {
+                this.mensaje_mal("No se pudo agregar la pregunta", 'Ocurrio un error inesperado');
               }
             });
           }
           console.log(this.pregunta_cuest.nativeElement);
         } else {
-          this.mensaje_mal("Error","Ingrese todos los campos necesarios");
+          this.mensaje_mal("Error", "Ingrese todos los campos necesarios");
         }
       } else if (this.seleccionado == 5) {
         if (this.valida_campos(4)) {
@@ -256,13 +261,13 @@ export class CreateComponent implements AfterViewInit {
               this.mensaje_bien("Pregunta agregada con éxito");
               this.ruta.navigateByUrl("/administrador/questions/list");
             } else if (resp.estado == 2) {
-              this.mensaje_mal("No se pudo agregar la pregunta",'Por favor, revisa que las opciones o pregunta no sean las mismas');
-            }else{
-              this.mensaje_mal("No se pudo agregar la pregunta",'Ocurrio un error inesperado');
+              this.mensaje_mal("No se pudo agregar la pregunta", 'Por favor, revisa que las opciones o pregunta no sean las mismas');
+            } else {
+              this.mensaje_mal("No se pudo agregar la pregunta", 'Ocurrio un error inesperado');
             }
           });
         } else {
-          this.mensaje_mal("Error","Ingrese todos los campos");
+          this.mensaje_mal("Error", "Ingrese todos los campos");
         }
       }
       this.formData = new FormData();
@@ -287,7 +292,7 @@ export class CreateComponent implements AfterViewInit {
 
   }
 
-  mensaje_mal(titulo:any, mensaje: any) {
+  mensaje_mal(titulo: any, mensaje: any) {
     Swal.fire({
       icon: 'error',
       title: titulo,

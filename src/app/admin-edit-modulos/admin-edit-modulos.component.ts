@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterViewInit, AfterContentInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModulosService } from '../servicios/modulos.service';
 import * as iconos from '@fortawesome/free-solid-svg-icons';
@@ -11,7 +11,7 @@ import { TemasService } from '../servicios/temas.service';
   templateUrl: './admin-edit-modulos.component.html',
   styleUrls: ['../admin-crear-lenguajes/admin-crear-lenguajes.component.css']
 })
-export class AdminEditModulosComponent implements OnInit {
+export class AdminEditModulosComponent implements AfterViewInit, AfterContentInit {
 
   moduloForm: FormGroup;
   moduleId: any;
@@ -28,7 +28,14 @@ export class AdminEditModulosComponent implements OnInit {
     this.crear_form_modulo();
   }
 
-  ngOnInit(): void {
+  ngAfterContentInit(): void {
+    this.route.paramMap.subscribe(params => {
+      this.moduleId = Number.parseInt(params.get('id'));
+      this.cargaInfoModulo();
+    });
+  }
+
+  ngAfterViewInit(): void {
     this.route.paramMap.subscribe(params => {
       this.moduleId = Number.parseInt(params.get('id'));
       this.cargaInfoModulo();
@@ -66,7 +73,7 @@ export class AdminEditModulosComponent implements OnInit {
       console.log(event.target.files);
       this.img1 = event.target.files[0];
     } catch (error) {
-      this.img1=null;
+      this.img1 = null;
       id_img.removeAttribute("src");
     }
   }
@@ -74,6 +81,7 @@ export class AdminEditModulosComponent implements OnInit {
   cargaInfoModulo() {
     this.temaService.obtener_temas_por_id(this.moduleId).subscribe(resp => {
       this.infoModulo = resp;
+      this.moduloForm.markAllAsTouched();
       this.moduloForm.updateValueAndValidity();
     })
   }

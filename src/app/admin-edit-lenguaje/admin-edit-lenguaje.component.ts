@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, AfterContentInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as iconos from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './admin-edit-lenguaje.component.html',
   styleUrls: ['../admin-crear-lenguajes/admin-crear-lenguajes.component.css']
 })
-export class AdminEditLenguajeComponent implements AfterViewInit {
+export class AdminEditLenguajeComponent implements AfterViewInit, AfterContentInit {
   //Variables
   editLanguageForm!: FormGroup;
   lenguajeID: number = 0
@@ -22,8 +22,14 @@ export class AdminEditLenguajeComponent implements AfterViewInit {
     private route: ActivatedRoute,
     private router: Router,
     private lenguajeService: LenguajesService
-  ) { 
+  ) {
     this.crear_form_EditLenguaje();
+  }
+  ngAfterContentInit(): void {
+    this.route.paramMap.subscribe(params => {
+      this.lenguajeID = Number.parseInt(params.get('id'));
+      this.cargaInfoLenguaje();
+    });
   }
 
   ngAfterViewInit(): void {
@@ -38,39 +44,52 @@ export class AdminEditLenguajeComponent implements AfterViewInit {
     this.editLanguageForm = this.formBuilder.group({
       titulo: ['',
         [
-          Validators.minLength(2),
-          Validators.required,
-          Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚ\\s]*$')
+          Validators.minLength(1),
+          Validators.required
         ]
       ],
-      portada: [null
+      portada: ['',
+        [
+
+        ]
       ],
       descripcion: ['',
         [
-          Validators.minLength(8),
+          Validators.minLength(10),
           Validators.required,
-          Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚ\\s]*$')
         ]
       ],
     });
-    this.editLanguageForm.valueChanges.subscribe(() => {
-      this.editLanguageForm.updateValueAndValidity();
-    })
+  }
+
+  //Método que compara que no hayan inputs con espacios (vacios)
+  compararTextoVacio(campo: string) {
+    if (this.editLanguageForm.get(campo)?.value.trim() === "")
+      return true;
+    else
+      return false;
   }
 
   //Setea los inputs del formulario, para editar ellenguaje
   cargaInfoLenguaje() {
     this.lenguajeService.obtener_lenguaje_por_id(this.lenguajeID).subscribe(resp => {
       this.infoLenguaje = resp;
+      this.editLanguageForm.updateValueAndValidity();
     })
   }
 
   vista_preliminar1 = (event) => {
+    console.log(event)
     let id_img = document.getElementById('img-vista-previa1');
-    let path = URL.createObjectURL(event.target.files[0]);
-    id_img.setAttribute("src", path);
-    console.log(event.target.files);
-    this.img1 = event.target.files[0];
+    try {
+      let path = URL.createObjectURL(event.target.files[0]);
+      id_img.setAttribute("src", path);
+      console.log(event.target.files);
+      this.img1 = event.target.files[0];
+    } catch (error) {
+      this.img1 = null;
+      id_img.removeAttribute("src");
+    }
   }
 
   //Método que manda a guardar los datos editados del formulario
@@ -78,9 +97,9 @@ export class AdminEditLenguajeComponent implements AfterViewInit {
     const formData = new FormData();
     formData.append('titulo', this.editLanguageForm.value.titulo);
     formData.append('descripcion', this.editLanguageForm.value.descripcion);
-    if (this.img1){
+    if (this.img1) {
       formData.append('images', this.img1);
-    }else{
+    } else {
       formData.append('portada', this.infoLenguaje.portada);
     }
     this.lenguajeService.editar_lenguaje(this.lenguajeID, formData).subscribe(resp => {
@@ -98,7 +117,7 @@ export class AdminEditLenguajeComponent implements AfterViewInit {
           'El lenguaje ya ha sido registrado',
           'error'
         )
-      }else{
+      } else {
         Swal.fire(
           '¡Error!',
           'No se ha podido modificar el lenguaje',

@@ -21,9 +21,6 @@
                             *ngIf="languageForm.get('titulo')?.hasError('required') && languageForm.get('titulo')?.touched">
                             <small>¡Este campo es requerido!</small>
                         </div>
-                        <div class="validators" *ngIf="languageForm.get('titulo')?.hasError('pattern')">
-                            <small>¡Solo se permiten letras!</small>
-                        </div>
                         <div class="validators"
                             *ngIf="compararTextoVacio('titulo')===true && languageForm.get('titulo')?.touched">
                             <small>¡No se aceptan espacios en blanco!</small>
@@ -62,8 +59,8 @@
                         <textarea maxlength="255" class="form-control form-control-lg bg-light fs-6" formControlName="descripcion"
                             placeholder="Descripción*" rows="10"
                             [ngClass]="{
-                                'is-invalid': languageForm.get('descripcion')?.hasError('required') && languageForm.get('descripcion')?.touched || languageForm.get('descripcion')?.hasError('pattern') || languageForm.get('descripcion')?.hasError('minlength') || compararTextoVacio('descripcion')===true && languageForm.get('descripcion')?.touched,
-                                'is-valid': languageForm.get('descripcion')?.hasError('required')==false && languageForm.get('descripcion')?.hasError('minlength') == false }">
+                                'is-invalid': languageForm.get('descripcion')?.hasError('required') || compararTextoVacio('descripcion') && languageForm.get('descripcion')?.touched,
+                                'is-valid': !languageForm.get('descripcion')?.hasError('required') && !languageForm.get('descripcion')?.hasError('minlength') }">
                             </textarea>
                         <div class="validators"
                             *ngIf="languageForm.get('descripcion')?.hasError('required') && languageForm.get('descripcion')?.touched">

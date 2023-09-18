@@ -126,26 +126,39 @@ export class EditComponent implements AfterViewInit {
 
   }
 
-  valida_dragandrop(): boolean {
+  valida_dragandrop(): number {
     let v = this.pregunta_cuest.nativeElement.value.split("\n");
     if (v.length == 4) {
       for (let index = 0; index < v.length; index++) {
         if (v[index] == "") {
-          return false;
+          return 0;
+        }
+        if (!v[index].includes("//")) {
+          return 2;
+        }
+        if (v[index].trim().length == 2) {
+          return 5;
         }
       }
-      return true;
+      for (let i = 0; i < v.length; i++) {
+        for (let j = i + 1; j < v.length; j++) {
+          if (v[i].toLowerCase() == v[j].toLowerCase()) {
+            return 3; // Se encontró una igualdad, los elementos no son todos diferentes.
+          }
+        }
+      }
+      return 1;
     } else {
-      return false;
+      return 4;
     }
   }
 
   send_question() {
     if (this.seleccionado == 0 || this.tema_select == 0) {
       if (this.seleccionado == 0) {
-        this.mensaje_mal("No ha ingresado ninguna pregunta");
+        this.mensaje_mal("No ha ingresado ninguna pregunta", "Verifica que has seleccionado el tipo de pregunta");
       } else if (this.tema_select == 0) {
-        this.mensaje_mal("Debe seleccionar el tema para su pregunta..");
+        this.mensaje_mal("Debe seleccionar el tema para su pregunta.", "Verifica que has seleccionado el modulo de tu pregunta");
       }
 
     } else {
@@ -164,28 +177,28 @@ export class EditComponent implements AfterViewInit {
             if (resp.estado == 1) {
               this.mensaje_bien("Pregunta editada con éxito");
               this.ruta.navigateByUrl("/administrador/questions/list");
-            } else if(resp.estado==2){
-              this.mensaje_mal("Las opciones o la pregunta no deben ser iguales");
-            }else {
-              this.mensaje_mal("No se pudo editar la pregunta");
+            } else if (resp.estado == 2) {
+              this.mensaje_mal("No se pudo agregar la pregunta", 'Por favor, revisa que las opciones o pregunta no sean las mismas');
+            } else {
+              this.mensaje_mal("No se pudo agregar la pregunta", 'Ocurrio un error inesperado');
             }
           });
         } else {
-          this.mensaje_mal("Agregue todos los campos");
+          this.mensaje_mal("Agregue todos los campos", "Por favor, verifica que has ingresado todos los campos requeridos");
         }
 
       } else if (this.seleccionado == 3) {
         if (this.valida_campos(2)) {
           this.formData.append("id", this.activityId.toString(),);
           this.formData.append("tema", this.activityInfo.modulo_id.toString(),);
-          if (this.img1 != undefined){
+          if (this.img1 != undefined) {
             this.formData.append("images", this.img1);
-          }else{
+          } else {
             this.formData.append("pregunta", this.activityInfo.pregunta);
           }
-          if(this.img2!=undefined){
+          if (this.img2 != undefined) {
             this.formData.append("images", this.img2);
-          }else{
+          } else {
             this.formData.append("opcion_correcta", this.activityInfo.opcion_correcta);
           }
           this.formData.append("tipo", "pares");
@@ -193,19 +206,36 @@ export class EditComponent implements AfterViewInit {
             if (resp.estado == 1) {
               this.mensaje_bien("Pregunta editada con éxito");
               this.ruta.navigateByUrl("/administrador/questions/list");
-            } else if(resp.estado==2){
-              this.mensaje_mal("Las opciones o la pregunta no deben ser iguales");
-            }else {
-              this.mensaje_mal("No se pudo editar la pregunta");
+            } else if (resp.estado == 2) {
+              this.mensaje_mal("Error", "Las opciones o la pregunta no deben ser iguales");
+            } else {
+              this.mensaje_mal("No se pudo agregar la pregunta", 'Ocurrio un error inesperado');
             }
           });
         } else {
-          this.mensaje_mal("Agregue las imagenes requeridas");
+          this.mensaje_mal("Agregue las imagenes requeridas", "Por favor, verifica que has ingresado todos los campos requeridos");
         }
       } else if (this.seleccionado == 4) {
         if (this.valida_campos(3)) {
-          if (this.valida_dragandrop() == false) {
-            this.mensaje_mal("Deben ser 4 lineas de pregunta");
+          const validado = this.valida_dragandrop();
+          if (validado != 1) {
+            switch (validado) {
+              case 0:
+                this.mensaje_mal("No debe estar vacío", "Por favor cumple con los requisitos de la pregunta");
+                break;
+              case 2:
+                this.mensaje_mal("Las lineas deben llevar comentarios (//)", "Por favor cumple con los requisitos de la pregunta");
+                break;
+              case 3:
+                this.mensaje_mal("Las 4 lineas deben ser diferentes", "Por favor cumple con los requisitos de la pregunta");
+                break;
+              case 4:
+                this.mensaje_mal("Deben ser 4 lineas de pregunta", "Por favor cumple con los requisitos de la pregunta");
+                break;
+              case 5:
+                this.mensaje_mal("Los comentarios deben llevar indicaciones", "Por favor cumple con los requisitos de la pregunta");
+                break;
+            }
           } else {
             this.act_serv.modifyActivity({
               id: this.activityId.toString(),
@@ -220,25 +250,25 @@ export class EditComponent implements AfterViewInit {
               if (resp.estado == 1) {
                 this.mensaje_bien("Pregunta editada con éxito");
                 this.ruta.navigateByUrl("/administrador/questions/list");
-              } else if(resp.estado==2){
-                this.mensaje_mal("Las opciones o la pregunta no deben ser iguales");
-              }else {
-                this.mensaje_mal("No se pudo editar la pregunta");
+              } else if (resp.estado == 2) {
+                this.mensaje_mal("No se pudo agregar la pregunta", 'Por favor, revisa que las opciones o pregunta no sean las mismas');
+              } else {
+                this.mensaje_mal("No se pudo agregar la pregunta", 'Ocurrio un error inesperado');
               }
             });
           }
           console.log(this.pregunta_cuest.nativeElement);
         } else {
-          this.mensaje_mal("Ingrese todos los campos necesarios");
+          this.mensaje_mal("Error", "Ingrese todos los campos necesarios");
         }
       } else if (this.seleccionado == 5) {
         if (this.valida_campos(4)) {
           this.formData.append("id", this.activityId.toString());
           this.formData.append("tema", this.activityInfo.modulo_id.toString());
           console.log(this.img3);
-          if(this.img3!=undefined){
+          if (this.img3 != undefined) {
             this.formData.append("images", this.img3);
-          }else{
+          } else {
             this.formData.append("pregunta", this.activityInfo.pregunta);
           }
           this.formData.append("opcion_correcta", this.opcion_a_error.nativeElement.value.trim());
@@ -250,15 +280,15 @@ export class EditComponent implements AfterViewInit {
             if (resp.estado == 1) {
               this.mensaje_bien("Pregunta editada con éxito");
               this.ruta.navigateByUrl("/administrador/questions/list");
-            } else if(resp.estado==2){
-              this.mensaje_mal("Las opciones o la pregunta no deben ser iguales");
-            }else {
-              this.mensaje_mal("No se pudo editar la pregunta");
+            } else if (resp.estado == 2) {
+              this.mensaje_mal("No se pudo agregar la pregunta", 'Por favor, revisa que las opciones o pregunta no sean las mismas');
+            } else {
+              this.mensaje_mal("No se pudo agregar la pregunta", 'Ocurrio un error inesperado');
             }
 
           });
         } else {
-          this.mensaje_mal("Ingrese todos los campos");
+          this.mensaje_mal("Error", "Ingrese todos los campos");
         }
       }
       this.formData = new FormData();
@@ -279,13 +309,12 @@ export class EditComponent implements AfterViewInit {
     })
   }
 
-  mensaje_mal(mensaje: any) {
+  mensaje_mal(titulo: any, mensaje: any) {
     Swal.fire({
       icon: 'error',
-      title: 'Oops...',
+      title: titulo,
       text: mensaje,
       showConfirmButton: true,
-      timer: 2000
     });
   }
 

@@ -57,6 +57,26 @@ export class PerfilUsuarioComponent implements OnInit {
     });
   }
 
+  private padZero(number: number): string {
+    return number < 10 ? `0${number}` : `${number}`;
+  }
+
+  getTodayDateString(): string {
+    const today = new Date();
+    const year = today.getFullYear() - 5;
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    return `${year}-${this.padZero(month)}-${this.padZero(day)}`;
+  }
+
+  getMinDate(): string {
+    const today = new Date();
+    const year = today.getFullYear() - 100;
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    return `${year}-${this.padZero(month)}-${this.padZero(day)}`;
+  }
+
   validarConfirmacionClave(control: AbstractControl): { [key: string]: any } | null {
     const clave = this.form_contra.get('clave_nueva').value;
     const confirmClave = control.value;

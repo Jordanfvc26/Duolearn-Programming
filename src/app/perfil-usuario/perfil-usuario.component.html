@@ -13,22 +13,22 @@
         *ngIf="form_clave else cambio">
         <div class="entrada-texto">
             <p><i class="fas fa-comment"></i> Nombres Completos: </p>
-            <input (keydown)="soloLetras($event)" type="text" class="form-control" formControlName="nombres" />
+            <input maxlength="30" (keydown)="soloLetras($event)" type="text" class="form-control" formControlName="nombres" />
         </div>
 
         <div class="entrada-texto">
             <p><i class="fas fa-comment"></i> Apellidos Completos: </p>
-            <input (keydown)="soloLetras($event)" type="text" class="form-control" formControlName="apellidos" />
+            <input maxlength="30" (keydown)="soloLetras($event)" type="text" class="form-control" formControlName="apellidos" />
         </div>
 
         <div class="entrada-texto">
             <p><i class="fas fa-calendar"></i> Fecha de Nacimiento: </p>
-            <input type="date" class="form-control" formControlName="fecha_nacimiento" id="campoFecha" />
+            <input [min]="getMinDate()" [max]="getTodayDateString()" type="date" class="form-control" formControlName="fecha_nacimiento" id="campoFecha" />
         </div>
 
         <div class="entrada-texto">
             <p><i class="fas fa-envelope"></i> Correo electrónico: </p>
-            <input type="text" class="form-control" formControlName="correo" />
+            <input maxlength="50" type="text" class="form-control" formControlName="correo" />
         </div>
 
         <div class="entrada-texto">
