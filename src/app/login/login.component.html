@@ -279,7 +279,7 @@
                                                     <div class="validators"
                                                         *ngIf="form_registro.get('clave')?.hasError('pattern')">
                                                         <small>¡Al menos una mayúscula, una minúscula, un número, un
-                                                            caracter especial!</small>
+                                                            caracter especial ({{pattern}}) !</small>
                                                     </div>
                                                     <div class="validators"
                                                         *ngIf="form_registro.get('clave')?.minlength">
