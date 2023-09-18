@@ -44,14 +44,14 @@ export class LoginComponent implements OnInit {
       nombres: ['',
         [
           Validators.required,
-          Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/),
+          Validators.pattern(/^(?!.*\s{2,})(?!^\s)(?=.*[a-zA-Z])[a-zA-Z0-9\s.-]*[a-zA-Z0-9]$/),
           Validators.minLength(3)
         ]
       ],
       apellidos: ['',
         [
           Validators.required,
-          Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/),
+          Validators.pattern(/^(?!.*\s{2,})(?!^\s)(?=.*[a-zA-Z])[a-zA-Z0-9\s.-]*[a-zA-Z0-9]$/),
           Validators.minLength(3),
         ]
       ],
