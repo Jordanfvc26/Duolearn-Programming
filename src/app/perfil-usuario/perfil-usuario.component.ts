@@ -17,10 +17,19 @@ export class PerfilUsuarioComponent implements OnInit {
   form_contra: FormGroup;
   fanombre = iconos.faClosedCaptioning;
   public showPassword = false;
-  iconEye = iconos.faEye;
-  iconEyeSlash = iconos.faEyeSlash;
   public showPassword2 = false;
+  public showPassword3 = false;
   tipo_usuario = "";
+  iconMyProfile = iconos.faUserAlt;
+  iconInformation = iconos.faInfoCircle;
+  iconPassword = iconos.faLock;
+  iconInfoPolicies = iconos.faInfoCircle;
+  iconHidePassword = iconos.faEyeSlash; 
+  iconViewPassword = iconos.faEye;
+  iconEdit = iconos.faEdit;
+  modoEdicion: boolean = false;
+  spinnerStatus:boolean = false;
+  nombreUsuario: string = "Usuario";
 
   constructor(
     public formulario_registro: FormBuilder,
@@ -44,8 +53,17 @@ export class PerfilUsuarioComponent implements OnInit {
     });
     //this.form_contra.get('confirmClave').setValidators([this.validarConfirmacionClave.bind(this)]);
 
-    //asigna valores al form
-    user_Service.get_user(sessionStorage.getItem("user")).subscribe(resp => {
+
+  }
+
+  private padZero(number: number): string {
+    return number < 10 ? `0${number}` : `${number}`;
+  }
+
+  //Método que obtiene los datos del perfil y asigna los valores al form
+  obtenerDatosUsuario() {
+    this.spinnerStatus = false;
+    this.user_Service.get_user(sessionStorage.getItem("user")).subscribe(resp => {
       this.form_registro.setValue({
         correo: resp.correo,
         usuario: resp.usuario,
@@ -53,12 +71,9 @@ export class PerfilUsuarioComponent implements OnInit {
         nombres: resp.nombres,
         apellidos: resp.apellidos,
       });
-
+      this.spinnerStatus = true;
+      this.nombreUsuario = this.form_registro.value.nombres + " " + this.form_registro.value.apellidos;
     });
-  }
-
-  private padZero(number: number): string {
-    return number < 10 ? `0${number}` : `${number}`;
   }
 
   getTodayDateString(): string {
@@ -102,6 +117,8 @@ export class PerfilUsuarioComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.spinnerStatus = true;
+    this.obtenerDatosUsuario();
     this.route.data.subscribe(data => {
       this.tipo_usuario = data['adminData'].role;
       console.log(this.tipo_usuario);
@@ -112,49 +129,51 @@ export class PerfilUsuarioComponent implements OnInit {
   }
 
   update_info() {
+    this.spinnerStatus = false;
     this.user_Service.update_info(this.returnDataUpdate()).subscribe(resp => {
       if (resp.estado == 1) {
-        this.mensaje_bien("Se ha modificado");
-        setTimeout(() => {
-          window.location.reload();
-        })
+        this.spinnerStatus = true;
+        this.mensaje_bien("Se ha actualizado la información de manera correcta.");
+        this.obtenerDatosUsuario();
+        this.modoEdicion = false;
       } else {
-        this.mensaje_mal("No se ha modificado");
+        this.spinnerStatus = true;
+        this.mensaje_mal("No se ha podido actualizar la información. Intente otra vez.");
       }
     });
-  }
-
-  //Ojo para la contraseña
-  togglePasswordVisibility() {
-    this.showPassword = !this.showPassword;
   }
 
   returnDataUpdate() {
     return { 'usuario_id': Number.parseInt(sessionStorage.getItem("user")), 'nombres': this.form_registro.value.nombres, 'apellidos': this.form_registro.value.apellidos, 'fecha_nacimiento': this.form_registro.value.fecha_nacimiento, 'correo': this.form_registro.value.correo }
   }
 
+  //Método que cambia la contraseña del usuario
   update_password() {
-
+    this.spinnerStatus = false;
     if (this.form_contra.get('clave_nueva').value == this.form_contra.get('confirmClave').value) {
-
       this.user_Service.update_pass(sessionStorage.getItem("user"), this.crearjson()).subscribe(resp => {
         if (resp.estado == 1) {
+          this.spinnerStatus = true;
           Swal.fire({
-            title: 'Debe volver a iniciar su sesión',
+            icon: 'success',
+            title: 'Proceso exitoso',
+            text: 'La contraseña se ha cambiado con éxito y se requiere volver a iniciar sesión.',
             showDenyButton: false,
             showCancelButton: false,
-            confirmButtonText: 'Entendido',
+            confirmButtonText: 'Aceptar',
           }).then((result) => {
             this.close_session();
           }).finally(() => {
             this.close_session();
           })
         } else {
-          this.mensaje_mal("NO SE HA MODIFICADO");
+          this.spinnerStatus = true;
+          this.mensaje_mal("No se ha podido modificar la contraseña. Intente otra vez.");
         }
       });
     } else {
-      this.mensaje_mal("LAS CONTRASEÑAS NO COINCIDEN");
+      this.spinnerStatus = true;
+      this.mensaje_mal("Las contraseñas ingresadas no coinciden.");
     }
   }
 
@@ -162,29 +181,30 @@ export class PerfilUsuarioComponent implements OnInit {
     return { clave_actual: this.form_contra.value.clave_actual, clave_nueva: this.form_contra.value.clave_nueva }
   }
 
+  //Método que muestra un mensaje de éxito
   mensaje_bien(mensaje: any) {
     Swal.fire({
       icon: 'success',
-      title: mensaje,
+      title: 'Proceso exitoso',
+      text: mensaje,
       showConfirmButton: true,
-      timer: 2000
     })
   }
 
-  close_session() {
-    sessionStorage.clear();
-    this.ruta.navigateByUrl("/login");
-  }
-
-
+  //Método que muestra un mensaje de error
   mensaje_mal(mensaje: any) {
     Swal.fire({
       icon: 'error',
-      title: 'Oops...',
+      title: '¡Ha ocurrido un error!',
       text: mensaje,
       showConfirmButton: true,
-      timer: 1500
     });
+  }
+
+  //Método que cierra la sesisón
+  close_session() {
+    sessionStorage.clear();
+    this.ruta.navigateByUrl("/login");
   }
 
   mostrarCambioClave() {
@@ -193,5 +213,60 @@ export class PerfilUsuarioComponent implements OnInit {
 
   volver() {
     this.ruta.navigateByUrl("/dashboard");
+  }
+
+  //Método que cambia el estado de la variable que habilita los campos para editar
+  habilitarEdicion(estado: boolean) {
+    if (!estado)
+      this.obtenerDatosUsuario();
+    this.modoEdicion = estado;
+    this.spinnerStatus = true;
+  }
+
+  togglePasswordVisibility(input: number) {
+    if (input == 1)
+      this.showPassword = !this.showPassword;
+    else if (input == 2)
+      this.showPassword2 = !this.showPassword2;
+    else  if (input == 3)
+      this.showPassword3 = !this.showPassword3;
+  }
+
+  // Método para obtener el tipo de entrada de contraseña según la visibilidad
+  getPasswordInputType(input: number) {
+    switch (input) {
+      case 1:
+        return this.showPassword ? 'text' : 'password';
+      case 2:
+        return this.showPassword2 ? 'text' : 'password';
+      default:
+        return this.showPassword3 ? 'text' : 'password';
+    }
+  }
+
+  /*Método que verifica que la nueva contraseña no sea igual a la anterior*/
+  newPasswordMatchesCurrent() {
+    const currentPasswordControl = this.form_contra.get('clave_actual');
+    const newPasswordControl = this.form_contra.get('clave_nueva');
+
+    if (currentPasswordControl && newPasswordControl) {
+      const currentPassword = currentPasswordControl.value;
+      const newPassword = newPasswordControl.value;
+      return currentPassword === newPassword;
+    }
+    return false;
+  }
+
+   /*Método que verifica que la contraseña actual no sea igual a la anterior*/
+   verifyPassword(): boolean {
+    const newPasswordControl = this.form_contra.get('clave_nueva');
+    const confirmPasswordControl = this.form_contra.get('confirmClave');
+
+    if (newPasswordControl && confirmPasswordControl) {
+      const newPassword = newPasswordControl.value;
+      const confirmPassword = confirmPasswordControl.value;
+      return newPassword === confirmPassword;
+    }
+    return false;
   }
 }

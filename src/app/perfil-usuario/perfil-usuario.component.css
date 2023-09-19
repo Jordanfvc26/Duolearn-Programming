@@ -1,91 +1,62 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
-
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-.validators {
-    color: #FC3B56;
-}
-
-.caja{
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.2);
+.caja {
+    background-color: #FFF;
+    height: auto;
+    border-radius: 8px;
     padding: 20px;
 }
 
-.entrada-texto{
-    margin-top: 15px;
-}
-
-.entrada-texto p{
-    font-size: 17px;
-}
-.entrada-texto input{
-    height: 35px;
-    padding-left: 7px;
-    border-radius: 10px;
-    background-color: lightgoldenrodyellow;
-    border-color: wheat;
-}
-
-#campoFecha{
-    color: gray;
-}
-
-.titulo{
-    text-align: center;
-}
-
-.titulo h6{
-    font-size: 40px;
-    color: #444;
-    margin-bottom: 30px;
-}
-
-#icono-titulo{
-    color: green
-}
-
-.botones{
+.div {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
 }
 
-.botones button{
-    background-color: rgb(5, 196, 88); 
+input[readOnly] {
+    background-color: #f0f0f0 !important;
+    color: #6b6b6b;
+    border-color: #dbdbdb;
+    cursor: not-allowed;
+}
+
+#btnEditar {
+    width: 100%;
+}
+
+.btn-primary {
     border-radius: 10px;
-    padding: 7px 10px;
-    outline: none;
-    border: 0;
-    font-size: 17px;
-    width: 240px;
-    color: white;
+    background-color: rgb(6, 148, 68) !important;
+    border-color: rgb(6, 148, 68) !important;
 }
 
-.botones button:hover{
-    box-shadow: 0 6px 5px rgba(19, 28, 56, 0.26);
-}
-
-.botones .boton-cambiar-contrasenia{
-    background-color: rgb(5, 196, 88); 
+.btn-danger {
     border-radius: 10px;
-    margin-top: 30px;
-    outline: none;
-    border: 0;
-    font-size: 17px;
-    width: 240px;
-    color: white;
 }
 
-.linea{
-    border-top: 4px solid lightgrey;
-    height: 2px;
-    max-width: 90%;
-    margin: 30px auto 0 auto;
-    border-radius: 50%;
-    margin-bottom: 5px;
+.validators{
+    color: #FC3B56;
+}
+
+.icon-title{
+    color: rgb(6, 148, 68) !important;
+}
+
+
+/*----------------------Contraseña--------------------*/
+.password-policies{
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    padding: 7px;
+}
+
+.password-policies>ul{
+    list-style: none;
+    margin-left: 15px;
+}
+
+.input-group-text>fa-icon{
+    color: rgb(6, 148, 68) !important;
+    cursor: pointer;
+}
+
+.btn-cancelar{
+    margin-right: 10px;
 }
