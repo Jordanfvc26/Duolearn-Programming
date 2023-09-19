@@ -31,7 +31,7 @@
                                             (keydown.enter)="login()" formControlName="usuario" placeholder="Usuario*"
                                             [ngClass]="{
                                         'is-invalid': form_login.get('usuario')?.hasError('required') && form_login.get('usuario')?.touched || form_login.get('usuario')?.hasError('pattern'),
-                                        'is-valid': form_login.get('usuario')?.value?.length >= 10 && form_login.get('usuario')?.hasError('pattern') == false}">
+                                        'is-valid': form_login.get('usuario')?.touched && form_login.get('usuario')?.hasError('pattern') == false}" maxlength="30">
                                         <div class="validators"
                                             *ngIf="form_login.get('usuario')?.hasError('required') && form_login.get('usuario')?.touched">
                                             <small>¡Este campo es requerido!</small>
@@ -46,7 +46,7 @@
                                                 (keydown.enter)="login()"
                                                 [ngClass]="{
                                             'is-invalid': form_login.get('clave')?.hasError('required') && form_login.get('clave')?.touched || form_login.get('clave')?.hasError('pattern'),
-                                            'is-valid': form_login.get('clave')?.value?.length >= 10 && form_login.get('clave')?.hasError('pattern') == false}">
+                                            'is-valid': form_login.get('usuario')?.touched && form_login.get('clave')?.hasError('pattern') == false}" maxlength="30">
                                             <span class="input-group-text" (click)="togglePasswordVisibility()">
                                                 <fa-icon [icon]="showPassword ? iconEyeSlash : iconEye"></fa-icon>
                                             </span>

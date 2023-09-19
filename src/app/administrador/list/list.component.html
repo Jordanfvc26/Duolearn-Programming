@@ -25,7 +25,7 @@
         </div>
         <div class="col-12 col-md-4 col-lg-4 mb-3">
           <form>
-            <label for="module_select"> <strong>Seleccione el modulo</strong></label>
+            <label for="module_select"> <strong>Seleccione el módulo</strong></label>
             <select name="module_select" id="module_select" class="form-select mt-2" aria-label="Default select example"
               style="margin-bottom: 12px;" [value]="selectedModuloId" (change)="changeModulo($event.target.value)">
               <option *ngFor="let modulo of arrayModulos" [value]="modulo.modulo_id">
@@ -35,7 +35,7 @@
         </div>
         <div class="col-12 col-md-4 col-lg-4 mb-3">
           <form>
-            <label for="module_select"> <strong>Seleccione el estado de la actividad</strong></label>
+            <label for="module_select"> <strong>Filtrar por</strong></label>
             <select class="form-select mt-2" aria-label="Default select example" style="margin-bottom: 12px;"
               (change)="onFilterChange($event)">
               <option [value]="true" selected>Activos</option>
@@ -55,7 +55,7 @@
                 <th scope="col">N°</th>
                 <th scope="col">Tipo</th>
                 <th scope="col">Lenguaje</th>
-                <th scope="col">Modulo</th>
+                <th scope="col">Módulo</th>
                 <th scope="col">Acciones</th>
               </tr>
             </thead>

@@ -6,6 +6,10 @@
     box-sizing: border-box;
 }
 
+fa-icon{
+    color: rgb(5, 196, 88);
+}
+
 .barra{
     height: 40px;
     font-size: 20px;
@@ -56,7 +60,6 @@
     box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.2);
     width: 100%;
     padding: 25px;
-    margin-top: 20px;
     margin-bottom: 20px;
 }
 
@@ -73,16 +76,7 @@
     margin-bottom: 30px;
     display: flex;
     justify-content: space-between;
-}
-
-.tema select,
-.tipo-pregunta select{
-    border-radius: 10px;
-    margin-left: 10px;
-    height: 40px;
-    border-color: rgb(212, 212, 212);
-    background-color: rgb(243, 240, 240);
-    cursor: pointer;
+    margin-right: 10px;
 }
 
 .tema option,
@@ -134,6 +128,7 @@
 }
 
 /*----------------------------------------Subir imagen para pares--------------------------*/
+
 #file1,#file2,#file3{
     display: none;
 }
@@ -172,24 +167,56 @@
     width: 40%;
     height: 40%;
     margin-right: 20px;
+    cursor: pointer;
 }
 
 /*--------------------------------Boton guardar cambios del final------------------------------*/
-.botones{
-    text-align: center;
+.action-buttons {
+    text-align: end;
 }
 
-.botones button{
-    background-color: rgb(5, 196, 88); 
-    border-radius: 10px;
-    padding: 7px 15px;
-    outline: none;
-    border: 0;
-    font-size: 17px;
-    width: 245px;
-    color: white;
+/*Botón aceptar (Guardar)*/
+.btn-primary {
+    background-color: rgb(6, 148, 68) !important;
+    border-color: rgb(6, 148, 68)!important;
+    padding: 7px !important;
 }
 
-.botones button:hover{
-    box-shadow: 0 6px 5px rgba(19, 28, 56, 0.26);
+.btn-primary:hover {
+    background-color: rgb(5, 129, 59) !important;
+    border-color: rgb(5, 129, 59) !important;
+}
+
+.btn-secondary, .btn-danger {
+    margin-right: 10px;
+}
+
+.btn-danger{
+    background-color: #FC3B56 !important;
+    border-color: #FC3B56 !important;
+    padding: 7px !important;
+}
+
+.btn-danger:hover{
+    background-color: #f72944 !important;
+    border-color: #f72944 !important;
+}
+
+select>option{
+    margin-left: 5px;
+}
+
+.alert{
+    min-height: 40px !important;
+}
+
+/*Responsive Web Design*/
+@media screen and (max-width: 760px) {
+    .button-back {
+        text-align: end;
+    }
+
+    .action-buttons>button{
+        width: 100%;
+    }
 }

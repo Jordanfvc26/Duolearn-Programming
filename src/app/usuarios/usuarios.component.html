@@ -1,3 +1,5 @@
+<app-pre-loader *ngIf="!spinnerStatus"></app-pre-loader>
+
 <body>
     <div class="row justify-content-center">
         <div class="col-12 container-info">
@@ -7,11 +9,10 @@
             <br />
             <!--Inputs para buscar e importar-->
             <div class="row">
-                <!--Buscar paciente por nombre-->
-
-                <div class="col-12 col-md-4 col-lg-5 mb-3">
+                <!--Buscar usuario por nombre-->
+                <div class="col-12 col-md-2 col-lg-2 mb-3">
                     <form>
-                        <label for="lenguaje_select"> <strong>Elija el estado de los usuarios</strong></label>
+                        <label for="lenguaje_select"> <strong>Filtrar por</strong></label>
                         <select class="form-select mt-2" aria-label="Default select example"
                             style="margin-bottom: 12px;" (change)="onFilterChange($event.target.value)">
                             <option [value]="true" selected>Activos</option>
@@ -19,7 +20,13 @@
                         </select>
                     </form>
                 </div>
-
+                <div class="col-12 col-md-4 col-lg-4 mb-3">
+                    <form>
+                        <label for="lenguaje_select"> <strong>Buscar por nombre de usuario</strong></label>
+                        <input class="form-control me-1 mt-2" type="text" placeholder="Buscar..."
+                            name="buscarMovimientos" [(ngModel)]="usersToSearch">
+                    </form>
+                </div>
             </div>
 
             <!--Tabla con la lista de tareas-->
@@ -40,7 +47,8 @@
                         </thead>
                         <tbody>
                             <ng-container *ngIf="usuarios.length > 0; else noResults">
-                                <tr *ngFor="let usuario of usuarios | slice:initialPage:finalPage; let i = index">
+                                <tr
+                                    *ngFor="let usuario of usuarios | slice:initialPage:finalPage | searchRegisters:usersToSearch:optionFilter; let i = index">
                                     <th scope="row">{{i+1}}</th>
                                     <td>{{usuario.nombres + " " + usuario.apellidos}}</td>
                                     <td>{{usuario.usuario}}</td>
@@ -51,18 +59,18 @@
                                         'Pendiente' }}
                                     </td>
                                     <td class="actions">
-                                        <fa-icon *ngIf="usuario.tipo_usuario.trim()=='docente' && !usuario.aprobado"
-                                            (click)="aprobarComoProfesor(usuario.nombres, usuario.usuario_id)"
-                                            data-bs-toggle="mensaje" title="Aprobar Docente" id="iconVerDetalles"
-                                            [icon]="iconAprobar"></fa-icon>
                                         <fa-icon *ngIf="usuario.usuario_activo"
-                                            (click)="eliminarUsuario(usuario.nombres, usuario.usuario_id, false)"
-                                            data-bs-toggle="mensaje" title="Eliminar" id="iconEliminar"
+                                            (click)="eliminarUsuario(usuario.nombres + ' ' + usuario.apellidos, usuario.usuario_id, false)"
+                                            data-bs-toggle="mensaje" title="Desactivar" id="iconEliminar"
                                             [icon]="iconOn"></fa-icon>
                                         <fa-icon *ngIf="!usuario.usuario_activo"
-                                            (click)="eliminarUsuario(usuario.nombres, usuario.usuario_id, true)"
+                                            (click)="eliminarUsuario(usuario.nombres + ' ' + usuario.apellidos, usuario.usuario_id, true)"
                                             data-bs-toggle="mensaje" title="Reactivar" id="iconVerDetalles"
                                             [icon]="iconOff"></fa-icon>
+                                        <fa-icon *ngIf="usuario.tipo_usuario.trim()=='docente' && !usuario.aprobado"
+                                            (click)="aprobarComoProfesor(usuario.nombres + ' ' + usuario.apellidos , usuario.usuario_id)"
+                                            data-bs-toggle="mensaje" title="Aprobar Docente" id="iconVerDetalles"
+                                            [icon]="iconAprobar"></fa-icon>
                                     </td>
 
                                 </tr>

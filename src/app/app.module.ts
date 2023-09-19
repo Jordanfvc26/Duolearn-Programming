@@ -41,6 +41,7 @@ import { AdminListarModulosComponent } from './admin-listar-modulos/admin-listar
 import { AdminCrearModulosComponent } from './admin-crear-modulos/admin-crear-modulos.component';
 import { AdminEditLenguajeComponent } from './admin-edit-lenguaje/admin-edit-lenguaje.component';
 import { AdminEditModulosComponent } from './admin-edit-modulos/admin-edit-modulos.component';
+import { SearchPatientsPipe } from './search-registers.pipe';
 
 
 @NgModule({
@@ -73,7 +74,8 @@ import { AdminEditModulosComponent } from './admin-edit-modulos/admin-edit-modul
     AdminListarModulosComponent,
     AdminCrearModulosComponent,
     AdminEditLenguajeComponent,
-    AdminEditModulosComponent
+    AdminEditModulosComponent,
+    SearchPatientsPipe
   ],
   imports: [
     BrowserModule,

@@ -16,7 +16,9 @@ export class AdminEditLenguajeComponent implements AfterViewInit, AfterContentIn
   lenguajeID: number = 0
   img1;
   infoLenguaje: any;
+  spinnerStatus: boolean = false;
 
+  //Constructor
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -25,6 +27,8 @@ export class AdminEditLenguajeComponent implements AfterViewInit, AfterContentIn
   ) {
     this.crear_form_EditLenguaje();
   }
+
+  //NgAfterContentInit
   ngAfterContentInit(): void {
     this.route.paramMap.subscribe(params => {
       this.lenguajeID = Number.parseInt(params.get('id'));
@@ -32,6 +36,7 @@ export class AdminEditLenguajeComponent implements AfterViewInit, AfterContentIn
     });
   }
 
+  //ngAfterViewInit
   ngAfterViewInit(): void {
     this.route.paramMap.subscribe(params => {
       this.lenguajeID = Number.parseInt(params.get('id'));
@@ -72,9 +77,11 @@ export class AdminEditLenguajeComponent implements AfterViewInit, AfterContentIn
 
   //Setea los inputs del formulario, para editar ellenguaje
   cargaInfoLenguaje() {
+    this.spinnerStatus = false;
     this.lenguajeService.obtener_lenguaje_por_id(this.lenguajeID).subscribe(resp => {
       this.infoLenguaje = resp;
       this.editLanguageForm.updateValueAndValidity();
+      this.spinnerStatus = true;
     })
   }
 
@@ -94,6 +101,7 @@ export class AdminEditLenguajeComponent implements AfterViewInit, AfterContentIn
 
   //Método que manda a guardar los datos editados del formulario
   editar_lenguaje() {
+    this.spinnerStatus = false;
     const formData = new FormData();
     formData.append('titulo', this.editLanguageForm.value.titulo);
     formData.append('descripcion', this.editLanguageForm.value.descripcion);
@@ -104,23 +112,26 @@ export class AdminEditLenguajeComponent implements AfterViewInit, AfterContentIn
     }
     this.lenguajeService.editar_lenguaje(this.lenguajeID, formData).subscribe(resp => {
       if (resp.estado == 1) {
+        this.spinnerStatus = true;
         Swal.fire(
           '¡Proceso exitoso!',
-          'El lenguaje fue modificado con éxito',
+          'El lenguaje fue modificado con éxito.',
           'success'
         )
         this.router.navigate(['/administrador/lenguaje/list']);
       }
       else if (resp.estado == 2) {
+        this.spinnerStatus = true;
         Swal.fire(
           '¡Error!',
-          'El lenguaje ya ha sido registrado',
+          'El lenguaje ya ha sido registrado.',
           'error'
         )
       } else {
+        this.spinnerStatus = true;
         Swal.fire(
           '¡Error!',
-          'No se ha podido modificar el lenguaje',
+          'No se ha podido modificar el lenguaje.',
           'error'
         )
       }

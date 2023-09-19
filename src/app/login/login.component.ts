@@ -197,7 +197,7 @@ export class LoginComponent implements OnInit {
       });
     } else {
       this.spinnerStatus = true;
-      this.mensaje_mal("Faltan datos");
+      this.mensaje_mal("Primero debe rellenar los campos requeridos");
     }
 
   }
@@ -219,7 +219,7 @@ export class LoginComponent implements OnInit {
         }
         else {
           this.spinnerStatus = true;
-          this.mensaje_mal("Usuario no registrado");
+          this.mensaje_mal("No se ha podido registrar el usuario");
         }
       });
     } else {
@@ -245,7 +245,7 @@ export class LoginComponent implements OnInit {
   mensaje_bien(mensaje: any) {
     Swal.fire({
       icon: 'success',
-      title: 'Éxito',
+      title: 'Proceso exitoso',
       text: mensaje,
       confirmButtonText: 'Aceptar',
       confirmButtonColor: '#05C458'
@@ -255,7 +255,7 @@ export class LoginComponent implements OnInit {
   mensaje_mal(mensaje: any) {
     Swal.fire({
       icon: 'error',
-      title: 'Error',
+      title: '¡Error!',
       text: mensaje,
       confirmButtonText: 'Aceptar',
       confirmButtonColor: '#FF4136'
