@@ -20,7 +20,7 @@
         <div class="container d-flex justify-content-center" data-aos-anchor-placement="bottom-bottom"
             data-aos-duration="1300">
             <div class="curso-container mt-3">
-                <div *ngFor="let lenguaje of lenguajes" class="card mb-5" (click)="redirigir()">
+                <div *ngFor="let lenguaje of lenguajes" class="card mb-5" (click)="redirigir(lenguaje.lenguaje_id)">
                     <div class="image-container mt-2">
                         <img src="{{ lenguaje.portada }}" alt="{{ lenguaje.titulo }}" class="img-fluid centered-image">
                     </div>
