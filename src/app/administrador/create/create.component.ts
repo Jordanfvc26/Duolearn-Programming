@@ -70,13 +70,12 @@ export class CreateComponent implements AfterViewInit {
 
   cargarModulos() {
     this.Temas = [];
+    this.spinnerStatus = false;
     this.tema_serv.obtener_temas_por_lenguaje(this.lenguaje_select, true).subscribe(resp => {
-      this.spinnerStatus = false;
       this.Temas = resp;
       this.spinnerStatus = true;
       console.log(this.Temas);
     });
-    this.spinnerStatus = true;
   }
 
   vista_preliminar1 = (event) => {
@@ -177,6 +176,7 @@ export class CreateComponent implements AfterViewInit {
     } else {
       if (this.seleccionado == 2) {
         if (this.valida_campos(1)) {
+          this.spinnerStatus = false;
           this.act_serv.realiza_pregunta({
             tema: this.tema_select,
             pregunta: this.pregunta_cuest.nativeElement.value.trim(),
@@ -186,6 +186,7 @@ export class CreateComponent implements AfterViewInit {
             opcion4: this.opcion_d_cuestionario.nativeElement.value.trim(),
             tipo: "cuestionario"
           }).subscribe(resp => {
+            this.spinnerStatus = true;
             if (resp.estado == 1) {
               this.mensaje_bien("Pregunta agregada con éxito");
               this.ruta.navigateByUrl("/administrador/questions/list");
@@ -199,12 +200,14 @@ export class CreateComponent implements AfterViewInit {
           this.mensaje_mal("¡Error, campos incompletos!", "Por favor, verifique que haya rellenado todos los campos requeridos.");
         }
       } else if (this.seleccionado == 3) {
+        this.spinnerStatus = false;
         if (this.valida_campos(2)) {
           this.formData.append("tema", this.tema_select.toString());
           this.formData.append("images", this.img1);
           this.formData.append("images", this.img2);
           this.formData.append("tipo", "pares");
           this.act_serv.realiza_pregunta(this.formData).subscribe(resp => {
+            this.spinnerStatus = true;
             if (resp.estado == 1) {
               this.mensaje_bien("Pregunta agregada con éxito");
               this.ruta.navigateByUrl("/administrador/questions/list");
@@ -237,6 +240,7 @@ export class CreateComponent implements AfterViewInit {
                 break;
             }
           } else {
+            this.spinnerStatus = false;
             this.act_serv.realiza_pregunta({
               tema: this.tema_select,
               pregunta: this.pregunta_cuest.nativeElement.value.trim(),
@@ -246,6 +250,7 @@ export class CreateComponent implements AfterViewInit {
               opcion4: this.opcion_d_cuestionario.nativeElement.value.trim(),
               tipo: "drag-and-drop"
             }).subscribe(resp => {
+              this.spinnerStatus = true;
               if (resp.estado == 1) {
                 this.mensaje_bien("Pregunta agregada con éxito");
                 this.ruta.navigateByUrl("/administrador/questions/list");
@@ -262,6 +267,7 @@ export class CreateComponent implements AfterViewInit {
         }
       } else if (this.seleccionado == 5) {
         if (this.valida_campos(4)) {
+          this.spinnerStatus = false;
           this.formData.append("tema", this.tema_select.toString());
           this.formData.append("images", this.img3);
           this.formData.append("opcion_correcta", this.opcion_a_error.nativeElement.value.trim());
@@ -270,6 +276,7 @@ export class CreateComponent implements AfterViewInit {
           this.formData.append("opcion4", this.opcion_d_error.nativeElement.value.trim());
           this.formData.append("tipo", "encontrar-error");
           this.act_serv.realiza_pregunta(this.formData).subscribe(resp => {
+            this.spinnerStatus = true;
             if (resp.estado == 1) {
               this.mensaje_bien("Pregunta agregada con éxito");
               this.ruta.navigateByUrl("/administrador/questions/list");
