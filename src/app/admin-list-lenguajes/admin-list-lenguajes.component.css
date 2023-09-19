@@ -24,3 +24,8 @@ td>fa-icon{
     color: #007BBD !important;
     cursor: pointer;
 }
+
+.lenguajeStatus{
+  width: 80px;
+  text-align: center;
+}

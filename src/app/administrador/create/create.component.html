@@ -1,58 +1,105 @@
+<app-pre-loader *ngIf="!spinnerStatus"></app-pre-loader>
+
 <div class="caja" id="screenPreguntas">
     <div class="cuestionario">
-        <div class="titulo">
+        <div class="titulo d-flex justify-content-left">
             <!--Este titulo habría que traerlo de la base da datos, o de la pagina anterior, ya que el nombre del módulo aparece según el modulo que el usuario elige-->
-            Agregar nuevas preguntas
             <span>
                 <fa-icon [icon]="faPlus"></fa-icon>
             </span>
+            Agregar nueva pregunta
         </div>
 
         <!--Los comboBox para seleccionar tipo de pregunta y tema-->
-        <div class="header">
-            <div class="tipo-pregunta"><b>Tipo de Pregunta: </b>
-                <select #escoge1 [(ngModel)]="seleccionado">
-                    <option [value]="1" selected disabled>--- Seleccione ---</option>
+        <form class="row header" [formGroup]="opcionesPregunta">
+            <!--Seleccionar el tipo de pregunta-->
+            <div class="mb-1 col-12 col-md-4">
+                <label class="mb-1"><b>Tipo de pregunta</b></label>
+                <select class="form-select form-select-lg" aria-label=".form-select-lg example" #escoge1
+                    [(ngModel)]="seleccionado" formControlName="tipoPregunta">
+                    <option [value]="1" selected disabled>Seleccione una opción</option>
                     <option [value]="2">Cuestionario</option>
                     <option [value]="3">Pares</option>
                     <option [value]="4">Drag and drop</option>
                     <option [value]="5">Error</option>
                 </select>
             </div>
-            <div class="tema"><b>Lenguaje: </b>
-                <select [(ngModel)]="lenguaje_select" (change)="cargarModulos()">
+
+            <!--Seleccionar el lenguaje-->
+            <div class="mb-1 col-12 col-md-4">
+                <label class="mb-1"><b>Lenguaje</b></label>
+                <select class="form-select form-select-lg" aria-label=".form-select-lg example"
+                    [(ngModel)]="lenguaje_select" (change)="cargarModulos()" formControlName="tipoLenguaje">
+                    <option [value]="1" selected disabled>Seleccione una opción</option>
                     <option *ngFor="let lenguaje of lenguajes" [value]="lenguaje.lenguaje_id">
                         {{lenguaje.titulo}}
                     </option>
                 </select>
             </div>
-            <div class="tema"><b>Modulo: </b>
-                <select *ngIf="Temas.length > 0" [(ngModel)]="tema_select">
-                    <option *ngFor="let tema of Temas" [value]="tema.modulo_id">
-                        {{tema.titulo_modulo}}
-                    </option>
-                </select>
+
+            <!--Seleccionar el módulo-->
+            <div class="mb-1 col-12 col-md-3">
+                <label class="mb-1"><b>Módulo</b></label>
+                <ng-container *ngIf="Temas.length > 0 else noExistenModulos">
+                    <select class="form-select form-select-lg" aria-label=".form-select-lg example"
+                        [(ngModel)]="tema_select" formControlName="tipoModulo">
+                        <option [value]="1" selected disabled>Seleccione una opción</option>
+                        <option *ngFor="let tema of Temas" [value]="tema.modulo_id">
+                            {{tema.titulo_modulo}}
+                        </option>
+                    </select>
+                </ng-container>
+                <ng-template #noExistenModulos>
+                    <select class="form-select form-select-lg" aria-label=".form-select-lg example" disabled>
+                        <option selected disabled>No existen módulos</option>
+                    </select>
+                </ng-template>
             </div>
-        </div>
+        </form>
     </div>
 
     <!--Para ingresar preguntas de tipo cuestionario-->
     <div *ngIf="(seleccionado==2 || seleccionado==4)" class="tipo-cuestionario">
+
+        <div class="row mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+                    <path
+                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                </symbol>
+                <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+                    <path
+                        d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+                </symbol>
+                <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+                    <path
+                        d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                </symbol>
+            </svg>
+
+            <div class="alert alert-primary d-flex align-items-center" role="alert">
+                <svg class="bi flex-shrink-0 me-2 mx-2" width="24" height="24" role="img" aria-label="Info:">
+                    <use xlink:href="#info-fill" />
+                </svg>
+                <div>
+                    En caso de que su pregunta sea de tipo Drag and Drop, visite el <a
+                        href="https://youtu.be/kbcx1tWoEF0" target="_blank">siguiente enlace</a> para ver un ejemplo de
+                    cómo registrar la pregunta.
+                </div>
+            </div>
+        </div>
+
         <div class="caja-pregunta" #pregunta>
-            <h5>Ingrese la pregunta: </h5>
-            <span><i><b>Nota: </b> En caso de ser de tipo Drag and drop, ingrese la pregunta (comentarios)
-                    línea
-                    a línea.</i></span>
-            <textarea #pregunta_cuestionario></textarea>
+            <h5>Detalle de la pregunta</h5>
+            <textarea #pregunta_cuestionario rows="5" placeholder="Ingrese la pregunta..."></textarea>
         </div>
 
         <div class="caja-opciones">
-            <h5>Ingrese las Opciones: </h5>
+            <h5>Ingrese las opciones</h5>
             <span><b>Nota: </b> No ingrese literales (a,b,c,d), solo el texto.</span>
             <input #opcion_a_cuestionario type="text"
                 [ngStyle]="seleccionado==2 && {'background-color': 'rgb(5, 196, 88)'} || seleccionado==4 && {'background-color': 'wheat'}"
-                [ngClass]="{'opc_correcta': seleccionado ==2, 'opc_correctadd' : step ==4 }"
-                placeholder=" Opción A" />
+                [ngClass]="{'opc_correcta': seleccionado ==2, 'opc_correctadd' : step ==4 }" placeholder=" Opción A" />
             <input #opcion_b_cuestionario type="text" placeholder=" Opción B" />
             <input #opcion_c_cuestionario type="text" placeholder=" Opción C" />
             <input #opcion_d_cuestionario type="text" placeholder=" Opción D" />
@@ -61,64 +108,97 @@
 
     <!--Para ingresar 2 imágenes en la pregunta de tipo pares-->
     <div *ngIf="(seleccionado==3)" class="pares">
-        <h5>Suba una imagen de algún código de muestra: </h5>
-        <span><i><b>Nota: </b> Deberá subir 2 imágenes, una como pregunta y la otra como opción
-                correcta</i></span>
+        <h5 class="mb-2">Suba dos imágenes con códigos de muestra similares </h5>
+        <div class="row mb-2 mt-2">
+            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+                    <path
+                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                </symbol>
+                <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+                    <path
+                        d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+                </symbol>
+                <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+                    <path
+                        d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                </symbol>
+            </svg>
+
+            <div class="alert alert-primary d-flex align-items-center" role="alert">
+                <svg class="bi flex-shrink-0 me-2 mx-2" width="24" height="24" role="img" aria-label="Info:">
+                    <use xlink:href="#info-fill" />
+                </svg>
+                <div>
+                    Visitando el <a href="https://youtu.be/kbcx1tWoEF0" target="_blank">siguiente enlace</a> encontrará
+                    un ejemplo de cómo registrar este tipo de pregunta.
+                </div>
+            </div>
+        </div>
         <div class="contenedor-imagen-pares">
             <div class="imagenes-a-cargar">
                 <br />
-                <img alt="" id="img-vista-previa1" />
-                <img alt="" id="img-vista-previa2" />
+                <input type="file" id="file1" (change)="vista_preliminar1($event)" />
+                <img [src]="'../../../assets/imagenes/Subir-imagen-fondo.png'" alt="" id="img-vista-previa1"
+                    onclick="document.getElementById('file1').click()" />
+                <input type="file" id="file2" (change)="vista_preliminar2($event)" />
+                <img [src]="'../../../assets/imagenes/Subir-imagen-fondo.png'" alt="" id="img-vista-previa2"
+                    onclick="document.getElementById('file2').click()" />
             </div>
-        </div>
-
-        <div class="form-pares">
-            <input type="file" id="file1" (change)="vista_preliminar1($event)" />
-            <input type="button" value="Subir imagen 1🔼" class="btn-subir-img"
-                onclick="document.getElementById('file1').click()" />
-            <input type="file" id="file2" (change)="vista_preliminar2($event)" />
-            <input type="button" value="Subir imagen 2🔼" class="btn-subir-img"
-                onclick="document.getElementById('file2').click()" />
         </div>
     </div>
 
 
     <!--Pregunta para encontrar errores-->
     <div *ngIf="(seleccionado==5)" class="error">
-        <h5>Suba una imagen de algún código de muestra: </h5>
-        <span><i><b>Nota: </b> Debe subir una imagen el cual el código contendrá un error</i></span>
+        <h5 class="mb-2">Suba una imagen de algún código de muestra</h5>
+        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+            <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path
+                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+            </symbol>
+            <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path
+                    d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+            </symbol>
+            <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path
+                    d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+            </symbol>
+        </svg>
+
+        <div class="alert alert-primary d-flex align-items-center" role="alert">
+            <svg class="bi flex-shrink-0 me-2 mx-2" width="24" height="24" role="img" aria-label="Info:">
+                <use xlink:href="#info-fill" />
+            </svg>
+            <div>
+                Visitando el <a href="https://youtu.be/kbcx1tWoEF0" target="_blank">siguiente enlace</a> encontrará
+                un ejemplo de cómo registrar este tipo de pregunta.
+            </div>
+        </div>
         <div class="contenedor-imagen-pares">
             <div class="imagenes-a-cargar">
                 <br />
-                <!--La imagen que puse aquí es de prueba, debes borrar esa imagen y dejar en blanco-->
-                <img #imagen3 alt="" id="img-vista-previa3" />
-            </div>
-
-            <div class="form-pares">
-                <input type="file" id="file3" (change)="vista_preliminar3($event)" />
-                <input type="button" value="Subir imagen 🔼" class="btn-subir-img"
+                <img [src]="'../../../assets/imagenes/Subir-imagen-fondo.png'" alt="" #imagen3 id="img-vista-previa3"
                     onclick="document.getElementById('file3').click()" />
+                <input type="file" id="file3" (change)="vista_preliminar3($event)" />
             </div>
         </div>
 
         <div class="caja-opciones">
-            <h5>Ingrese las Opciones: </h5>
+            <h5>Ingrese las opciones</h5>
             <span><i><b>Nota: </b> No ingrese literales (a,b,c,d), solo el texto.</i></span>
-            <input class="opc_correcta" #opcion_a_error type="text"
-                style="background-color: rgb(5, 196, 88);" placeholder=" Opción A" />
+            <input class="opc_correcta" #opcion_a_error type="text" style="background-color: rgb(5, 196, 88);"
+                placeholder=" Opción A" />
             <input #opcion_b_error type="text" placeholder=" Opción B" />
             <input #opcion_c_error type="text" placeholder=" Opción C" />
             <input #opcion_d_error type="text" placeholder=" Opción D" />
         </div>
     </div>
 
-    <!--Boton para guardar los cambios-->
-    <div class="botones d-flex justify-content-evenly">
-        <button [routerLink]="['/administrador/questions/list']">
-            Volver
-        </button>
-        <button (click)="send_question()">
-            Guardar cambios 💾
-        </button>
+    <div class="action-buttons mb-3">
+        <button [routerLink]="['/administrador/questions/list']" mat-button type="button"
+            class="btn btn-danger btn-md">Cancelar</button>
+        <button (click)="send_question()" type="button" class="btn btn-primary btn-md">Guardar</button>
     </div>
 </div>

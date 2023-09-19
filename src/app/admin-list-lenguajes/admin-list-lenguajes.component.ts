@@ -13,6 +13,8 @@ export class AdminListLenguajesComponent implements OnInit {
 
   /*Variables*/
   lenguajes: any[] = [];
+  lenguajesToSearch: any[] = [];
+  optionFilter:string = "titulo"
   itemsForPage: number = 10;
   initialPage: number = 0;
   finalPage: number = 10;
@@ -50,8 +52,10 @@ export class AdminListLenguajesComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
+        this.spinnerStatus = false;
         this.lenguajeService.cambiar_estado_lenguaje(lenguajeID, status).subscribe(resp => {
           if(resp.estado == 1){
+            this.spinnerStatus = true;
             Swal.fire(
               '¡Proceso exitoso!',
               'Estado del lenguaje modificado con éxito',
@@ -61,6 +65,7 @@ export class AdminListLenguajesComponent implements OnInit {
             this.obtener_listado_lenguajes(true);
           }
           else{
+            this.spinnerStatus = true;
             Swal.fire(
               '¡Error!',
               'No se pudo modificar el estado del lenguaje',

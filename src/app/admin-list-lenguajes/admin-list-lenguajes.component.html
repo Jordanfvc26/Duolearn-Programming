@@ -1,4 +1,5 @@
 <app-pre-loader *ngIf="!spinnerStatus"></app-pre-loader>
+
 <body>
   <div class="row justify-content-center">
     <div class="col-12 container-info">
@@ -11,13 +12,21 @@
       <!--Inputs para buscar e importar-->
       <div class="row">
         <!--Buscar paciente por nombre-->
-        <div class="col-12 col-md-4 col-lg-4 mb-3">
+        <div class="col-12 col-md-2 col-lg-2 mb-3">
           <form>
-            <select class="form-select" aria-label="Default select example" style="margin-bottom: 12px;"
+            <label for="lenguaje_select"> <strong>Filtrar por</strong></label>
+            <select class="form-select mt-2" aria-label="Default select example" style="margin-bottom: 12px;"
               (change)="onFilterChange($event)">
               <option value="true" selected>Activos</option>
               <option value="false">Inactivos</option>
             </select>
+          </form>
+        </div>
+        <div class="col-12 col-md-4 col-lg-4 mb-3">
+          <form>
+            <label for="lenguaje_select"> <strong>Buscar por título</strong></label>
+            <input class="form-control me-1 mt-2" type="text" placeholder="Buscar..." name="buscarMovimientos"
+              [(ngModel)]="lenguajesToSearch">
           </form>
         </div>
 
@@ -33,17 +42,25 @@
                 <th scope="col">Título</th>
                 <th scope="col">Descripción</th>
                 <th scope="col">Estado</th>
-                <th scope="col">URL Portada</th>
+                <th scope="col">URL de la portada</th>
                 <th scope="col">Acciones</th>
               </tr>
             </thead>
             <tbody>
               <ng-container *ngIf="lenguajes.length > 0; else noResults">
-                <tr *ngFor="let lenguaje of lenguajes | slice:initialPage:finalPage; let i = index">
+                <tr
+                  *ngFor="let lenguaje of lenguajes | slice:initialPage:finalPage | searchRegisters:lenguajesToSearch:optionFilter;; let i = index">
                   <th scope="row">{{i+1}}</th>
                   <td> {{lenguaje.titulo.toUpperCase()}}</td>
                   <td data-bs-toggle="mensaje" title="{{lenguaje.descripcion}}">{{lenguaje.descripcion}}</td>
-                  <td>{{lenguaje.lenguaje_activo?"Activo":"Inactivo"}}</td>
+                  <td>
+                    <div class="lenguajeStatus" [style.background-color]="lenguaje.lenguaje_activo ? '#198754' : '#FC3B56'"
+                      [style.border-radius]="lenguaje.lenguaje_activo ? '5px' : '5px'"
+                      [style.padding]="lenguaje.lenguaje_activo ? '3px' : '3px'"
+                      [style.color]="lenguaje.lenguaje_activo ? 'white' : 'white'">
+                      {{lenguaje.lenguaje_activo? "Activo" : "Inactivo"}}
+                    </div>
+                  </td>
                   <td data-bs-toggle="mensaje" title="{{lenguaje.portada}}">{{lenguaje.portada}}</td>
                   <td>
                     <fa-icon [style.color]="'black'" *ngIf="lenguaje.lenguaje_activo"

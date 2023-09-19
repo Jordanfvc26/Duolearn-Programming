@@ -4,7 +4,7 @@
     <div class="row justify-content-center">
         <div class="col-12 container-info">
             <div class="col-12 mt-3 mx-1">
-                <h4 id="titulo"><fa-icon [icon]="iconLanguage" class="icon-title"></fa-icon> Crear nuevo lenguaje</h4>
+                <h4 id="titulo"><fa-icon [icon]="iconLanguage" class="icon-title"></fa-icon> Nuevo lenguaje</h4>
             </div>
 
             <form [formGroup]="languageForm">
@@ -59,7 +59,7 @@
                         <textarea maxlength="255" class="form-control form-control-lg bg-light fs-6" formControlName="descripcion"
                             placeholder="Descripción*" rows="10"
                             [ngClass]="{
-                                'is-invalid': languageForm.get('descripcion')?.hasError('required') || compararTextoVacio('descripcion') && languageForm.get('descripcion')?.touched,
+                                'is-invalid': languageForm.get('descripcion')?.touched && languageForm.get('descripcion')?.hasError('required') || compararTextoVacio('descripcion'),
                                 'is-valid': !languageForm.get('descripcion')?.hasError('required') && !languageForm.get('descripcion')?.hasError('minlength') }">
                             </textarea>
                         <div class="validators"

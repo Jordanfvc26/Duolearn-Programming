@@ -1,4 +1,5 @@
 import { Component, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as iconos from '@fortawesome/free-solid-svg-icons';
 import { LenguajesService } from 'src/app/servicios/lenguajes.service';
@@ -17,7 +18,8 @@ export class CreateComponent implements AfterViewInit {
     public tema_serv: TemasService,
     public act_serv: PreguntasService,
     public lenguajeService: LenguajesService,
-    public ruta: Router) { }
+    public ruta: Router,
+    public formBuilder: FormBuilder) { }
   faCerrarSesion = iconos.faSignOutAlt;
   //cuestionario
   @ViewChild("escoge1") public select1: ElementRef;
@@ -34,6 +36,8 @@ export class CreateComponent implements AfterViewInit {
   @ViewChild("opcion_c_error") public opcion_c_error: ElementRef;
   @ViewChild("opcion_d_error") public opcion_d_error: ElementRef;
 
+  optionVisibilitySelected: number = 1;
+  opcionesPregunta!: FormGroup;
   seleccionado = 0;
   tema_select = 0;
   lenguaje_select = 0;
@@ -47,12 +51,18 @@ export class CreateComponent implements AfterViewInit {
 
   ngOnInit() {
     this.spinnerStatus = true;
+    this.crearFormularioOpcionesPreguntas();
+    this.seleccionado = 1; // o el valor que desees para tipoPregunta
+    this.lenguaje_select = 1;
+    this.tema_select = 1;
   }
 
 
   ngAfterViewInit(): void {
+    this.spinnerStatus = false;
     this.lenguajeService.listar_lenguajes(true).subscribe(resp => {
       this.lenguajes = resp;
+      this.spinnerStatus = true;
       console.log(this.lenguajes);
     })
 
@@ -61,9 +71,12 @@ export class CreateComponent implements AfterViewInit {
   cargarModulos() {
     this.Temas = [];
     this.tema_serv.obtener_temas_por_lenguaje(this.lenguaje_select, true).subscribe(resp => {
+      this.spinnerStatus = false;
       this.Temas = resp;
+      this.spinnerStatus = true;
       console.log(this.Temas);
     });
+    this.spinnerStatus = true;
   }
 
   vista_preliminar1 = (event) => {
@@ -157,9 +170,9 @@ export class CreateComponent implements AfterViewInit {
   send_question() {
     if (this.seleccionado == 0 || this.tema_select == 0) {
       if (this.seleccionado == 0) {
-        this.mensaje_mal("No ha ingresado ninguna pregunta", "Verifica que has seleccionado el tipo de pregunta");
+        this.mensaje_mal("¡Error, campos incompletos!", "Verifique que haya seleccionado un tipo de pregunta, lenguaje y módulo correspondiente.");
       } else if (this.tema_select == 0) {
-        this.mensaje_mal("Debe seleccionar el tema para su pregunta.", "Verifica que has seleccionado el modulo de tu pregunta");
+        this.mensaje_mal("¡Error, campos incompletos!", "Verifique que haya seleccionado el lenguaje y módulo correspondiente para su pregunta.");
       }
     } else {
       if (this.seleccionado == 2) {
@@ -177,13 +190,13 @@ export class CreateComponent implements AfterViewInit {
               this.mensaje_bien("Pregunta agregada con éxito");
               this.ruta.navigateByUrl("/administrador/questions/list");
             } else if (resp.estado == 2) {
-              this.mensaje_mal("No se pudo agregar la pregunta", 'Por favor, revisa que las opciones o pregunta no sean las mismas');
+              this.mensaje_mal("¡Ha ocurrido un error!", 'Por favor, revise que las opciones o pregunta no sean las mismas.');
             } else {
-              this.mensaje_mal("No se pudo agregar la pregunta", 'Ocurrio un error inesperado');
+              this.mensaje_mal("¡Ha ocurrido un error!", 'No se ha podido agregar la pregunta debido a un error inesperado, refresque e intente nuevamente.');
             }
           });
         } else {
-          this.mensaje_mal("Agregue todos los campos", "Por favor, verifica que has ingresado todos los campos requeridos");
+          this.mensaje_mal("¡Error, campos incompletos!", "Por favor, verifique que haya rellenado todos los campos requeridos.");
         }
       } else if (this.seleccionado == 3) {
         if (this.valida_campos(2)) {
@@ -298,6 +311,30 @@ export class CreateComponent implements AfterViewInit {
       title: titulo,
       text: mensaje,
       showConfirmButton: true,
+    });
+  }
+
+  mensaje_informacion(titulo: any, mensaje: any) {
+    Swal.fire({
+      icon: 'info',
+      title: titulo,
+      text: mensaje,
+      showConfirmButton: true,
+    });
+  }
+
+  //Método que crea el formulario
+  crearFormularioOpcionesPreguntas() {
+    this.opcionesPregunta = this.formBuilder.group({
+      tipoPregunta: ['',
+        [Validators.required],
+      ],
+      tipoLenguaje: ['',
+        [Validators.required],
+      ],
+      tipoModulo: ['',
+        [Validators.required],
+      ],
     });
   }
 }

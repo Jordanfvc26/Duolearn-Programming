@@ -1,37 +1,35 @@
-<!--Agregar la página de carga-->
+<app-pre-loader *ngIf="!spinnerStatus"></app-pre-loader>
 
 <div class="body">
-    <div>
-        <form>
-            <div class="header" data-aos-anchor-placement="bottom-bottom" data-aos-duration="1300">
-                <div class="logo">
-                    <img src="./assets/imagenes/logo_pag_principal.png" alt="Logo-principal">
-                    <h6>DuoLearn Programming</h6>
-                </div>
+    <form>
+        <nav class="navbar navbar-light bg-light">
+            <div class="container-fluid nav-items mx-4">
+                <img src="../../assets/imagenes/logo_pag_principal.png">
+                <a class="navbar-brand">DuoLearn Programming</a>
+                <form class="d-flex">
+                    <button class="btn btn-primary" type="submit" (click)="cerrarSesion()">Cerrar sesión</button>
+                </form>
             </div>
-        
-        
-            <div class="texto"data-aos-anchor-placement="bottom-bottom" data-aos-duration="1300">
-                <h2>Selecciona el curso que vas a practicar ahora: </h2>
-            </div>
-        
-        
-            <div class="container pt-3" data-aos-anchor-placement="bottom-bottom"
-                        data-aos-duration="1300">
-                <div class="curso-container">
-                    <div *ngFor="let lenguaje of lenguajes" >
-                        <div (click)="redirigir(lenguaje.lenguaje_id)" *ngIf="lenguaje.lenguaje_activo" class="card m-3" style="align-items: center; cursor: pointer;">
-                            <img width="40%" [src]="lenguaje.portada" class="img-fluid" [alt]="lenguaje.titulo">
-                        <div class="card-body">
-                          <h5 style="text-align: center;" class="card-title"> {{lenguaje.titulo}} </h5>
-                        </div>
-                        </div>
+        </nav>
+
+        <div class="texto" data-aos-anchor-placement="bottom-bottom" data-aos-duration="1300">
+            <h2>Selecciona el curso que vas a practicar ahora: </h2>
+        </div>
+
+
+        <div class="container d-flex justify-content-center" data-aos-anchor-placement="bottom-bottom"
+            data-aos-duration="1300">
+            <div class="curso-container mt-3">
+                <div *ngFor="let lenguaje of lenguajes" class="card mb-5" (click)="redirigir()">
+                    <div class="image-container mt-2">
+                        <img src="{{ lenguaje.portada }}" alt="{{ lenguaje.titulo }}" class="img-fluid centered-image">
+                    </div>
+                    <div class="card-body mt-2 mb-2">
+                        <h5 style="text-align: center;" class="card-title">{{ lenguaje.titulo }}</h5>
                     </div>
                 </div>
             </div>
-        
-        
-            
-        </form>
-    </div>
+
+        </div>
+    </form>
 </div>

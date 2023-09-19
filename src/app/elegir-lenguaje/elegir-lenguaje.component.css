@@ -8,11 +8,54 @@
     padding: 0;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     background-color: rgb(5, 196, 88);
+    min-height: 100vh;
 }
+
+.navbar{
+    height: 60px;
+    background-color: #FFF !important;
+}
+
+.nav-items>img{
+    height: 40px;
+    justify-content: left;
+}
+
+.btn-primary{
+    background-color: rgb(5, 196, 88) !important;
+    padding: 5px;
+    border:rgb(5, 196, 88) !important
+}
+
+.card {
+    width: 14rem;
+    margin-right: 15px;
+}
+
+.curso-container .card:hover {
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Agrega una sombra al hacer hover */
+}
+
+
+.image-container {
+    text-align: center;
+}
+
+.centered-image {
+    width: 120px;
+    /* Establece el ancho deseado */
+    height: 120px;
+    /* Establece el alto deseado */
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 auto;
+}
+
 
 .header h6 {
     margin-left: 42.5%;
-    color: blanchedalmond;
+    color: #fff;
     margin-top: 8px;
 }
 
@@ -23,20 +66,20 @@
 }
 
 .texto {
-    color: blanchedalmond;
+    color: #fff;
     margin-top: 40px;
     text-align: center;
 }
 
 .nombres a {
     text-decoration: none;
-    color: whitesmoke;
+    color: fff;
 }
 
 .curso-container {
     align-items: center;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
 }
 
 .img-curso:hover {
