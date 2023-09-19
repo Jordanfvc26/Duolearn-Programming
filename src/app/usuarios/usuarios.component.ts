@@ -38,8 +38,12 @@ export class UsuariosComponent implements OnInit {
     this.usuarios_serv.listar_usuarios(estado)
       .subscribe({
         next: (resp) => {
-          this.usuarios = resp.filter(usuario => usuario.tipo_usuario != 'administrador');
           this.spinnerStatus = true;
+          if(resp!=null){
+            this.usuarios = resp.filter(usuario => usuario.tipo_usuario != 'administrador');
+          }else{
+            this.usuarios=[];
+          }
         },
         error: (error) => {
           this.spinnerStatus = true;
@@ -54,12 +58,7 @@ export class UsuariosComponent implements OnInit {
 
   //Para filtrar los usuarios por activos e inactivos
   onFilterChange(event: any) {
-    if (this.usuarios.length > 0) {
-      this.cargaUsuarios(event);
-    }
-    else{
-      console.log("No usuarios");
-    }
+    this.cargaUsuarios(event)
   }
 
   //Para cambiar de pagina de la lista
