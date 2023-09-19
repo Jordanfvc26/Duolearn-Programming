@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
   public showPassword = false;
   spinnerStatus: boolean = false;
   isLinear: boolean = true;
-  pattern="!@#$'%^&*()._"+'"'+"/+{}:<>?-";
+  pattern = "!@#$'%^&*()._" + '"' + "/+{}:<>?-";
   fanombre = iconos.faClosedCaptioning;
 
   @ViewChild('stepper') stepper!: MatStepper;
@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit {
       ],
       tipo: ['', [Validators.required]],
       fecha_nacimiento: ['', [Validators.required]],
-      correo: ['', [Validators.email, Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{1,}))$/)]],
+      correo: ['', [Validators.email, Validators.required, Validators.pattern(/^(?!.*([._-]{2,}))[a-zA-Z0-9]+[a-zA-Z0-9._-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]],
       clave: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*['"!@#$%^&*()_/+{}.:<>?-]).{8,20}$/), Validators.maxLength(20), Validators.minLength(8)]],
       confirmClave: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*['"!@#$%^&*()._/+{}:<>?-]).{8,20}$/), Validators.maxLength(20), Validators.minLength(8)]],
     });

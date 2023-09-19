@@ -23,21 +23,14 @@ export class CreateComponent implements AfterViewInit {
   faCerrarSesion = iconos.faSignOutAlt;
   //cuestionario
   @ViewChild("escoge1") public select1: ElementRef;
-  @ViewChild("pregunta_cuestionario") public pregunta_cuest: ElementRef;
-  @ViewChild("opcion_a_cuestionario") public opcion_a_cuestionario: ElementRef;
-  @ViewChild("opcion_b_cuestionario") public opcion_b_cuestionario: ElementRef;
-  @ViewChild("opcion_c_cuestionario") public opcion_c_cuestionario: ElementRef;
-  @ViewChild("opcion_d_cuestionario") public opcion_d_cuestionario: ElementRef;
 
   //encontrar-error
   @ViewChild("imagen3") public imagen3: ElementRef;
-  @ViewChild("opcion_a_error") public opcion_a_error: ElementRef;
-  @ViewChild("opcion_b_error") public opcion_b_error: ElementRef;
-  @ViewChild("opcion_c_error") public opcion_c_error: ElementRef;
-  @ViewChild("opcion_d_error") public opcion_d_error: ElementRef;
 
   optionVisibilitySelected: number = 1;
   opcionesPregunta!: FormGroup;
+  formCuestionario!: FormGroup;
+  formError!: FormGroup;
   seleccionado = 0;
   tema_select = 0;
   lenguaje_select = 0;
@@ -52,6 +45,7 @@ export class CreateComponent implements AfterViewInit {
   ngOnInit() {
     this.spinnerStatus = true;
     this.crearFormularioOpcionesPreguntas();
+    this.crearFormularioCuestionario();
     this.seleccionado = 1; // o el valor que desees para tipoPregunta
     this.lenguaje_select = 1;
     this.tema_select = 1;
@@ -106,9 +100,9 @@ export class CreateComponent implements AfterViewInit {
   valida_campos(preg: any): boolean {
     switch (preg) {
       case 1:
-        if (this.pregunta_cuest.nativeElement.value != "" && this.opcion_a_cuestionario.nativeElement.value != ""
-          && this.opcion_b_cuestionario.nativeElement.value != "" && this.opcion_c_cuestionario.nativeElement.value != ""
-          && this.opcion_d_cuestionario.nativeElement.value != "") {
+        if (this.formCuestionario.controls['pregunta_cuest'].value != "" && this.formCuestionario.controls['opcion_a_cuestionario'].value != ""
+          && this.formCuestionario.controls['opcion_b_cuestionario'].value != "" && this.formCuestionario.controls['opcion_c_cuestionario'].value != ""
+          && this.formCuestionario.controls['opcion_d_cuestionario'].value != "") {
           return true;
         } else {
           return false;
@@ -120,17 +114,17 @@ export class CreateComponent implements AfterViewInit {
           return false;
         }
       case 3:
-        if (this.pregunta_cuest.nativeElement.value != "" && this.opcion_a_cuestionario.nativeElement.value != ""
-          && this.opcion_b_cuestionario.nativeElement.value != "" && this.opcion_c_cuestionario.nativeElement.value != ""
-          && this.opcion_d_cuestionario.nativeElement.value != "") {
+        if (this.formCuestionario.controls['pregunta_cuest'].value != "" && this.formCuestionario.controls['opcion_a_cuestionario'].value != ""
+          && this.formCuestionario.controls['opcion_b_cuestionario'].value != "" && this.formCuestionario.controls['opcion_c_cuestionario'].value != ""
+          && this.formCuestionario.controls['opcion_d_cuestionario'].value != "") {
           return true;
         } else {
           return false;
         }
       case 4:
-        if (this.img3 != null && this.opcion_a_error.nativeElement.value != ""
-          && this.opcion_b_error.nativeElement.value != "" && this.opcion_c_error.nativeElement.value != ""
-          && this.opcion_d_error.nativeElement.value != "") {
+        if (this.img3 != null && this.formError.controls['opcion_a_error'].value != ""
+          && this.formError.controls['opcion_b_error'].value != "" && this.formError.controls['opcion_c_error'].value != ""
+          && this.formError.controls['opcion_d_error'].value != "") {
           return true;
         } else {
           return false;
@@ -140,7 +134,7 @@ export class CreateComponent implements AfterViewInit {
   }
 
   valida_dragandrop(): number {
-    let v = this.pregunta_cuest.nativeElement.value.split("\n");
+    let v = this.formCuestionario.controls['pregunta_cuest'].value.split("\n");
     if (v.length == 4) {
       for (let index = 0; index < v.length; index++) {
         if (v[index] == "") {
@@ -179,11 +173,11 @@ export class CreateComponent implements AfterViewInit {
           this.spinnerStatus = false;
           this.act_serv.realiza_pregunta({
             tema: this.tema_select,
-            pregunta: this.pregunta_cuest.nativeElement.value.trim(),
-            opcion_correcta: this.opcion_a_cuestionario.nativeElement.value.trim(),
-            opcion2: this.opcion_b_cuestionario.nativeElement.value.trim(),
-            opcion3: this.opcion_c_cuestionario.nativeElement.value.trim(),
-            opcion4: this.opcion_d_cuestionario.nativeElement.value.trim(),
+            pregunta: this.formCuestionario.controls['pregunta_cuest'].value.trim(),
+            opcion_correcta: this.formCuestionario.controls['opcion_a_cuestionario'].value.trim(),
+            opcion2: this.formCuestionario.controls['opcion_b_cuestionario'].value.trim(),
+            opcion3: this.formCuestionario.controls['opcion_c_cuestionario'].value.trim(),
+            opcion4: this.formCuestionario.controls['opcion_d_cuestionario'].value.trim(),
             tipo: "cuestionario"
           }).subscribe(resp => {
             this.spinnerStatus = true;
@@ -243,11 +237,11 @@ export class CreateComponent implements AfterViewInit {
             this.spinnerStatus = false;
             this.act_serv.realiza_pregunta({
               tema: this.tema_select,
-              pregunta: this.pregunta_cuest.nativeElement.value.trim(),
-              opcion_correcta: this.opcion_a_cuestionario.nativeElement.value.trim(),
-              opcion2: this.opcion_b_cuestionario.nativeElement.value.trim(),
-              opcion3: this.opcion_c_cuestionario.nativeElement.value.trim(),
-              opcion4: this.opcion_d_cuestionario.nativeElement.value.trim(),
+              pregunta: this.formCuestionario.controls['pregunta_cuest'].value.trim(),
+              opcion_correcta: this.formCuestionario.controls['opcion_a_cuestionario'].value.trim(),
+              opcion2: this.formCuestionario.controls['opcion_b_cuestionario'].value.trim(),
+              opcion3: this.formCuestionario.controls['opcion_c_cuestionario'].value.trim(),
+              opcion4: this.formCuestionario.controls['opcion_d_cuestionario'].value.trim(),
               tipo: "drag-and-drop"
             }).subscribe(resp => {
               this.spinnerStatus = true;
@@ -261,7 +255,6 @@ export class CreateComponent implements AfterViewInit {
               }
             });
           }
-          console.log(this.pregunta_cuest.nativeElement);
         } else {
           this.mensaje_mal("Error", "Ingrese todos los campos necesarios");
         }
@@ -270,10 +263,10 @@ export class CreateComponent implements AfterViewInit {
           this.spinnerStatus = false;
           this.formData.append("tema", this.tema_select.toString());
           this.formData.append("images", this.img3);
-          this.formData.append("opcion_correcta", this.opcion_a_error.nativeElement.value.trim());
-          this.formData.append("opcion2", this.opcion_b_error.nativeElement.value.trim());
-          this.formData.append("opcion3", this.opcion_c_error.nativeElement.value.trim());
-          this.formData.append("opcion4", this.opcion_d_error.nativeElement.value.trim());
+          this.formData.append("opcion_correcta", this.formError.controls['opcion_a_error'].value.trim());
+          this.formData.append("opcion2", this.formError.controls['opcion_b_error'].value.trim());
+          this.formData.append("opcion3", this.formError.controls['opcion_c_error'].value.trim());
+          this.formData.append("opcion4", this.formError.controls['opcion_d_error'].value.trim());
           this.formData.append("tipo", "encontrar-error");
           this.act_serv.realiza_pregunta(this.formData).subscribe(resp => {
             this.spinnerStatus = true;
@@ -344,4 +337,44 @@ export class CreateComponent implements AfterViewInit {
       ],
     });
   }
+
+  //Método que crea el formulario
+  crearFormularioCuestionario() {
+    this.formCuestionario = this.formBuilder.group({
+      pregunta_cuest: ['',
+        [Validators.required],
+      ],
+      opcion_a_cuestionario: ['',
+        [Validators.required],
+      ],
+      opcion_b_cuestionario: ['',
+        [Validators.required],
+      ],
+      opcion_c_cuestionario: ['',
+        [Validators.required],
+      ],
+      opcion_d_cuestionario: ['',
+        [Validators.required],
+      ],
+    });
+  }
+
+  //Método que crea el formulario
+  crearFormularioError() {
+    this.formError = this.formBuilder.group({
+      opcion_a_error: ['',
+        [Validators.required],
+      ],
+      opcion_b_error: ['',
+        [Validators.required],
+      ],
+      opcion_c_error: ['',
+        [Validators.required],
+      ],
+      opcion_d_error: ['',
+        [Validators.required],
+      ]
+    });
+  }
+
 }
