@@ -1,126 +1,258 @@
-<div *ngIf="bolean" class="contenedorLoader">
-    <div class="loader"></div>
-    <a href="../../assets/imagenes/"></a>
-</div>
+<app-pre-loader *ngIf="!spinnerStatus"></app-pre-loader>
 
 <div class="caja" id="screenPreguntas">
 
-    <div class="titulo">
-        <h6><i class="fas fa-user" id="icono-titulo"></i> Mi perfil</h6>
+    <div class="row justify-content-center" *ngIf="form_clave else cambio">
+        <div class="col-12 container-info">
+            <div class="div mt-3 mx-1">
+                <h4 id="titulo"><fa-icon [icon]="iconMyProfile" class="icon-title"></fa-icon> Mi perfil</h4>
+                <button [routerLink]="'../create-task'" type="button" class="btn btn-primary btn-sm"
+                    (click)="mostrarCambioClave()">
+                    <fa-icon [icon]="iconPassword"></fa-icon> Cambiar clave</button>
+            </div>
+
+            <form class="row mt-3" [formGroup]="form_registro" (ngSubmit)="update_info()">
+                <!--Card con información del Nombre y foto-->
+                <div class="col-lg-4">
+                    <div class="card mb-2" style="background-color: #eee;">
+                        <div class="card-body text-center">
+                            <img src="../../assets/imagenes/usuario-logueado.png" alt="avatar"
+                                class="rounded-circle img-fluid" style="width: 125px;" id="img-profile">
+                            <h4 class="my-3">{{nombreUsuario}}</h4>
+                            <p class="text-muted mb-2"><i>Usuario de DuoLearn Programming</i></p>
+                        </div>
+                    </div>
+
+                    <ng-container *ngIf="!modoEdicion else opcionesEditar">
+                        <button type="button" class="btn btn-primary btn-md mt-3" id="btnEditar"
+                            (click)="habilitarEdicion(true)">
+                            <fa-icon [icon]="iconEdit"></fa-icon> Editar perfil</button>
+                    </ng-container>
+
+                    <ng-template #opcionesEditar>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <button type="button" class="btn btn-danger btn-md" id="btnEditar"
+                                    (click)="habilitarEdicion(false)">
+                                    <i class="fa-solid fa-x"></i> Cancelar </button>
+                            </div>
+                            <div class="col-6">
+                                <button type="submit" class="btn btn-primary btn-md" id="btnEditar">
+                                    <fa-icon [icon]="iconGuardar"></fa-icon> Guardar </button>
+                            </div>
+                        </div>
+                    </ng-template>
+                </div>
+
+                <!--Card de información personal-->
+                <div class="col-lg-8">
+                    <div class="card mb-4" style="background-color: #fff;">
+                        <div class="card-body">
+
+                            <!--Nombres y Apellidos-->
+                            <div class="row">
+                                <!--Nombres-->
+                                <div class="col-12 col-md-6 col-lg-6 mb-4">
+                                    <label class="mb-1"><b>Nombres</b></label>
+                                    <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                        formControlName="nombres" placeholder="Nombres*" [ngClass]="{
+                                        'is-invalid': form_registro.get('nombres')?.hasError('required') && form_registro.get('nombres')?.touched || form_registro.get('nombres')?.hasError('pattern')
+                                    }" [maxlength]="100" [readOnly]="!modoEdicion" maxlength="30"
+                                        (keydown)="soloLetras($event)">
+                                    <div class="validators"
+                                        *ngIf="form_registro.get('nombres')?.hasError('required') && form_registro.get('nombres')?.touched">
+                                        <small>¡Este campo es requerido!</small>
+                                    </div>
+                                    <div class="validators" *ngIf="form_registro.get('nombres')?.hasError('pattern')">
+                                        <small>¡Solo se permiten letras!</small>
+                                    </div>
+                                </div>
+
+                                <!--Apellidos-->
+                                <div class="col-12 col-md-6 col-lg-6 mb-4">
+                                    <label class="mb-1"><b>Apellidos</b></label>
+                                    <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                        formControlName="apellidos" placeholder="Apellidos*" [ngClass]="{
+                                        'is-invalid': form_registro.get('apellidos')?.hasError('required') && form_registro.get('apellidos')?.touched || form_registro.get('apellidos')?.hasError('pattern')
+                                    }" [maxlength]="100" [readOnly]="!modoEdicion" maxlength="30"
+                                        (keydown)="soloLetras($event)">
+                                    <div class="validators"
+                                        *ngIf="form_registro.get('apellidos')?.hasError('required') && form_registro.get('apellidos')?.touched">
+                                        <small>¡Este campo es requerido!</small>
+                                    </div>
+                                    <div class="validators" *ngIf="form_registro.get('apellidos')?.hasError('pattern')">
+                                        <small>¡Solo se permiten letras!</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Nombre de usuario y Fecha de nacimiento-->
+                            <div class="row">
+                                <!--Nombre de usuario-->
+                                <div class="col-12 col-md-6 col-lg-6 mb-4">
+                                    <label class="mb-1"><b>Nombre de usuario</b></label>
+                                    <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                        formControlName="usuario" placeholder="Nombre usuario*" [ngClass]="{
+                                        'is-invalid': form_registro.get('usuario')?.hasError('required') && form_registro.get('usuario')?.touched || form_registro.get('usuario')?.hasError('pattern') 
+                                    }" [maxlength]="100" [readOnly]="true">
+                                    <div class="validators"
+                                        *ngIf="form_registro.get('usuario')?.hasError('required') && form_registro.get('usuario')?.touched">
+                                        <small>¡Este campo es requerido!</small>
+                                    </div>
+                                    <div class="validators" *ngIf="form_registro.get('usuario')?.hasError('pattern')">
+                                        <small>¡Solo se permiten letras!</small>
+                                    </div>
+                                </div>
+
+                                <!--Fecha de nacimiento-->
+                                <div class="col-12 col-md-6 col-lg-6 mb-3">
+                                    <label class="mb-1"><b>Fecha de nacimiento</b></label>
+                                    <input type="date" class="form-control form-control-lg bg-light fs-6"
+                                        formControlName="fecha_nacimiento" placeholder="Fecha de nacimiento*" [ngClass]="{
+                                            'is-invalid': form_registro.get('fecha_nacimiento')?.hasError('required') && form_registro.get('fecha_nacimiento')?.touched
+                                        }" [readonly]="linkPatient2" [readOnly]="!modoEdicion" [min]="getMinDate()"
+                                        [max]="getTodayDateString()">
+                                    <div class="validators"
+                                        *ngIf="form_registro.get('fecha_nacimiento')?.hasError('required') && form_registro.get('fecha_nacimiento')?.touched">
+                                        <small>¡Este campo es requerido!</small>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <!--Correo electrónico-->
+                                <div class="col-12 mb-4">
+                                    <label class="mb-1"><b>Correo electrónico</b></label>
+                                    <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                        formControlName="correo" placeholder="Correo electrónico*" [ngClass]="{
+                                        'is-invalid': form_registro.get('correo')?.hasError('required') && form_registro.get('correo')?.touched || form_registro.get('correo')?.hasError('pattern')
+                                    }" [maxlength]="100" [readOnly]="!modoEdicion" maxlength="50">
+                                    <div class="validators"
+                                        *ngIf="form_registro.get('correo')?.hasError('required') && form_registro.get('correo')?.touched">
+                                        <small>¡Este campo es requerido!</small>
+                                    </div>
+                                    <div class="validators" *ngIf="form_registro.get('correo')?.hasError('pattern')">
+                                        <small>¡Solo se permiten letras!</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 
-    <form class="ingresar-registro-form" [formGroup]="form_registro" (ngSubmit)="update_info()"
-        *ngIf="form_clave else cambio">
-        <div class="entrada-texto">
-            <p><i class="fas fa-comment"></i> Nombres Completos: </p>
-            <input maxlength="30" (keydown)="soloLetras($event)" type="text" class="form-control" formControlName="nombres" />
-        </div>
 
-        <div class="entrada-texto">
-            <p><i class="fas fa-comment"></i> Apellidos Completos: </p>
-            <input maxlength="30" (keydown)="soloLetras($event)" type="text" class="form-control" formControlName="apellidos" />
-        </div>
-
-        <div class="entrada-texto">
-            <p><i class="fas fa-calendar"></i> Fecha de Nacimiento: </p>
-            <input [min]="getMinDate()" [max]="getTodayDateString()" type="date" class="form-control" formControlName="fecha_nacimiento" id="campoFecha" />
-        </div>
-
-        <div class="entrada-texto">
-            <p><i class="fas fa-envelope"></i> Correo electrónico: </p>
-            <input maxlength="50" type="text" class="form-control" formControlName="correo" />
-        </div>
-
-        <div class="entrada-texto">
-            <p><i class="fas fa-user"></i> Nombre de usuario: </p>
-            <input disabled="true" type="text" class="form-control" formControlName="usuario" />
-        </div>
-        <br>
-        <a style="cursor: pointer;" class="botones boton-cambiar-contrasenia" (click)="mostrarCambioClave()">
-            Cambiar Contraseña
-        </a>
-
-        <div class="botones">
-            <button class="boton-cambiar-contrasenia" type="submit">
-                🔁 Modificar datos
-            </button>
-        </div>
-    </form>
 
     <!-- Cambio de clave -->
     <ng-template #cambio>
         <form [formGroup]="form_contra" (ngSubmit)="update_password()">
 
-            <div class="row mb-4">
-                <div class="col-12 mb-2 mt-3">
-                    <label class="mb-1"><b>Contraseña Actual</b></label>
-                    <div class="input-group">
-                        <input type="{{ showPassword ? 'text' : 'password' }}" [maxlength]="20"
-                            class="form-control form-control-lg bg-light fs-6" formControlName="clave_actual"
-                            placeholder="Contraseña*" [ngClass]="{
-                            'is-invalid': form_contra.get('clave_actual')?.hasError('required') && form_contra.get('clave_actual')?.touched,
-                            'is-valid': form_contra.get('clave_actual')?.value?.length >= 1
-                          }" />
+            <div class="row justify-content-center">
+                <div class="col-12 container-info">
+                    <div class="col-12 mt-3 mx-1">
+                        <h4 id="titulo"><fa-icon [icon]="iconPassword" class="icon-title"></fa-icon> Cambio de
+                            contraseña</h4>
                     </div>
-                    <div class="validators"
-                        *ngIf="form_contra.get('clave_actual')?.hasError('required') && form_contra.get('clave_actual')?.touched">
-                        <small>¡Este campo es requerido!</small>
-                    </div>
-                </div>
-                <div class="col-12 mb-2 mt-3">
-                    <label class="mb-1"><b>Contraseña Nueva</b></label>
-                    <div class="input-group">
-                        <input type="{{ showPassword ? 'text' : 'password' }}" [maxlength]="20"
-                            class="form-control form-control-lg bg-light fs-6" formControlName="clave_nueva"
-                            placeholder="Contraseña*" [ngClass]="{
-                            'is-invalid': form_contra.get('clave_nueva')?.hasError('required') && form_contra.get('clave_nueva')?.touched || form_contra.get('clave_nueva')?.hasError('pattern'),
-                            'is-valid': form_contra.get('clave_nueva')?.value?.length >= 8 && form_contra.get('clave_nueva')?.hasError('pattern') == false
-                          }" />
-                    </div>
-                    <div class="validators"
-                        *ngIf="form_contra.get('clave_nueva')?.hasError('required') && form_contra.get('clave_nueva')?.touched">
-                        <small>¡Este campo es requerido!</small>
-                    </div>
-                    <div class="validators" *ngIf="form_contra.get('clave_nueva')?.hasError('pattern')">
-                        <small>¡Al menos una mayúscula, una minúscula, un número, un
-                            caracter especial!</small>
-                    </div>
-                </div>
 
-                <div class="col-12 mb-2 mt-3">
-                    <label class="mb-1"><b>Confirmar contraseña</b></label>
-                    <div class="input-group">
-                        <input type="{{ showPassword ? 'text' : 'password' }}"
-                            class="form-control form-control-lg bg-light fs-6" [maxlength]="20"
-                            formControlName="confirmClave" placeholder="Confirmar contraseña*" [ngClass]="{
-                          'is-invalid': form_contra.get('confirmClave')?.hasError('required') && form_contra.get('confirmClave')?.touched || form_contra.get('confirmClave')?.hasError('confirmacionClaveNoCoincide'),
-                          'is-valid': form_contra.get('confirmClave')?.value?.length >= 8 && form_contra.get('confirmClave')?.hasError('confirmacionClaveNoCoincide') == false
-                        }" />
-                        <div class="input-group-append" (click)="togglePasswordVisibility()">
-                            <span class="input-group-text">
-                                <fa-icon [icon]="showPassword ? iconEyeSlash : iconEye"></fa-icon>
-                            </span>
+                    <!--Políticas de contraseña-->
+                    <div class="row mt-4 password-policies mx-1">
+                        <span class="mb-3">La nueva contraseña debe cumplir con los siguientes parámetros:</span>
+                        <ul>
+                            <li class="mb-1"><fa-icon [icon]="iconInfoPolicies" class="icon-title"></fa-icon>
+                                Al menos una letra mayúscula</li>
+                            <li class="mb-1"><fa-icon [icon]="iconInfoPolicies" class="icon-title"></fa-icon>
+                                Al menos un número</li>
+                            <li class="mb-1"><fa-icon [icon]="iconInfoPolicies" class="icon-title"></fa-icon>
+                                Mínimo 6 dígitos</li>
+                            <li class="mb-1"><fa-icon [icon]="iconInfoPolicies" class="icon-title"></fa-icon>
+                                La nueva contraseña no puede ser igual a la anterior</li>
+                        </ul>
+                    </div>
+
+                    <div class="row mt-4 mx-1">
+                        <!--Contraseña actual-->
+                        <div class="col-12 col-md-12 mb-3">
+                            <label class="mb-1"><b>Contraseña actual</b></label>
+                            <div class="input-group">
+                                <input type="{{ getPasswordInputType(1) }}"
+                                    class="form-control form-control-lg bg-light fs-6" formControlName="clave_actual"
+                                    placeholder="Contraseña actual*" [ngClass]="{
+                                        'is-invalid': form_contra.get('clave_actual')?.hasError('required') && form_contra.get('clave_actual')?.touched || form_contra.get('clave_actual')?.hasError('pattern'),
+                                        'is-valid': form_contra.get('clave_actual')?.value?.length >= 8
+                                      }">
+                                <span class="input-group-text" id="basic-addon1" (click)="togglePasswordVisibility(1)">
+                                    <fa-icon [icon]="showPassword  ? iconHidePassword: iconViewPassword"></fa-icon>
+                                </span>
+                            </div>
+
+                            <div class="validators"
+                                *ngIf="form_contra.get('clave_actual')?.hasError('required') && form_contra.get('clave_actual')?.touched">
+                                <small>¡Este campo es requerido!</small>
+                            </div>
                         </div>
                     </div>
-                    <div class="validators"
-                        *ngIf="form_contra.get('confirmClave')?.hasError('required') && form_contra.get('confirmClave')?.touched">
-                        <small>¡Este campo es requerido!</small>
+                    <div class="row mt-2 mx-1">
+                        <!--Nueva contraseña-->
+                        <div class="col-6 mb-2 mt-3">
+                            <label class="mb-1"><b>Contraseña Nueva</b></label>
+                            <div class="input-group">
+                                <input type="{{ getPasswordInputType(2) }}" [maxlength]="20"
+                                    class="form-control form-control-lg bg-light fs-6" formControlName="clave_nueva"
+                                    placeholder="Contraseña*" [ngClass]="{
+                                    'is-invalid': form_contra.get('clave_nueva')?.hasError('required') && form_contra.get('clave_nueva')?.touched || form_contra.get('clave_nueva')?.hasError('pattern'),
+                                    'is-valid': form_contra.get('clave_nueva')?.value?.length >= 8 && form_contra.get('clave_nueva')?.hasError('pattern') == false
+                                  }" />
+                                <span class="input-group-text" id="basic-addon1" (click)="togglePasswordVisibility(2)">
+                                    <fa-icon [icon]="showPassword2  ? iconHidePassword: iconViewPassword"></fa-icon>
+                                </span>
+                            </div>
+                            <div class="validators"
+                                *ngIf="form_contra.get('clave_nueva')?.hasError('required') && form_contra.get('clave_nueva')?.touched">
+                                <small>¡Este campo es requerido!</small>
+                            </div>
+                            <div class="validators" *ngIf="form_contra.get('clave_nueva')?.hasError('pattern')">
+                                <small>¡Al menos una mayúscula, una minúscula, un número, un
+                                    caracter especial!</small>
+                            </div>
+                        </div>
+
+                        <!--Confirmar nueva contraseña-->
+                        <div class="col-6 mb-2 mt-3">
+                            <label class="mb-1"><b>Confirmar contraseña</b></label>
+                            <div class="input-group">
+                                <input type="{{ getPasswordInputType(3) }}"
+                                    class="form-control form-control-lg bg-light fs-6" [maxlength]="20"
+                                    formControlName="confirmClave" placeholder="Confirmar contraseña*" [ngClass]="{
+                                        'is-invalid': form_contra.get('confirmClave')?.hasError('required') && form_contra.get('confirmClave')?.touched || form_contra.get('confirmClave')?.hasError('confirmacionClaveNoCoincide'),
+                                        'is-valid': form_contra.get('confirmClave')?.value?.length >= 8 && form_contra.get('confirmClave')?.hasError('confirmacionClaveNoCoincide') == false
+                                    }" />
+                                    <span class="input-group-text" id="basic-addon1" (click)="togglePasswordVisibility(3)">
+                                        <fa-icon [icon]="showPassword3  ? iconHidePassword: iconViewPassword"></fa-icon>
+                                    </span>
+                            </div>
+                            <div class="validators"
+                                *ngIf="form_contra.get('confirmClave')?.hasError('required') && form_contra.get('confirmClave')?.touched">
+                                <small>¡Este campo es requerido!</small>
+                            </div>
+                            <div class="validators"
+                                *ngIf="form_contra.get('confirmClave')?.hasError('confirmacionClaveNoCoincide')">
+                                <small>¡La confirmación de la clave no coincide con la
+                                    clave!</small>
+                            </div>
+                        </div>
                     </div>
-                    <div class="validators"
-                        *ngIf="form_contra.get('confirmClave')?.hasError('confirmacionClaveNoCoincide')">
-                        <small>¡La confirmación de la clave no coincide con la
-                            clave!</small>
+
+                    <div class="action-buttons mb-3 d-flex justify-content-end mx-2 mt-3">
+                        <button (click)="mostrarCambioClave()" type="button"
+                            class="btn btn-danger btn-md btn-cancelar">Cancelar</button>
+                        <button
+                            [disabled]="!form_contra.valid || newPasswordMatchesCurrent() || !verifyPassword()"
+                            type="submit" type="submit" class="btn btn-primary btn-md">Guardar</button>
                     </div>
                 </div>
-            </div>
-
-            <div class="botones">
-                <button [disabled]="!form_contra.valid" type="submit">
-                    Actualizar 💾
-                </button>
-                <button (click)="mostrarCambioClave()">
-                    Cancelar ❌
-                </button>
             </div>
         </form>
     </ng-template>
