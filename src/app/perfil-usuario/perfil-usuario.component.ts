@@ -166,14 +166,17 @@ export class PerfilUsuarioComponent implements OnInit {
           }).finally(() => {
             this.close_session();
           })
-        } else {
+        } else if(resp.estado==2){
+          this.spinnerStatus = true;
+          this.mensaje_mal("La contraseña ingresada no es igual a la contraseña actual");
+        }else{
           this.spinnerStatus = true;
           this.mensaje_mal("No se ha podido modificar la contraseña. Intente otra vez.");
         }
       });
     } else {
       this.spinnerStatus = true;
-      this.mensaje_mal("Las contraseñas ingresadas no coinciden.");
+      this.mensaje_mal("Las confirmación de la contraseña debe ser igual.");
     }
   }
 
