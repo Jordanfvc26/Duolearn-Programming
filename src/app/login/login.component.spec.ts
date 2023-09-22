@@ -169,7 +169,7 @@ describe('LoginComponent', () => {
   it('Ingreso de credenciales de login correcto', (done) => {
     const form_login = component.form_login;
     form_login.controls['usuario'].setValue('admin');
-    form_login.controls['clave'].setValue('12345');
+    form_login.controls['clave'].setValue('Admin123$');
     component.user_service.user_login(form_login.value).subscribe(
       (resp) => {
         expect(resp.estado).toContain(1);
