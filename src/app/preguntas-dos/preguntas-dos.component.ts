@@ -387,7 +387,6 @@ export class PreguntasDosComponent implements AfterViewInit {
           num_actividad: Number.parseInt(sessionStorage.getItem("num_act")),
           puntaje: this.puntos 
         }).subscribe(resp => {
-        console.log(resp);
       });
     }
 

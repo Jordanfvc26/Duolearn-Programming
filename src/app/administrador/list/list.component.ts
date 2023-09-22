@@ -51,7 +51,6 @@ export class ListComponent implements OnInit {
       this.spinnerStatus = true;
       this.arrayLenguajes = resp;
       this.selectedLenguajeId = this.arrayLenguajes.length > 0 ? this.arrayLenguajes[0].lenguaje_id : null;
-      console.log(this.selectedLenguajeId)
       this.cargaModulos(this.selectedLenguajeId);
     },
     error => {
@@ -69,13 +68,11 @@ export class ListComponent implements OnInit {
   }
 
   changeLenguaje(event:any){
-    console.log(event);
     this.selectedLenguajeId = event;
     this.cargaModulos(this.selectedLenguajeId);
   }
 
   changeModulo(event:any){
-    console.log(event);
     this.selectedModuloId = event;
     this.cargaPreguntas(this.statusActividad);
   }
@@ -88,7 +85,6 @@ export class ListComponent implements OnInit {
       this.arrayModulos = resp;
       this.selectedModuloId = this.arrayModulos.length > 0 ? this.arrayModulos[0].modulo_id : null;
       this.cargaPreguntas(this.statusActividad);
-      console.log(this.arrayModulos);
     },error => {
       this.spinnerStatus = true;
       Swal.fire(
@@ -107,7 +103,6 @@ export class ListComponent implements OnInit {
       resp => {
       this.actividades = resp;
       this.spinnerStatus = true;
-      console.log(this.actividades);
     },error => {
       this.spinnerStatus = true;
       this.actividades = [];

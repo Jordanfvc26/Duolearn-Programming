@@ -90,7 +90,6 @@ export class AdministradorComponent implements OnInit {
     let id_img = document.getElementById('img-vista-previa1');
     let path = URL.createObjectURL(event.target.files[0]);
     id_img.setAttribute("src", path);
-    console.log(event.target.files);
     this.img1 = event.target.files[0];
   }
 
@@ -98,7 +97,6 @@ export class AdministradorComponent implements OnInit {
     let id_img = document.getElementById('img-vista-previa2');
     let path = URL.createObjectURL(event.target.files[0]);
     this.img2 = event.target.files[0];
-    console.log(event.target.files);
     id_img.setAttribute("src", path);
   }
 
@@ -185,7 +183,6 @@ export class AdministradorComponent implements OnInit {
               this.mensaje_bien("Pregunta agregada con éxito");
             } else {
               this.mensaje_bien("Pregunta agregada con éxito");
-              console.log("No se pudo agregar la pregunta");
             }
             this.seleccionado = 0;
             this.tema_select = 0;
@@ -205,7 +202,6 @@ export class AdministradorComponent implements OnInit {
               this.mensaje_bien("Pregunta agregada con éxito");
             } else {
               this.mensaje_bien("Se pudo agregar la imagen");
-              console.log("No se pudo agregar la pregunta");
             }
             this.seleccionado = 0;
             this.tema_select = 0;
@@ -231,13 +227,11 @@ export class AdministradorComponent implements OnInit {
                 this.mensaje_bien("Pregunta agregada con éxito");
               } else {
                 this.mensaje_bien("Pregunta agregada con éxito");
-                console.log("No se pudo agregar la pregunta");
               }
               this.seleccionado = 0;
               this.tema_select = 0;
             });
           }
-          console.log(this.pregunta_cuest.nativeElement);
         } else {
           this.mensaje_mal("Ingrese todos los campos necesarios");
         }
@@ -255,7 +249,6 @@ export class AdministradorComponent implements OnInit {
               this.mensaje_bien("Pregunta agregada con éxito");
             } else {
               this.mensaje_bien("Pregunta agregada con éxito");
-              console.log("No se pudo agregar la pregunta")
             }
             this.seleccionado = 0;
             this.tema_select = 0;

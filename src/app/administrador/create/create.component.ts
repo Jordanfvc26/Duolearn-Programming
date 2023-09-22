@@ -19,7 +19,10 @@ export class CreateComponent implements AfterViewInit {
     public act_serv: PreguntasService,
     public lenguajeService: LenguajesService,
     public ruta: Router,
-    public formBuilder: FormBuilder) { }
+    public formBuilder: FormBuilder) {
+    this.crearFormularioOpcionesPreguntas();
+    this.crearFormularioCuestionario();
+  }
   faCerrarSesion = iconos.faSignOutAlt;
   //cuestionario
   @ViewChild("escoge1") public select1: ElementRef;
@@ -31,9 +34,9 @@ export class CreateComponent implements AfterViewInit {
   opcionesPregunta!: FormGroup;
   formCuestionario!: FormGroup;
   formError!: FormGroup;
-  seleccionado = 0;
-  tema_select = 0;
-  lenguaje_select = 0;
+  seleccionado = 1;
+  tema_select = 1;
+  lenguaje_select = 1;
   Temas = [];
   faPlus = iconos.faPlusCircle;
   img1;
@@ -42,22 +45,11 @@ export class CreateComponent implements AfterViewInit {
   lenguajes = [];
   spinnerStatus: boolean = false;
 
-  ngOnInit() {
-    this.spinnerStatus = true;
-    this.crearFormularioOpcionesPreguntas();
-    this.crearFormularioCuestionario();
-    this.seleccionado = 1; // o el valor que desees para tipoPregunta
-    this.lenguaje_select = 1;
-    this.tema_select = 1;
-  }
-
-
   ngAfterViewInit(): void {
     this.spinnerStatus = false;
     this.lenguajeService.listar_lenguajes(true).subscribe(resp => {
       this.lenguajes = resp;
       this.spinnerStatus = true;
-      console.log(this.lenguajes);
     })
 
   }
@@ -68,7 +60,6 @@ export class CreateComponent implements AfterViewInit {
     this.tema_serv.obtener_temas_por_lenguaje(this.lenguaje_select, true).subscribe(resp => {
       this.Temas = resp;
       this.spinnerStatus = true;
-      console.log(this.Temas);
     });
   }
 
@@ -76,7 +67,6 @@ export class CreateComponent implements AfterViewInit {
     let id_img = document.getElementById('img-vista-previa1');
     let path = URL.createObjectURL(event.target.files[0]);
     id_img.setAttribute("src", path);
-    console.log(event.target.files);
     this.img1 = event.target.files[0];
   }
 
@@ -84,7 +74,6 @@ export class CreateComponent implements AfterViewInit {
     let id_img = document.getElementById('img-vista-previa2');
     let path = URL.createObjectURL(event.target.files[0]);
     this.img2 = event.target.files[0];
-    console.log(event.target.files);
     id_img.setAttribute("src", path);
   }
 

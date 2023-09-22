@@ -45,7 +45,6 @@ export class AdminCrearModulosComponent implements OnInit {
     let id_img = document.getElementById('img-vista-previa1');
     let path = URL.createObjectURL(event.target.files[0]);
     id_img.setAttribute("src", path);
-    console.log(event.target.files);
     this.img1 = event.target.files[0];
   }
 

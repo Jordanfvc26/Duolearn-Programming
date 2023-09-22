@@ -44,7 +44,6 @@ export class AdminListarModulosComponent implements OnInit {
   onFilterChange(event: any) {
     this.status = event.target.value;
     this.listar_modulos(this.status);
-    console.log(this.status);
   }
 
   changePage(e: PageEvent) {
@@ -57,7 +56,6 @@ export class AdminListarModulosComponent implements OnInit {
   }
 
   changeLenguaje(event:any){
-    console.log(event);
     this.selectedLenguajeId = event;
     this.listar_modulos(this.status);
   }
@@ -71,7 +69,6 @@ export class AdminListarModulosComponent implements OnInit {
         this.modulos = resp;
       }, (error) => {
         this.spinnerStatus = true;
-        console.log(error);
         this.modulos = [];
       });
   }

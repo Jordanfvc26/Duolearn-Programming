@@ -65,12 +65,10 @@ export class AdminEditModulosComponent implements AfterViewInit, AfterContentIni
   }
 
   vista_preliminar1 = (event) => {
-    console.log(event)
     let id_img = document.getElementById('img-vista-previa1');
     try {
       let path = URL.createObjectURL(event.target.files[0]);
       id_img.setAttribute("src", path);
-      console.log(event.target.files);
       this.img1 = event.target.files[0];
     } catch (error) {
       this.img1 = null;

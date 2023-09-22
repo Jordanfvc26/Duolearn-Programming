@@ -43,7 +43,6 @@ export class EditComponent implements AfterViewInit {
       this.activityId = Number.parseInt(params.get('id'));
       this.act_serv.get_questionId(this.activityId).subscribe(resp => {
         this.activityInfo = resp;
-        console.log(this.activityInfo)
         this.tema_select = this.activityInfo.tema;
         switch (this.activityInfo.tipo_actividad.trim()) {
           case "cuestionario":
@@ -68,7 +67,6 @@ export class EditComponent implements AfterViewInit {
     let id_img = document.getElementById('img-vista-previa1');
     let path = URL.createObjectURL(event.target.files[0]);
     id_img.setAttribute("src", path);
-    console.log(event.target.files);
     this.img1 = event.target.files[0];
   }
 
@@ -76,12 +74,10 @@ export class EditComponent implements AfterViewInit {
     let id_img = document.getElementById('img-vista-previa2');
     let path = URL.createObjectURL(event.target.files[0]);
     this.img2 = event.target.files[0];
-    console.log(event.target.files);
     id_img.setAttribute("src", path);
   }
 
   vista_preliminar3 = (event) => {
-    console.log(event.target.files);
     let id_img = document.getElementById('img-vista-previa3');
     this.img3 = event.target.files[0];
     let path = URL.createObjectURL(event.target.files[0]);
@@ -257,7 +253,6 @@ export class EditComponent implements AfterViewInit {
               }
             });
           }
-          console.log(this.pregunta_cuest.nativeElement);
         } else {
           this.mensaje_mal("Error", "Ingrese todos los campos necesarios");
         }
@@ -265,7 +260,6 @@ export class EditComponent implements AfterViewInit {
         if (this.valida_campos(4)) {
           this.formData.append("id", this.activityId.toString());
           this.formData.append("tema", this.activityInfo.modulo_id.toString());
-          console.log(this.img3);
           if (this.img3 != undefined) {
             this.formData.append("images", this.img3);
           } else {

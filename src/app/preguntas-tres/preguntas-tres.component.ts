@@ -185,7 +185,6 @@ export class PreguntasTresComponent implements AfterViewInit {
     var fecha = this.hoy.getFullYear() + '-' + (this.hoy.getMonth() + 1) + '-' + this.hoy.getDate();
     this.pregservice.send_solves(
       sessionStorage.getItem("user"), { id_actividad: this.preg_aleatoria.actividad_id, minutos: this.tiempo, intentos: 1, num_actividad: Number.parseInt(sessionStorage.getItem("num_act")), puntaje: this.puntos }).subscribe(resp => {
-        console.log(resp);
       });
   }
 

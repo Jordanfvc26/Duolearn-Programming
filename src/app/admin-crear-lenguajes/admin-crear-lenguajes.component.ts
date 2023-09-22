@@ -34,7 +34,6 @@ export class AdminCrearLenguajesComponent implements OnInit {
     let id_img = document.getElementById('img-vista-previa1');
     let path = URL.createObjectURL(event.target.files[0]);
     id_img.setAttribute("src", path);
-    console.log(event.target.files);
     this.img1 = event.target.files[0];
   }
 
@@ -73,7 +72,6 @@ export class AdminCrearLenguajesComponent implements OnInit {
       this.lenguajeService.nuevo_lenguaje(formData)
         .subscribe({
           next: (data) => {
-            console.log(data);
             if (data.estado == 1) {
               this.spinnerStatus = true;
               Swal.fire(

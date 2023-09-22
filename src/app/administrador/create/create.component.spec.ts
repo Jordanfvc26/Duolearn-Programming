@@ -29,6 +29,7 @@ describe('CreateComponent', () => {
   });
 
   it('should create', () => {
+    component.lenguaje_select=1;
     expect(component).toBeTruthy();
   });
 
@@ -71,6 +72,7 @@ describe('CreateComponent', () => {
     formCuestionario.controls['opcion_b_cuestionario'].setValue('opcion 1');
     formCuestionario.controls['opcion_c_cuestionario'].setValue('opcion 2');
     formCuestionario.controls['opcion_d_cuestionario'].setValue('opcion 2');
+    console.log(formCuestionario)
     if (formCuestionario.invalid) {
       expect(formCuestionario.invalid).toBeTrue();
       done();
